@@ -33,10 +33,10 @@ def register_activity(bot):
         return [app_commands.Choice(name=r['name'][:100], value=r['id']) for r in bot.directory.search(current)]
 
     @bot.tree.command(description='Presence on synchronized servers from a SteamID')
-    @app_commands.describe(player='SteamID64 or BattleMetrics player ID', page='Page of 10 servers')
-    async def presence(interaction: discord.Interaction, player: str, page: app_commands.Range[int, 1, 1000] = 1):
+    @app_commands.describe(player='SteamID64 or BattleMetrics player ID', page='Page of 10 servers', share='Publish the result in this channel')
+    async def presence(interaction: discord.Interaction, player: str, page: app_commands.Range[int, 1, 1000] = 1, share: bool = False):
         lang = lang_for(interaction)
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer(ephemeral=not share)
         try:
             pid = await bot.bm.resolve_player(player)
             data = await bot.bm.profile(pid)
@@ -45,17 +45,17 @@ def register_activity(bot):
             page = min(page, pages)
             e = brand_embed(t(lang, 'activity.title') + f' · {page}/{pages}', '\n'.join(lines[(page-1)*10:page*10]) or t(lang, 'activity.empty'))
             e.set_footer(text=t(lang, 'activity.footer'))
-            await interaction.followup.send(embed=e, ephemeral=True)
+            await interaction.followup.send(embed=e, ephemeral=not share)
         except Exception as exc:
             key = str(exc) if isinstance(exc, ValueError) and str(exc).startswith('identity.') else 'identity.unavailable'
-            await interaction.followup.send(embed=error_embed(t(lang, key), lang=lang), ephemeral=True)
+            await interaction.followup.send(embed=error_embed(t(lang, key), lang=lang), ephemeral=not share)
 
     @bot.tree.command(description='Recent player sessions, timestamps and duration')
-    @app_commands.describe(player='SteamID64 or BattleMetrics player ID', server='Optional server name')
+    @app_commands.describe(player='SteamID64 or BattleMetrics player ID', server='Optional server name', share='Publish the result in this channel')
     @app_commands.autocomplete(server=servers)
-    async def sessions(interaction: discord.Interaction, player: str, server: str | None = None):
+    async def sessions(interaction: discord.Interaction, player: str, server: str | None = None, share: bool = False):
         lang = lang_for(interaction)
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer(ephemeral=not share)
         try:
             pid = await bot.bm.resolve_player(player)
             sid = bot.directory.resolve(server) if server else None
@@ -73,7 +73,7 @@ def register_activity(bot):
                 lines.append(f"**{safe(names.get(server_id, bot.directory.name(server_id)))}**\n<t:{start}:f> → {end}{duration}")
             e = brand_embed(t(lang, 'sessions.title'), '\n'.join(lines) or t(lang, 'sessions.empty'))
             e.set_footer(text=t(lang, 'sessions.footer'))
-            await interaction.followup.send(embed=e, ephemeral=True)
+            await interaction.followup.send(embed=e, ephemeral=not share)
         except Exception as exc:
             key = str(exc) if isinstance(exc, ValueError) and str(exc).startswith('identity.') else 'identity.unavailable'
-            await interaction.followup.send(embed=error_embed(t(lang, key), lang=lang), ephemeral=True)
+            await interaction.followup.send(embed=error_embed(t(lang, key), lang=lang), ephemeral=not share)

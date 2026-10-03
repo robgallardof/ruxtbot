@@ -13,7 +13,7 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 | 🖥️ Servers | `/server`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe` |
 | 🕵️ Players | `/who`, `/player`, `/presence`, `/sessions` |
 | ℹ️ Info | `/help`, `/examples`, `/author` |
-| ⚙️ Admin | `/track`, `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers`, `/ping` |
+| ⚙️ Admin | `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers`, `/ping` |
 
 `/help` opens an interactive menu with buttons that launch the raid planner and the base calculator.
 
@@ -44,7 +44,7 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 
 ### Alerts
 
-`/track action:Add profile:<SteamID64> server:<name>` pings the single `wipe` role on connect/disconnect. The first reading is silent, unknown data never counts as a disconnect, and player names are escaped so they cannot mention anyone. Admin only.
+`/track action:Add profile:<SteamID64> server:<name>` pings the single `wipe` role on connect/disconnect. The first reading is silent, unknown data never counts as a disconnect, and player names are escaped so they cannot mention anyone. Available to server members; owners manage their watches and administrators can manage all watches.
 
 ## UX rules
 
@@ -83,3 +83,13 @@ The test suite checks the raid math, every panel against Discord's limits (40 co
 - Numeric BattleMetrics player IDs continue to work as an alternative; links are optional. Access denial, no exact match and ambiguity are reported separately.
 
 API contract: [BattleMetrics developer documentation](https://www.battlemetrics.com/developers/documentation), Player Quick Match Identifiers and Player Session History, reviewed 2026-10-03. New commands require a bot restart to sync with Discord.
+
+### Temporary, shareable tracking
+
+`/track action:Add profile:<SteamID64> days:7` works for regular server members. Duration defaults to seven days and accepts 1–15 days. Adding the same watch again renews it; only its owner or an administrator can modify it. One shared watch per player/server/channel avoids duplicate role notifications. Legacy watches expire seven days after migration and remain administrator-managed.
+
+Expiry is stored in SQLite and survives restarts. Expired watches are removed before polling. The bot itself continues serving commands, but makes no tracking requests when no active watches remain. Connection and disconnection changes mention the configured server's `wipe` role; the existing role and channel permissions still apply.
+
+Use `share:true` on `/track`, `/player`, `/who`, `/presence` or `/sessions` to publish the response in the channel where you invoked it. Friends can view and share the public Discord message. Replies remain private by default; this does not send DMs or post to unrelated chats.
+
+Performance: duplicate player/server observations are reused within each polling cycle; expired watch timing entries are discarded; profile cache entries expire after eight seconds with a 256-profile cap; expired `/who` cooldown entries are removed. BattleMetrics rate-limit backoff remains enabled. These are bounded-state improvements, not a measured production memory benchmark.

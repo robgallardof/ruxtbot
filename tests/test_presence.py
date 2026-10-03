@@ -45,3 +45,16 @@ def test_rate_limit_stops_following_requests():
         assert len(seen)==1
         await bm.client.aclose()
     asyncio.run(run())
+
+
+def test_profile_cache_has_a_hard_size_limit():
+    async def run():
+        bm = BattleMetrics('test')
+        async def request(path):
+            return {'data': {}, 'included': []}
+        bm.request = request
+        for pid in range(300):
+            await bm.profile(str(pid))
+        assert len(bm.cache) <= 256
+        await bm.client.aclose()
+    asyncio.run(run())

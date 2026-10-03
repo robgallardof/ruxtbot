@@ -456,3 +456,14 @@ for _key in ('help.players', 'examples.players'):
     if _key in STRINGS:
         _en, _es = STRINGS[_key]
         STRINGS[_key] = (_en + '\n`/presence player:SteamID64` · `/sessions player:SteamID64`', _es + '\n`/presence player:SteamID64` · `/sessions player:SteamID64`')
+
+STRINGS.update({
+    'track.guild': ('Use tracking in a Discord server.', 'Usa el seguimiento dentro de un servidor Discord.'),
+    'track.owner': ('This watch belongs to another user. Only its owner or an admin can change it.', 'Esta vigilancia pertenece a otro usuario. Solo su creador o un administrador puede modificarla.'),
+})
+COMMAND_ES['👀 Manage your temporary connection alerts'] = '👀 Gestiona tus alertas temporales de conexión'
+
+COMMAND_ES.update({
+    'Duration in days (maximum 15)': 'Duración en días (máximo 15)',
+    'Publish the result in this channel': 'Publicar el resultado en este canal',
+})

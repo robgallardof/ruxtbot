@@ -1,6 +1,7 @@
 """SQLite persistence: watches, per-guild settings and imported servers."""
 from __future__ import annotations
 import sqlite3
+import time
 from dataclasses import dataclass
 
 STEAMID64_MIN, STEAMID64_MAX = 76561197960265728, 99999999999999999
@@ -24,6 +25,8 @@ class Watch:
     channel_id: int
     label: str | None        # name shown in the alert
     was_online: bool | None  # last known reading; None = no baseline yet
+    owner_id: int = 0
+    expires_at: float = 0
 
 
 class Store:
@@ -31,12 +34,20 @@ class Store:
         self.conn = sqlite3.connect(path)
         self.conn.execute("CREATE TABLE IF NOT EXISTS watches(steamid TEXT,server_id TEXT,channel_id INTEGER,label TEXT,was_online INTEGER,PRIMARY KEY(steamid,server_id,channel_id))")
         self.conn.execute("CREATE TABLE IF NOT EXISTS settings(guild_id INTEGER PRIMARY KEY,channel_id INTEGER,language TEXT,alerts INTEGER,poll_interval INTEGER)")
+        columns = {r[1] for r in self.conn.execute('PRAGMA table_info(watches)')}
+        if 'owner_id' not in columns:
+            self.conn.execute('ALTER TABLE watches ADD COLUMN owner_id INTEGER NOT NULL DEFAULT 0')
+        if 'expires_at' not in columns:
+            self.conn.execute('ALTER TABLE watches ADD COLUMN expires_at REAL NOT NULL DEFAULT 0')
+        self.conn.execute('UPDATE watches SET expires_at=? WHERE expires_at=0', (time.time()+7*86400,))
         self.conn.commit()
 
     # ── Watches ──
-    def add(self, steamid, server_id, channel_id, label=None):
+    def add(self, steamid, server_id, channel_id, label=None, owner_id=0, days=7):
+        if not 1 <= days <= 15:
+            raise ValueError('days must be between 1 and 15')
         # Re-adding only updates the label: the last reading is kept so no false alert is sent.
-        self.conn.execute("INSERT INTO watches VALUES(?,?,?,?,NULL) ON CONFLICT(steamid,server_id,channel_id) DO UPDATE SET label=excluded.label", (steamid, server_id, channel_id, label))
+        self.conn.execute("INSERT INTO watches(steamid,server_id,channel_id,label,was_online,owner_id,expires_at) VALUES(?,?,?,?,NULL,?,?) ON CONFLICT(steamid,server_id,channel_id) DO UPDATE SET label=excluded.label,expires_at=excluded.expires_at", (steamid, server_id, channel_id, label, owner_id, time.time()+days*86400))
         self.conn.commit()
 
     def remove(self, steamid, server_id, channel_id):
@@ -44,7 +55,10 @@ class Store:
         self.conn.commit()
 
     def watches(self):
-        return [Watch(*r) for r in self.conn.execute("SELECT steamid,server_id,channel_id,label,was_online FROM watches")]
+        self.conn.execute('DELETE FROM watches WHERE expires_at<=?', (time.time(),))
+        self.conn.commit()
+        return [Watch(*r) for r in self.conn.execute("SELECT steamid,server_id,channel_id,label,was_online,owner_id,expires_at FROM watches")]
+
 
     def set_state(self, w, online):
         self.conn.execute("UPDATE watches SET was_online=? WHERE steamid=? AND server_id=? AND channel_id=?", (int(online), w.steamid, w.server_id, w.channel_id))

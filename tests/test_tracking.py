@@ -13,3 +13,28 @@ def test_store_persists_settings_and_watches(tmp_path):
     store.add('76561197960265728', '123', 20, 'Scout')
     assert store.settings(10) == (20, 'es', 1, 120)
     assert store.watches()[0].label == 'Scout'
+
+
+def test_expiration_migrates_and_survives_restart(tmp_path):
+    import sqlite3
+    from unittest.mock import patch
+    from rustbot.tracking import Store
+    path = str(tmp_path / 'legacy.db')
+    conn = sqlite3.connect(path)
+    conn.execute('CREATE TABLE watches(steamid TEXT,server_id TEXT,channel_id INTEGER,label TEXT,was_online INTEGER,PRIMARY KEY(steamid,server_id,channel_id))')
+    conn.execute("INSERT INTO watches VALUES('bm:1','1',1,'legacy',0)")
+    conn.commit()
+    conn.close()
+    with patch('rustbot.tracking.time.time', return_value=1000):
+        store = Store(path)
+        assert store.watches()[0].expires_at == 1000+7*86400
+        store.add('bm:2', '1', 1, owner_id=9, days=15)
+        store.conn.close()
+    with patch('rustbot.tracking.time.time', return_value=1000+8*86400):
+        store = Store(path)
+        assert [w.steamid for w in store.watches()] == ['bm:2']
+        store.conn.close()
+    with patch('rustbot.tracking.time.time', return_value=1000+15*86400):
+        store = Store(path)
+        assert store.watches() == []
+        store.conn.close()

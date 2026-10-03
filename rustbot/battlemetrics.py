@@ -49,6 +49,9 @@ class BattleMetrics:
         if cached and time.monotonic() - cached[0] < 8:
             return cached[1]
         data = await self.request(f'players/{player_id}?include=server')
+        self.cache = {key: value for key, value in self.cache.items() if time.monotonic() - value[0] < 8}
+        if len(self.cache) >= 256:
+            self.cache.pop(next(iter(self.cache)))
         self.cache[player_id] = (time.monotonic(), data)
         return data
 

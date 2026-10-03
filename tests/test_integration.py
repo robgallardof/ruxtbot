@@ -364,7 +364,7 @@ def test_admin_flow_track_settings_alerts_status(bot):
         assert not bot.store.watches()
         nope = FakeInteraction(admin=False)
         await cmd(bot, 'track')(nope, 'list', None, None, None)
-        assert 'administrators' in nope.sent()['embed'].description
+        assert 'No watches' in nope.sent()['embed'].description
     run(go())
 
 
@@ -430,4 +430,27 @@ def test_steamid_tracking_presence_sessions_and_who(bot):
         report = await bot.who.lookup(__import__('rustbot.who', fromlist=['parse_target']).parse_target(STEAMID))
         assert report['bm_id'] == '1128280744'
         assert 'bm' in report and not report.get('bm_candidates')
+    run(go())
+
+
+def test_member_tracking_ownership_expiry_and_public_share(bot):
+    async def go():
+        import time
+        member = FakeInteraction(admin=False, user_id=20)
+        await cmd(bot, 'track')(member, 'add', STEAMID, days=15, share=True)
+        watch = bot.store.watches()[0]
+        assert watch.owner_id == 20
+        assert 14.99 * 86400 < watch.expires_at-time.time() <= 15*86400
+        assert member.sent()['ephemeral'] is False
+        stranger = FakeInteraction(admin=False, user_id=21)
+        await cmd(bot, 'track')(stranger, 'remove', STEAMID)
+        assert 'belongs to another' in stranger.sent()['embed'].description
+        assert len(bot.store.watches()) == 1
+        for name, args in [('player', (STEAMID, '5931597')), ('presence', (STEAMID,)), ('sessions', (STEAMID,)), ('who', (STEAMID,))]:
+            i = FakeInteraction(user_id=30)
+            await cmd(bot, name)(i, *args, share=True)
+            assert i.sent()['ephemeral'] is False
+        owner = FakeInteraction(admin=False, user_id=20)
+        await cmd(bot, 'track')(owner, 'remove', STEAMID)
+        assert not bot.store.watches()
     run(go())

@@ -495,39 +495,42 @@ def register_who(bot, service: WhoService):
 
     @bot.tree.command(name='who', description='🕵️ Full player profile: Steam, bans, name history, Rust stats, BattleMetrics')
     @app_commands.describe(player='SteamID64, STEAM_0, or a Steam, steamid.io, SteamDB, RustWho or BattleMetrics link',
-                           battlemetrics='BattleMetrics profile link (optional) for hours, servers and in-game names')
-    async def who(interaction: discord.Interaction, player: str, battlemetrics: str | None = None):
+                           battlemetrics='BattleMetrics profile link (optional) for hours, servers and in-game names', share='Publish the result in this channel')
+    async def who(interaction: discord.Interaction, player: str, battlemetrics: str | None = None, share: bool = False):
         lang = lang_for(interaction)
         try:
             target = parse_target(player)
         except ValueError:
-            await interaction.response.send_message(embed=error_embed(t(lang, 'who.bad_input'), lang=lang), ephemeral=True)
+            await interaction.response.send_message(embed=error_embed(t(lang, 'who.bad_input'), lang=lang), ephemeral=not share)
             return
         try:
             bm_id = profile_id(battlemetrics) if battlemetrics else None
         except ValueError:
-            await interaction.response.send_message(embed=error_embed(t(lang, 'bm.profile_link'), lang=lang), ephemeral=True)
+            await interaction.response.send_message(embed=error_embed(t(lang, 'bm.profile_link'), lang=lang), ephemeral=not share)
             return
         now = time.monotonic()
         remaining = COOLDOWN_SECONDS - (now - cooldowns.get(interaction.user.id, 0))
         if remaining > 0:
-            await interaction.response.send_message(t(lang, 'who.cooldown', s=int(remaining) + 1), ephemeral=True)
+            await interaction.response.send_message(t(lang, 'who.cooldown', s=int(remaining) + 1), ephemeral=not share)
             return
+        for uid, stamp in list(cooldowns.items()):
+            if now - stamp >= COOLDOWN_SECONDS:
+                cooldowns.pop(uid, None)
         cooldowns[interaction.user.id] = now
-        await interaction.response.defer(ephemeral=True, thinking=True)
+        await interaction.response.defer(ephemeral=not share, thinking=True)
         try:
             report = await service.lookup(target, bm_id)
         except VanityNotFound as exc:
-            await interaction.followup.send(embed=error_embed(t(lang, 'who.bad_vanity', v=esc(exc.vanity)), lang=lang), ephemeral=True)
+            await interaction.followup.send(embed=error_embed(t(lang, 'who.bad_vanity', v=esc(exc.vanity)), lang=lang), ephemeral=not share)
             return
         except Exception:
             logging.exception('who lookup failed')
-            await interaction.followup.send(embed=error_embed(t(lang, 'who.fail'), lang=lang), ephemeral=True)
+            await interaction.followup.send(embed=error_embed(t(lang, 'who.fail'), lang=lang), ephemeral=not share)
             return
         view = LinksView(report['steamid'], report['bm_id'])
         if report['steamid'] and 'steam' in report['errors'] and 'rustwho' in report['errors']:
-            await interaction.followup.send(embed=error_embed(t(lang, 'who.both_down'), lang=lang), view=view, ephemeral=True)
+            await interaction.followup.send(embed=error_embed(t(lang, 'who.both_down'), lang=lang), view=view, ephemeral=not share)
             return
-        await interaction.followup.send(embeds=build_embeds(report, bool(service.bm.token), lang), view=view, ephemeral=True)
+        await interaction.followup.send(embeds=build_embeds(report, bool(service.bm.token), lang), view=view, ephemeral=not share)
 
     return who

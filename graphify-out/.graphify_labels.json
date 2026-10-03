@@ -1,6 +1,6 @@
 {
   "0": "test_utilities.py",
-  "1": "raid.py",
+  "1": "RaidData",
   "2": "test_integration.py",
   "3": "BattleMetrics",
   "4": "Store",
@@ -9,8 +9,7 @@
   "7": "RuxtBot",
   "8": "who.py",
   "9": "__init__.py",
-  "10": "RaidData",
+  "10": ".best",
   "11": "ServerPagesView",
-  "13": "CommandTranslator",
   "14": "build_raid_data.py"
 }
