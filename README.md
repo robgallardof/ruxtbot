@@ -10,7 +10,7 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 | --- | --- |
 | ⚡ Start here | `/me`, `/sv`, `/ip`, `/help`, `/examples` |
 | 💥 Raid | `/raid`, `/raidcalc`, `/raidbudget`, `/raidcompare`, `/raidtools` |
-| 🛠️ Crafting & base | `/craft`, `/item`, `/upkeep`, `/decay`, `/sources` |
+| 🛠️ Crafting & base | `/craft`, `/item`, `/upkeep`, `/decay`, `/binds`, `/sources` |
 | 🖥️ Servers | `/server`, `/online`, `/serverstats`, `/leaderboard`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe`, `/rust` |
 | 🕵️ Players | `/who`, `/findplayer`, `/player`, `/presence`, `/sessions`, `/playercompare`, `/steamid` |
 | 🔔 Alerts (everyone) | `/track`, `/team`, `/wipealert`, `/serverwatch` |
@@ -40,6 +40,10 @@ A server manager saves the community's servers once: `/setserver name:Main addre
 - `/player player: server:` adds hours on that server, first and last seen, and a 30-day hours-per-day graph.
 - `/rust`: players and servers worldwide, with the 24-hour range and 7-day peak.
 - `/upkeep server:` and `/decay server:` apply that server's upkeep and decay multipliers.
+
+### Binds: `/binds`
+
+Posts the binds and console (F1) commands guide publicly, one message per part (movement, combat & FOV · audio, aim & performance · items, chat & utilities), every bind in its own code block so it can be copied. The text lives in `data/binds.md`: edit it there. Use real Unicode emoji in that file, because Discord does not convert `:shortcodes:` sent by bots. Messages are split only at headings and stay under Discord's 2000-character limit.
 
 ### Version and updates
 

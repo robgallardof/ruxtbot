@@ -237,3 +237,27 @@ def test_clickable_commands_and_welcome(bot):
         assert e.title.startswith('👋 ¡Gracias') and '</sv:11>' in e.description
         assert [c.label for c in channel.send.call_args.kwargs['view'].children] == ['Ver ejemplos']
     run(go())
+
+
+def test_binds_guide_is_public_and_split_by_part(bot):
+    import re
+    from rustbot.info_commands import split_sections
+
+    async def go():
+        i = FakeInteraction()
+        await cmd(bot, 'binds')(i)
+        first = i.response.calls[0]
+        rest = [c.args[0] for c in i.followup.send.call_args_list]
+        messages = [first[1][0], *rest]
+        assert len(messages) == 3 and all(len(m) <= 2000 for m in messages)
+        assert [m.split('\n')[0] for m in messages] == ['# 🤖 RUXTBOT — MOVIMIENTO, COMBATE Y FOV', '# 🤖 RUXTBOT — AUDIO, AIM Y RENDIMIENTO',
+                                                        '# 🤖 RUXTBOT — ITEMS, CHAT Y UTILIDADES']
+        text = '\n'.join(messages)
+        assert 'ZERGDOS' not in text and '🐷' not in text and not re.findall(r':[a-z_]+:', text)   # bots must send real emoji
+        assert 'bind x +meta.if_true "graphics.fov 70";+meta.if_false "graphics.fov 90"' in text
+        assert 'gametip.showgametip \\"<#ff0000>On Live: <#00ff00>M2cGTTV\\""' in text
+        assert all(m.count('```') % 2 == 0 for m in messages) and 'ephemeral' not in first[2]
+    run(go())
+    long = '# T\n' + '\n\n'.join(f'**{n}**\n```\nbind {n} x\n```' for n in range(200))
+    chunks = split_sections(long)
+    assert all(len(c) <= 2000 and c.count('```') % 2 == 0 for c in chunks) and len(chunks) > 1
