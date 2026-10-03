@@ -19,3 +19,14 @@ Costos de munición: lotes enteros, sin inventario previo, componentes adquirido
 El tracker utiliza `GET /players/{id}?include=server`, `included[type=server].meta.online`. Solo acepta valores booleanos con servidor online, consulta válida y actualización de menos de cinco minutos. Los datos ausentes, privados, antiguos, errores y límites de API conservan la última observación: no equivalen a desconexión. La revisión cada 10 segundos no garantiza que BattleMetrics publique cambios cada 10 segundos.
 
 Las vigilancias antiguas de SteamID deben reemplazarse con `/track add profile:<enlace BattleMetrics>`; no es seguro convertir SteamID en ID BattleMetrics por coincidencias de texto. La primera observación es silenciosa. El envío se reintenta si Discord falla antes de guardar estado; una caída entre envío y guardado puede duplicar una alerta. No se promete entrega exactamente una vez.
+
+## /who
+
+Fuentes públicas consultadas en paralelo; si una falla, el resto se muestra y el pie indica cuál no respondió:
+
+- Steam Community: `/profiles/{id}?xml=1` (estado, baneo VAC, tradeo, cuenta limitada, ubicación), la página del perfil (nivel, juegos, insignias), `/ajaxaliases` (nombres anteriores) y `/id/{vanity}?xml=1` para URLs personalizadas.
+- Formatos SteamID calculados localmente con la misma fórmula que steamid.io.
+- RustWho: `fetch-v1.rustwho.com/stats/public/{id}` (baneos, bans en servidores, historial de nombres, estadísticas de Rust). Son estadísticas de Steam: orientativas, no prueba de trampas.
+- BattleMetrics: `GET /players/{id}?include=server,identifier` cuando se pasa el enlace del perfil. Sin enlace, `filter[search]` por nombre exacto solo muestra candidatos sin verificar.
+- Steam Web API (`IPlayerService/GetOwnedGames`) solo con `STEAM_API_KEY`.
+- SteamDB devuelve 403 a clientes automatizados; se enlaza su calculadora (`?cc=mx`) en lugar de extraer datos.

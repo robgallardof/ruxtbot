@@ -8,6 +8,7 @@ Este proyecto está preparado para el producto **Discord Bot Hosting → Python*
 4. En las variables de inicio/entorno del panel, crea:
    - `DISCORD_TOKEN`: el token de **Developer Portal → Bot → Reset Token**.
    - `BATTLEMETRICS_TOKEN`: opcional, requerido solo para comandos BattleMetrics.
+   - `STEAM_API_KEY`: opcional; en `/who` añade horas de Rust y número exacto de juegos ([obtener clave](https://steamcommunity.com/dev/apikey)).
    - `RUST_TRACKER_STATE_PATH`: `rustbot.sqlite3`.
    - `RUST_POLL_INTERVAL_SECONDS`: `10`.
    - `RUST_LOG_LEVEL`: `INFO`.

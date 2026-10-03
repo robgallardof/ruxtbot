@@ -1,6 +1,7 @@
 import asyncio
 from datetime import datetime, timezone
 import time
+from urllib.parse import urlencode
 import httpx
 
 
@@ -68,7 +69,6 @@ class BattleMetrics:
             return online if isinstance(online, bool) else None
         return None
 
-    async def rustwho_profile(self, steamid: str) -> dict:
-        response = await self.client.get(f'https://fetch-v1.rustwho.com/stats/public/{steamid}')
-        response.raise_for_status()
-        return response.json()
+    async def search_players(self, name: str) -> list[dict]:
+        query = urlencode({'filter[search]': name, 'page[size]': 25})
+        return (await self.request(f'players?{query}'))['data']

@@ -9,18 +9,20 @@ from discord import app_commands
 from discord.ext import commands, tasks
 from .config import Settings
 from .catalog import Catalog
-from .tracking import Store, valid_steamid64, transition
+from .tracking import Store, transition
 from .battlemetrics import BattleMetrics
+from .who import WhoService, register_who
 
 YELLOW=0xD5A522
 class RustBot(commands.Bot):
  def __init__(self, settings, catalog):
-  super().__init__(command_prefix="!",intents=discord.Intents.default()); self.settings,self.catalog=settings,catalog; self.store=Store(settings.state_path); self.bm=BattleMetrics(settings.battlemetrics_token); self.directory=ServerDirectory(Path(settings.data_path).with_name("servers.json")); self.directory.merge(self.store.servers()); self.last_poll={}; self.poll.change_interval(seconds=10)
+  super().__init__(command_prefix="!",intents=discord.Intents.default()); self.settings,self.catalog=settings,catalog; self.store=Store(settings.state_path); self.bm=BattleMetrics(settings.battlemetrics_token); self.who=WhoService(self.bm,settings.steam_api_key); self.directory=ServerDirectory(Path(settings.data_path).with_name("servers.json")); self.directory.merge(self.store.servers()); self.last_poll={}; self.poll.change_interval(seconds=10)
  async def setup_hook(self): await self.tree.sync(); self.poll.start()
  async def on_ready(self): logging.info("RuxtBot connected as %s", self.user)
  async def close(self):
   self.poll.cancel()
   await self.bm.client.aclose()
+  await self.who.client.aclose()
   self.store.conn.close()
   await super().close()
  @tasks.loop(seconds=10)
@@ -145,9 +147,9 @@ class RaidBackButton(discord.ui.Button):
 class RaidBackButtonView(discord.ui.View):
  def __init__(self,catalog): super().__init__(timeout=180); self.add_item(RaidBackButton(catalog))
 def main():
- s=Settings.from_env(); logging.basicConfig(level=s.log_level); cat=Catalog.load(s.data_path); bot=RustBot(s,cat); rustwho_cooldowns: dict[int, float] = {}
+ s=Settings.from_env(); logging.basicConfig(level=s.log_level); cat=Catalog.load(s.data_path); bot=RustBot(s,cat)
  @bot.tree.command(description="Main menu / Menú principal")
- async def help(interaction): await interaction.response.send_message(embed=embed("RuxtBot",f"Raid, craft, items, servers and authorized tracking.\nData: **{cat.version}**\n`/raid /raidtools /raidcompare /raidplan /craft /item\n/server /servers /syncservers /wipe /player /rustwho\n/track /status /pausealerts /resumealerts /settings /ping /sources`"),view=HelpView(),ephemeral=True)
+ async def help(interaction): await interaction.response.send_message(embed=embed("RuxtBot",f"Raid, craft, items, servers and authorized tracking.\nData: **{cat.version}**\n`/raid /raidtools /raidcompare /raidplan /craft /item\n/server /servers /syncservers /wipe /player /who\n/track /status /pausealerts /resumealerts /settings /ping /sources`"),view=HelpView(),ephemeral=True)
  @bot.tree.command(description="Find an item / Buscar ítem")
  async def item(interaction, query:str):
   found=cat.item(query); options=cat.matches(query)
@@ -191,25 +193,6 @@ def main():
    online=await bot.bm.player_online(bot.directory.resolve(server),'bm:'+profile_id(profile))
    await interaction.followup.send({True:'🟢 Conectado',False:'🔴 Desconectado',None:'⚪ Estado desconocido; BattleMetrics no tiene una observación reciente.'}[online],ephemeral=True)
   except Exception: await interaction.followup.send('No se pudo consultar BattleMetrics.',ephemeral=True)
- @bot.tree.command(description="Public RustWho profile lookup / Consulta pública de RustWho")
- async def rustwho(interaction, steamid64: str):
-  if not valid_steamid64(steamid64):
-   await interaction.response.send_message("Invalid SteamID64.", ephemeral=True); return
-  now=time.monotonic(); last=rustwho_cooldowns.get(interaction.user.id, 0); remaining=10-(now-last)
-  if remaining > 0:
-   await interaction.response.send_message(f"Try again in {int(remaining)} seconds / inténtalo en {int(remaining)} segundos.", ephemeral=True); return
-  rustwho_cooldowns[interaction.user.id]=now
-  await interaction.response.defer(ephemeral=True)
-  try:
-   profile=await bot.bm.rustwho_profile(steamid64); info=profile.get('steamInfo',{}); bans=profile.get('steamBans',{}); stats=profile.get('rustStats',{})
-   fields=[f"SteamID64: `{steamid64}`",f"VAC bans: **{bans.get('vacBans','—')}** | Game bans: **{bans.get('gameBans','—')}**",f"K/D: **{stats.get('kd','—')}** | Kills: **{stats.get('kills','—')}** | Deaths: **{stats.get('deaths','—')}**",f"Accuracy: **{stats.get('accuracyPct','—')}%** | Headshots: **{stats.get('headshots','—')}**"]
-   e=embed(info.get('name','RustWho profile'),"\n".join(fields)+"\n\nInformational only — not proof of cheating / información orientativa; no es prueba de trampas.")
-   avatar=info.get('avatar')
-   if avatar: e.set_thumbnail(url=avatar)
-   e.url=f"https://www.rustwho.com/stats/{steamid64}"
-   await interaction.followup.send(embed=e,ephemeral=True)
-  except Exception:
-   await interaction.followup.send("RustWho lookup is unavailable right now. Open the profile directly: https://www.rustwho.com/stats/"+steamid64,ephemeral=True)
  @bot.tree.command(description="Manage shared tracking / Gestionar vigilancias")
  @app_commands.choices(action=[app_commands.Choice(name='add',value='add'),app_commands.Choice(name='remove',value='remove'),app_commands.Choice(name='list',value='list')])
  @app_commands.autocomplete(server=server_choices)
@@ -242,5 +225,6 @@ def main():
  async def sources(interaction):
   meta=cat.raw['meta']; await interaction.response.send_message(embed=embed("Data sources",f"Version: **{meta['version']}**\nUpdated: {meta['updated']}\nConfidence: {meta['confidence']}\nSource: {meta['source']}"),ephemeral=True)
  register_utilities(bot,cat,require_admin)
+ register_who(bot,bot.who)
  bot.run(s.discord_token)
 if __name__=='__main__': main()

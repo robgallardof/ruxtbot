@@ -19,7 +19,7 @@ Para alojarlo en el panel de Cybrancee, sigue [CYBRANCEE.md](CYBRANCEE.md); ese 
 
 ## Comandos
 
-`/help`, `/raid`, `/craft`, `/item`, `/server`, `/player`, `/rustwho`, `/track`, `/settings` y `/sources` están disponibles desde el registro de comandos de Discord. `/track` está limitado a administradores; usa `add`, `remove` o `list`. La primera lectura crea una base silenciosa y solo se avisa ante transiciones posteriores. `/settings` permite fijar el canal de alertas, idioma, activación de alertas e intervalo. `/rustwho` es una consulta pública bajo demanda, efímera y limitada a una por usuario cada 10 segundos; no se usa para vigilancias ni alertas.
+`/help`, `/raid`, `/craft`, `/item`, `/server`, `/player`, `/who`, `/track`, `/settings` y `/sources` están disponibles desde el registro de comandos de Discord. `/track` está limitado a administradores; usa `add`, `remove` o `list`. La primera lectura crea una base silenciosa y solo se avisa ante transiciones posteriores. `/settings` permite fijar el canal de alertas, idioma, activación de alertas e intervalo. `/who` es una consulta pública bajo demanda, efímera y limitada a una por usuario cada 10 segundos; no se usa para vigilancias ni alertas.
 
 ## Datos y límites
 
@@ -42,7 +42,15 @@ El avatar original está en `assets/rustbot-mascot.png`. No contiene logos ni as
 - `/player profile:<URL de BattleMetrics> server:<nombre>`: consulta presencia explícita o estado desconocido.
 - `/track action:add profile:<URL de BattleMetrics> server:<nombre>`: avisa de conexión y desconexión al rol **wipe**. Sin servidor, vigila los servidores conocidos del jugador que están en el directorio importado. `remove` admite el mismo flujo. `list` muestra las vigilancias del Discord actual.
 - Debe existir exactamente un rol `wipe`, y ser mencionable o el bot debe poder mencionarlo en el canal. El comando es solo para administradores. No se permite mencionar otros roles ni `@everyone` desde datos del jugador.
-- `/settings interval_seconds:10` guarda el intervalo por Discord. Nuevas instalaciones usan 10 segundos; configuraciones anteriores conservan su valor hasta cambiarlas. `/rustwho` permite una consulta cada 10 segundos por usuario.
+- `/who jugador:<SteamID64 o enlace> battlemetrics:<URL opcional>`: ficha completa del jugador (reemplaza a `/rustwho`). Acepta SteamID64, `STEAM_0:X:Y`, `[U:1:N]`, URL personalizada o enlaces de Steam, steamid.io, SteamDB, RustWho y BattleMetrics. Muestra:
+  - 👤 **Steam**: estado, país, todos los formatos de SteamID (como steamid.io), fecha de creación, nivel, juegos, insignias y cuenta limitada.
+  - 🛡️ **Baneos**: VAC, game bans, comunidad, tradeo y bans en servidores (RustWho).
+  - 📝 **Nombres usados**: historial fusionado de Steam, RustWho y BattleMetrics con fecha y fuente.
+  - 🦀 **Rust** (RustWho): PvP, disparos, construcción, recolección y mundo.
+  - 📊 **BattleMetrics**: horas totales, servidores, primer registro y los más jugados. Sin el enlace `battlemetrics:` solo sugiere perfiles con el mismo nombre (sin verificar), porque la API pública no permite convertir SteamID en jugador BattleMetrics.
+  - Botones a Steam, SteamID I/O, SteamDB (calculadora en MXN), RustWho y BattleMetrics. SteamDB bloquea bots, por eso el valor de la cuenta se abre allí.
+  - `STEAM_API_KEY` (opcional) añade horas jugadas en Rust y conteo exacto de juegos.
+- `/settings interval_seconds:10` guarda el intervalo por Discord. Nuevas instalaciones usan 10 segundos; configuraciones anteriores conservan su valor hasta cambiarlas.
 
 Consulta [SOURCES.md](SOURCES.md) para fuentes, correcciones de recetas, 75 servidores importados y límites de las observaciones. No se han enviado mensajes de prueba a Discord ni desplegado esta versión automáticamente.
 
