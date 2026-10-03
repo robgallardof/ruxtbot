@@ -19,7 +19,24 @@ Para alojarlo en el panel de Cybrancee, sigue [CYBRANCEE.md](CYBRANCEE.md); ese 
 
 ## Comandos
 
-`/help`, `/raid`, `/craft`, `/item`, `/server`, `/player`, `/who`, `/track`, `/settings` y `/sources` están disponibles desde el registro de comandos de Discord. `/track` está limitado a administradores; usa `add`, `remove` o `list`. La primera lectura crea una base silenciosa y solo se avisa ante transiciones posteriores. `/settings` permite fijar el canal de alertas, idioma, activación de alertas e intervalo. `/who` es una consulta pública bajo demanda, efímera y limitada a una por usuario cada 10 segundos; no se usa para vigilancias ni alertas.
+Todos los comandos tienen autocompletado y descripciones en Discord. `/help` abre un menú por secciones con botones que lanzan directamente el planificador y la calculadora.
+
+| Sección | Comandos |
+| --- | --- |
+| 💥 Raid | `/raid`, `/raidcalc`, `/raidbudget`, `/raidcompare`, `/raidtools`, `/raidplan` |
+| 🛠️ Crafteo | `/craft`, `/item`, `/sources` |
+| 🖥️ Servidores | `/server`, `/servers`, `/wipe` |
+| 🕵️ Jugadores | `/who`, `/player` |
+| ⚙️ Admin | `/track`, `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers`, `/ping` |
+
+`/track` está limitado a administradores; usa ➕ Añadir, ➖ Quitar o 📋 Listar. La primera lectura crea una base silenciosa y solo se avisa ante transiciones posteriores. `/who` es una consulta bajo demanda, efímera y limitada a una por usuario cada 10 segundos.
+
+### Experiencia de uso
+
+- Los paneles interactivos (raid, calculadora, servidores, ayuda) **solo los puede usar quien los abrió**; otros reciben un aviso para abrir el suyo.
+- Al caducar, los botones se desactivan en lugar de quedar «muertos».
+- Los errores se muestran como embeds rojos con una pista de **cómo seguir**; un manejador global atrapa cualquier fallo inesperado.
+- Las alertas de conexión incluyen hora relativa y un botón al servidor en BattleMetrics.
 
 ## Datos y límites
 
@@ -37,7 +54,10 @@ El avatar original está en `assets/rustbot-mascot.png`. No contiene logos ni as
 
 ## Nuevo flujo de raideo y tracking
 
-- `/raid`: elige categoría, objetivo y método. La barra representa **vida restante**. «Aplicar 1», «Completar», «Reiniciar» y «Comparar» permiten explorar el resultado. Cambiar método reinicia el cálculo.
+- `/raid`: elige categoría, objetivo y método (empieza con el 🏆 más barato). La barra representa **vida restante**. 💥 Aplicar 1, ↩️ Deshacer, ⏭️ Completar, 🔄 Reiniciar y 📊 Comparar permiten explorar el resultado. El embed muestra azufre total y el método más barato.
+- `/raidcalc`: calculadora de base. Añade varios objetivos (2 puertas HQ + 3 muros de piedra…), elige un método o «🏆 más barato en cada objetivo» y obtén explosivos, azufre y materiales totales. 📤 Compartir publica el plan en el canal.
+- `/raidbudget azufre:20000`: cuántos explosivos puedes fabricar y cuántos objetivos de cada tipo puedes destruir.
+- «Más barato» solo considera explosivos comunes; asedio (catapulta, mortero, ballesta, cañón, ariete, MLRS) y fuego aparecen etiquetados en `/raidcompare` pero no se recomiendan por defecto.
 - `/server server:`: escribe parte del nombre y selecciona una sugerencia; no necesitas IDs.
 - `/player profile:<URL de BattleMetrics> server:<nombre>`: consulta presencia explícita o estado desconocido.
 - `/track action:add profile:<URL de BattleMetrics> server:<nombre>`: avisa de conexión y desconexión al rol **wipe**. Sin servidor, vigila los servidores conocidos del jugador que están en el directorio importado. `remove` admite el mismo flujo. `list` muestra las vigilancias del Discord actual.
@@ -65,12 +85,14 @@ Consulta [SOURCES.md](SOURCES.md) para fuentes, correcciones de recetas, 75 serv
 | `/wipe server:<nombre>` | Último/próximo wipe publicado, en la zona horaria de Discord |
 | `/pausealerts` | Silencia avisos sin borrar vigilancias |
 | `/resumealerts` | Reactiva avisos para cambios futuros |
-| `/raidtools target:<objetivo>` | Métodos y daño estimado |
-| `/raidcompare target:<objetivo>` | Compara cantidades y azufre conocido |
-| `/raidplan target:<objetivo> method:<método> quantity:2` | Materiales para múltiples objetivos, sin asumir splash compartido |
+| `/raidtools target:<objetivo>` | Métodos, daño por unidad y unidades necesarias |
+| `/raidcompare target:<objetivo>` | Todos los métodos ordenados por azufre, 🏆 el más barato |
+| `/raidplan target:<objetivo> method:<método> quantity:2` | Materiales para varios objetivos iguales, sin asumir splash compartido |
+| `/raidcalc objetivo:<opcional> cantidad:<n> metodo:<opcional>` | Calculadora de base con varios objetivos |
+| `/raidbudget azufre:<n>` | Qué fabricar y destruir con ese azufre |
 
 `/syncservers`, `/status`, `/pausealerts` y `/resumealerts` son solo para administradores. Las importaciones amplían el directorio compartido del bot, pero no crean vigilancias automáticamente. Los comandos de raideo ofrecen autocompletado de objetivos y métodos.
 
 ### Validación de esta versión
 
-34 pruebas automatizadas: recetas y lotes, invariantes de daño, límites de componentes Discord, presencia explícita/frescura, backoff, transiciones y mención del rol, fallo de envío, almacenamiento y registro de los 20 comandos. Se consultó el perfil real y los tres servidores solicitados por API de solo lectura. Falta la comprobación en el Discord de destino tras desplegar/reiniciar el bot; no se ha iniciado una segunda instancia local.
+64 pruebas automatizadas: recetas y lotes, invariantes de daño, límites de componentes Discord, presencia explícita/frescura, backoff, transiciones y mención del rol, fallo de envío, almacenamiento y registro de los 22 comandos, calculadora de base, presupuesto, método más barato, paneles con dueño y ayuda. Se consultó el perfil real y los tres servidores solicitados por API de solo lectura. Falta la comprobación en el Discord de destino tras desplegar/reiniciar el bot; no se ha iniciado una segunda instancia local.

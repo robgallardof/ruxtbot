@@ -13,7 +13,7 @@ def execute(tmp_path,case):
         with patch.object(Settings,'from_env',return_value=settings),patch.object(app.RustBot,'run',lambda bot,token:captured.append(bot)):
             app.main()
         bot=captured[0]
-        interaction=SimpleNamespace(guild=SimpleNamespace(id=1),guild_id=1,channel_id=2,user=SimpleNamespace(guild_permissions=SimpleNamespace(administrator=True)),response=SimpleNamespace(send_message=AsyncMock(),defer=AsyncMock()),followup=SimpleNamespace(send=AsyncMock()))
+        interaction=SimpleNamespace(guild=SimpleNamespace(id=1),guild_id=1,channel_id=2,user=SimpleNamespace(id=7,guild_permissions=SimpleNamespace(administrator=True)),response=SimpleNamespace(send_message=AsyncMock(),defer=AsyncMock()),followup=SimpleNamespace(send=AsyncMock()))
         try:await case(bot,interaction)
         finally:await bot.bm.client.aclose();bot.store.conn.close()
     asyncio.run(run())
@@ -21,7 +21,7 @@ def execute(tmp_path,case):
 
 def test_all_commands_register_and_serialize(tmp_path):
     async def case(bot,i):
-        assert len(bot.tree.get_commands())==20
+        assert len(bot.tree.get_commands())==22
         for command in bot.tree.get_commands():command.to_dict(bot.tree)
         assert bot.tree.get_command('raid').get_parameter('method').autocomplete
     execute(tmp_path,case)
@@ -68,7 +68,7 @@ def test_admin_commands_reject_dms(tmp_path):
         i.guild=None
         await bot.tree.get_command('pausealerts').callback(i)
         assert bot.store.settings(1) is None
-        assert 'administrador' in i.response.send_message.call_args.args[0]
+        assert 'administradores' in i.response.send_message.call_args.kwargs['embed'].description
     execute(tmp_path,case)
 
 

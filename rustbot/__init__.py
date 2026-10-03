@@ -1,1 +1,1 @@
-"""RuxtBot: data-driven Discord utility bot."""
+"""RuxtBot: bot de Discord para raids, crafteo, servidores y jugadores de Rust."""

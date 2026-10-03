@@ -9,11 +9,11 @@ def test_health_and_bar_describe_remaining_health():
     t=CAT.raid('hqdoor')
     assert t['hp']==1000
     assert '100% de vida' in raid_embed(CAT,t,'c4',0).description
-    assert '120.000/1,000' in raid_embed(CAT,t,'c4',2).description
+    assert '120/1,000' in raid_embed(CAT,t,'c4',2).description
     final=raid_embed(CAT,t,'c4',3)
-    assert '0.000/1,000' in final.description and '0% de vida' in final.description
+    assert '0/1,000' in final.description and '0% de vida' in final.description
     assert '░'*10 in final.description
-    assert 'Reinicia' in final.fields[2].value
+    assert 'Reinicia' in final.fields[3].value
     assert '\\n' not in final.description
 
 def test_all_catalog_damage_counts_destroy_only_on_last_unit():
@@ -31,7 +31,7 @@ def test_all_views_fit_discord_limits():
     asyncio.run(run())
 
 def test_unknown_cost_never_claims_free():
-    assert 'no significa gratis' in raid_embed(CAT,CAT.raid('hqdoor'),'mlrs').fields[1].value
+    assert 'no significa gratis' in raid_embed(CAT,CAT.raid('hqdoor'),'mlrs').fields[2].value
 
 def test_verified_recipe_costs_and_batch_rounding():
     assert CAT.materials('c4',2)['sulfur']==4400

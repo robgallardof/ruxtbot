@@ -1,3 +1,4 @@
+"""Cliente mínimo de la API de BattleMetrics con reintentos y freno ante límites de uso."""
 import asyncio
 from datetime import datetime, timezone
 import time
@@ -7,12 +8,15 @@ import httpx
 
 class BattleMetrics:
     def __init__(self, token: str | None):
+        # blocked_until: tras un 429 no se hace ninguna petición hasta esta marca de tiempo.
+        # cache: perfiles recientes (8 s) para que varias vigilancias del mismo jugador compartan consulta.
         self.token = token
         self.client = httpx.AsyncClient(timeout=15)
         self.blocked_until = 0.0
         self.cache = {}
 
     async def request(self, path: str) -> dict:
+        """GET autenticado. Reintenta errores 5xx con backoff exponencial; un 429 bloquea las siguientes llamadas."""
         if not self.token:
             raise PermissionError('BattleMetrics is not configured')
         if time.monotonic() < self.blocked_until:
@@ -46,6 +50,7 @@ class BattleMetrics:
         return data
 
     async def player_online(self, server_id: str, player_id: str) -> bool | None:
+        """True/False solo con una observación explícita y reciente (< 5 min); en cualquier otro caso None."""
         # Legacy SteamID watches remain unknown, never treated as disconnected.
         if not player_id.startswith('bm:'):
             return None
@@ -70,5 +75,6 @@ class BattleMetrics:
         return None
 
     async def search_players(self, name: str) -> list[dict]:
+        """Busca jugadores por nombre (la API pública no permite buscar por SteamID)."""
         query = urlencode({'filter[search]': name, 'page[size]': 25})
         return (await self.request(f'players?{query}'))['data']
