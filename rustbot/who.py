@@ -618,9 +618,9 @@ def register_who(bot, service: WhoService):
 
     @bot.tree.command(name='who', description='🕵️ Full player profile: Steam, bans, name history, Rust stats, BattleMetrics')
     @app_commands.describe(player='Name you looked up before, SteamID64, STEAM_0 or BattleMetrics player ID',
-                           bm_id='BattleMetrics player ID (optional, numbers only)', share='Publish the result in this channel')
+                           bm_id='BattleMetrics player ID (optional, numbers only)', share='Everyone in the channel sees the profile (default yes; false = only you)')
     @app_commands.autocomplete(player=players)
-    async def who(interaction: discord.Interaction, player: str | None = None, bm_id: str | None = None, share: bool = False):
+    async def who(interaction: discord.Interaction, player: str | None = None, bm_id: str | None = None, share: bool = True):
         lang = lang_for(interaction)
         if not player and not bm_id:
             embed, view = hub(bot, interaction, lang)
@@ -628,20 +628,21 @@ def register_who(bot, service: WhoService):
             view.message = await interaction.original_response()
             return
         player = expand(bot, interaction, player) or bm_id
+        # Profiles are public by default, but mistakes and waits only ever go to whoever typed the command.
         try:
             target = parse_target(player)
         except ValueError:
-            await player_error(bot, interaction, lang, 'identity.input', player, share)
+            await player_error(bot, interaction, lang, 'identity.input', player, False)
             return
         try:
             bm_id = profile_id(bm_id) if bm_id else None
         except ValueError:
-            await interaction.response.send_message(embed=error_embed(t(lang, 'bm.profile_link'), lang=lang), ephemeral=not share)
+            await interaction.response.send_message(embed=error_embed(t(lang, 'bm.profile_link'), lang=lang), ephemeral=True)
             return
         now = time.monotonic()
         remaining = COOLDOWN_SECONDS - (now - cooldowns.get(interaction.user.id, 0))
         if remaining > 0:
-            await interaction.response.send_message(t(lang, 'who.cooldown', s=int(remaining) + 1), ephemeral=not share)
+            await interaction.response.send_message(t(lang, 'who.cooldown', s=int(remaining) + 1), ephemeral=True)
             return
         for uid, stamp in list(cooldowns.items()):
             if now - stamp >= COOLDOWN_SECONDS:
@@ -659,15 +660,21 @@ def register_who(bot, service: WhoService):
             report = await service.lookup(target, bm_id)
         except VanityNotFound as exc:
             # Not a Steam custom URL either: most likely an in-game name, so offer to search it.
-            await player_error(bot, interaction, lang, 'identity.name', exc.vanity, share)
+            await drop_public_placeholder(interaction, share)
+            await player_error(bot, interaction, lang, 'identity.name', exc.vanity, False)
             return
         except Exception:
             logging.exception('who lookup failed')
-            await interaction.followup.send(embed=error_embed(t(lang, 'who.fail'), lang=lang), ephemeral=not share)
+            await drop_public_placeholder(interaction, share)
+            await interaction.followup.send(embed=error_embed(t(lang, 'who.fail'), lang=lang), ephemeral=True)
             return
         await remember(bot, interaction, bm_id=report['bm_id'], steamid=report['steamid'], name=report_name(report))
-        view = LinksView(report['steamid'], report['bm_id'], interaction.user.id, shortcut_actions(bot, report, lang, bool(interaction.guild)))
-        if report['steamid'] and not report['bm_id'] and report.get('bm_candidates'):
+        linking = bool(report['steamid'] and not report['bm_id'] and report.get('bm_candidates'))
+        # On a public profile anyone can use Watch / Sessions (their replies are private);
+        # choosing which BattleMetrics profile to link stays with whoever asked.
+        owner = interaction.user.id if linking or not share else None
+        view = LinksView(report['steamid'], report['bm_id'], owner, shortcut_actions(bot, report, lang, bool(interaction.guild)))
+        if linking:
             view.add_item(link_picker(report, lang, share))
             # Open each candidate on BattleMetrics to compare before choosing.
             for n, p in enumerate(report['bm_candidates'][:5], start=1):
@@ -679,6 +686,14 @@ def register_who(bot, service: WhoService):
         else:
             await interaction.followup.send(embeds=build_embeds(report, bool(service.bm.token), lang), view=view, ephemeral=not share)
         view.message = await interaction.original_response()
+
+    async def drop_public_placeholder(interaction, share):
+        """After a public "thinking…" message, delete it so the error that follows can be private."""
+        if share and interaction.response.is_done():
+            try:
+                await interaction.delete_original_response()
+            except Exception:
+                pass
 
     def link_picker(report: dict, lang: str, share: bool) -> discord.ui.Select:
         """Pick which BattleMetrics profile is this SteamID; the link is saved in the guild's book and the profile reloads."""

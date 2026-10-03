@@ -752,6 +752,7 @@ COMMAND_ES: dict[str, str] = {
     '👀 Manage your temporary connection alerts': '👀 Gestiona tus alertas temporales de conexión',
     'Duration in days (maximum 15)': 'Duración en días (máximo 15)',
     'Publish the result in this channel': 'Publicar el resultado en este canal',
+    'Everyone in the channel sees the profile (default yes; false = only you)': 'Todos en el canal ven la ficha (por defecto sí; false = solo tú)',
     '🏠 Daily Tool Cupboard upkeep for your base': '🏠 Upkeep diario del armario (TC) para tu base',
     '⏳ How long until a building grade fully decays': '⏳ Cuánto tarda en caerse cada material por decay',
     'Stone full pieces (foundations, walls, doorways, frames, stairs, roofs)': 'Piezas completas de piedra (cimientos, muros, puertas, marcos, escaleras, techos)',

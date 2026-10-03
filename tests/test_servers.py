@@ -293,3 +293,25 @@ def test_titles_are_not_markdown_escaped(bot):
         await cmd(bot, 'leaderboard')(top, '5931597', 7)
         assert chr(92) not in top.sent()['embed'].title   # no backslashes
     run(go())
+
+
+def test_who_is_public_but_errors_stay_private(bot):
+    async def go():
+        use(bot)
+        i = FakeInteraction()
+        await cmd(bot, 'who')(i, '1128280744')
+        assert i.response.calls[0] == ('defer', (), {'ephemeral': False, 'thinking': True})
+        sent = i.sent()
+        assert sent['ephemeral'] is False and sent['embeds']
+        stranger = FakeInteraction(user_id=99)
+        assert await sent['view'].interaction_check(stranger) is True       # anyone can press Watch / Sessions
+        wait = FakeInteraction()
+        await cmd(bot, 'who')(wait, '1128280744')
+        assert wait.response.calls[-1][2]['ephemeral'] is True              # cooldown notice: only the requester
+        bad = FakeInteraction(user_id=50)
+        await cmd(bot, 'who')(bad, '!!!')
+        assert bad.sent()['ephemeral'] is True
+        private = FakeInteraction(user_id=51)
+        await cmd(bot, 'who')(private, '1128280744', share=False)
+        assert private.sent()['ephemeral'] is True
+    run(go())

@@ -79,6 +79,8 @@ After the first lookup the player goes into the guild's **player book** and ever
 
 ### Players: `/who`
 
+`/who` posts the profile **publicly** by default so everyone in the channel sees it (`share:false` keeps it private). Errors, the cooldown notice and the lookup panel (`/who` with no options) only go to whoever typed it. On a public profile anyone can press Watch or Sessions (their replies are private); choosing which BattleMetrics profile to link stays with the person who asked.
+
 `/who player:<SteamID64, BattleMetrics ID or name> bm_id:<optional BattleMetrics ID>`. With only a BattleMetrics ID, the bot reads the SteamID from the BattleMetrics profile when the token can see it, so Steam and RustWho data still appear. Buttons under the profile open **Watch 7 days** and **Sessions** directly. It shows:
 
 - 📝 **Name history first**: merged from Steam, RustWho and BattleMetrics with date and source, plus how many older names are locked on RustWho.
