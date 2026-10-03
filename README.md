@@ -62,9 +62,13 @@ After the first lookup the player goes into the guild's **player book** and ever
 - `/serversearch query:`: search any Rust server on BattleMetrics, most players first, with each server ID.
 - `/forcewipe`: next Facepunch forced wipe (first Thursday of the month, 2 PM US Eastern) with countdowns in each user's time zone.
 
-### Alerts
+### Alerts: open to every member
 
-`/track action:Add player:<name, SteamID64 or BattleMetrics ID> server:<name>` pings the single `wipe` role on connect/disconnect. The first reading is silent, unknown data never counts as a disconnect, and player names are escaped so they cannot mention anyone. Available to server members; owners manage their watches and administrators can manage all watches.
+- **Anyone in the server** can use `/track`: watch a player for 1–15 days (7 by default), renew any watch, and see the server's shared list. Stopping someone else's watch needs its creator or a server manager.
+- Alerts ping **whoever started the watch**, plus the alert role chosen with `/settings role:` (or a role named `wipe`, if there is exactly one). No role is required. Player names are escaped so they can never mention anyone, and `@everyone` is never allowed.
+- If none of the player's servers is in the directory, the servers where they played in the last 14 days are watched (at least the latest one) and added to the directory.
+- The first reading is silent and unknown data never counts as a disconnect.
+- **Server managers** (Administrator or Manage Server) **and the bot owner** can use `/settings`, `/pausealerts`, `/resumealerts`, `/status` and `/syncservers`.
 
 ## UX rules
 

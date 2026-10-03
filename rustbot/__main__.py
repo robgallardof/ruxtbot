@@ -77,7 +77,7 @@ class RustBot(commands.Bot):
 
     @tasks.loop(seconds=10)
     async def poll(self):
-        """Check every watch and ping the @wipe role only when the state changes.
+        """Check every watch and ping the alert role and the watch's creator only when the state changes.
 
         Safety rules:
         - Unknown data (None) never counts as a disconnect.
@@ -109,14 +109,8 @@ class RustBot(commands.Bot):
                     continue
                 event = transition(w.was_online, online)
                 if event and (not saved or saved[2]):
-                    roles = [role for role in ch.guild.roles if role.name.casefold() == 'wipe']
-                    if len(roles) != 1:
-                        logging.warning('Tracking alert waiting: guild %s needs exactly one wipe role', ch.guild.id)
-                        continue
-                    role = roles[0]
-                    if not role.mentionable and not ch.permissions_for(ch.guild.me).mention_everyone:
-                        logging.warning('Tracking alert waiting: wipe role is not mentionable in guild %s', ch.guild.id)
-                        continue
+                    role = alert_role(self.store, ch)
+                    pings = ' '.join(x for x in (role.mention if role else '', f'<@{w.owner_id}>' if w.owner_id else '') if x)
                     lang = saved[1] if saved and saved[1] in ('en', 'es') else 'en'
                     # The label comes from player data: escape it so it can never mention anyone.
                     label = discord.utils.escape_markdown(discord.utils.escape_mentions(w.label or w.steamid))
@@ -124,8 +118,9 @@ class RustBot(commands.Bot):
                     verb = t(lang, 'alert.connected' if online else 'alert.disconnected')
                     link = discord.ui.View()
                     link.add_item(discord.ui.Button(label=t(lang, 'alert.button'), emoji='📊', url=f'https://www.battlemetrics.com/servers/rust/{w.server_id}'))
-                    await ch.send(f"{role.mention} {'🟢' if online else '🔴'} **{label}** {verb} **{name}** · <t:{int(time.time())}:R>",
-                                  view=link, allowed_mentions=discord.AllowedMentions(roles=[role], users=False, everyone=False))
+                    await ch.send(f"{pings} {'🟢' if online else '🔴'} **{label}** {verb} **{name}** · <t:{int(time.time())}:R>".strip(), view=link,
+                                  allowed_mentions=discord.AllowedMentions(roles=[role] if role else False,
+                                                                           users=[discord.Object(w.owner_id)] if w.owner_id else False, everyone=False))
                 self.store.set_state(w, online)
             except Exception:
                 logging.exception('tracker poll failed')
@@ -135,13 +130,65 @@ class RustBot(commands.Bot):
         await self.wait_until_ready()
 
 
+def alert_role(store, channel):
+    """Role to ping in alerts: the one chosen with /settings, else the only role named "wipe"; None if neither can be mentioned."""
+    guild = channel.guild
+    chosen = store.alert_role(guild.id)
+    if chosen:
+        roles = [guild.get_role(chosen)] if hasattr(guild, 'get_role') else [r for r in guild.roles if getattr(r, 'id', None) == chosen]
+    else:
+        roles = [r for r in guild.roles if r.name.casefold() == 'wipe']
+    roles = [r for r in roles if r]
+    if len(roles) != 1:
+        return None
+    role = roles[0]
+    if not role.mentionable and not channel.permissions_for(guild.me).mention_everyone:
+        logging.info('alert role %s is not mentionable in guild %s: alerts ping only the watch owner', role.name, guild.id)
+        return None
+    return role
+
+
+async def can_manage(interaction) -> bool:
+    """Server administrators, members with Manage Server, and the bot's owner."""
+    if not interaction.guild:
+        return False
+    perms = interaction.user.guild_permissions
+    if getattr(perms, 'administrator', False) or getattr(perms, 'manage_guild', False):
+        return True
+    try:
+        return await interaction.client.is_owner(interaction.user)
+    except Exception:
+        return False
+
+
 async def require_admin(interaction) -> bool:
-    """Stop the interaction with a notice unless the user is a server administrator."""
-    if not interaction.guild or not interaction.user.guild_permissions.administrator:
+    """Stop the interaction with a notice unless the user can manage the bot in this server."""
+    if not await can_manage(interaction):
         lang = lang_for(interaction)
         await interaction.response.send_message(embed=error_embed(t(lang, 'err.admin'), t(lang, 'err.admin.hint'), lang), ephemeral=True)
         return False
     return True
+
+
+def recent_rust_servers(profile: dict, days: int = 14, limit: int = 5) -> list[dict]:
+    """Rust servers the player was seen on in the last `days` days (at least the latest one), newest first."""
+    servers = [s for s in profile.get('included', []) if s.get('type') == 'server'
+               and (s.get('relationships') or {}).get('game', {}).get('data', {}).get('id', 'rust') == 'rust']
+    servers.sort(key=lambda s: (s.get('meta') or {}).get('lastSeen') or '', reverse=True)
+    cutoff = time.time() - days * 86400
+    recent = [s for s in servers if (iso_to_ts((s.get('meta') or {}).get('lastSeen')) or 0) >= cutoff][:limit] or servers[:1]
+    return [{'id': s['id'], 'name': (s.get('attributes') or {}).get('name', s['id']).strip()} for s in recent]
+
+
+def clip_lines(lines: list[str], limit: int) -> str:
+    """Join whole lines up to `limit` characters (never cuts a line, so mentions and links stay intact)."""
+    out, size = [], 0
+    for line in lines:
+        if size + len(line) + 1 > limit:
+            break
+        out.append(line)
+        size += len(line) + 1
+    return '\n'.join(out)
 
 
 def main():
@@ -242,18 +289,21 @@ def main():
         await interaction.response.send_message(embed=e, ephemeral=True)
 
     # ── Settings ──
-    @bot.tree.command(description='⚙️ Alert channel, language, alerts and interval (admins)')
-    @app_commands.describe(language='Language for alerts', alerts='Send alerts', interval_seconds='Seconds between checks', channel='Channel for alerts')
+    @bot.tree.command(description='⚙️ Alert channel, role, language and interval (server managers)')
+    @app_commands.describe(language='Language for alerts', alerts='Send alerts', interval_seconds='Seconds between checks', channel='Channel for alerts',
+                           role='Role to ping in alerts (empty = a role named wipe, if any)')
     @app_commands.choices(language=[app_commands.Choice(name='English', value='en'), app_commands.Choice(name='Spanish', value='es')])
     async def settings(interaction: discord.Interaction, language: str = 'en', alerts: bool = True,
-                       interval_seconds: app_commands.Range[int, 10, 3600] = 10, channel: discord.TextChannel | None = None):
+                       interval_seconds: app_commands.Range[int, 10, 3600] = 10, channel: discord.TextChannel | None = None, role: discord.Role | None = None):
         if not await require_admin(interaction):
             return
         lang = lang_for(interaction)
         language = language if language in ('en', 'es') else 'en'
         target_channel = channel or interaction.channel
         bot.store.set_settings(interaction.guild_id, target_channel.id, language, alerts, interval_seconds)
+        bot.store.set_alert_role(interaction.guild_id, role.id if role else None)
         e = success_embed(t(lang, 'settings.saved'))
+        e.add_field(name=t(lang, 'settings.role'), value=role.mention if role else t(lang, 'settings.role.default'))
         e.add_field(name=t(lang, 'settings.channel'), value=f'<#{target_channel.id}>')
         e.add_field(name=t(lang, 'settings.language'), value={'en': 'English', 'es': 'Español'}[language])
         e.add_field(name=t(lang, 'settings.alerts'), value=t(lang, 'settings.on' if alerts else 'settings.off'))
@@ -351,17 +401,20 @@ def main():
         if not interaction.guild:
             await interaction.response.send_message(embed=error_embed(t(lang, 'track.guild'), lang=lang), ephemeral=not share)
             return
-        admin = interaction.user.guild_permissions.administrator
+        manager = await can_manage(interaction)
         if action == 'list':
-            mine = [w for w in bot.store.watches() if (ch := bot.get_channel(w.channel_id)) and ch.guild.id == interaction.guild_id and (admin or w.owner_id == interaction.user.id)]
+            # Everyone in the server sees every watch: friends share one list and one set of alerts.
+            shared = [w for w in bot.store.watches() if (ch := bot.get_channel(w.channel_id)) and getattr(ch, 'guild', None) and ch.guild.id == interaction.guild_id]
+            shared.sort(key=lambda w: (w.owner_id != interaction.user.id, w.was_online != 1, (w.label or '').casefold()))
             dot = {1: '🟢', 0: '🔴'}
             rows = [f"{dot.get(w.was_online, '⚪')} **{discord.utils.escape_markdown(w.label or w.steamid)}** · "
-                    f"{discord.utils.escape_markdown(bot.directory.name(w.server_id))} → <#{w.channel_id}> · <t:{int(w.expires_at)}:R>" for w in mine]
-            e = brand_embed(t(lang, 'track.title', n=len(rows)), '\n'.join(rows)[:4000] or t(lang, 'track.none'))
+                    f"{discord.utils.escape_markdown(bot.directory.name(w.server_id))} · <t:{int(w.expires_at)}:R>"
+                    + (f' · <@{w.owner_id}>' if w.owner_id else '') for w in shared]
+            e = brand_embed(t(lang, 'track.title', n=len(rows)), clip_lines(rows, 4000) or t(lang, 'track.none'))
             e.add_field(name=t(lang, 'track.panel.title'), value=t(lang, 'track.panel.help'), inline=False)
             recent = [(choice_label(name, steamid, bm_id), steamid or bm_id) for name, steamid, bm_id in bot.store.known_players(scope_of(interaction), limit=25)]
             panel = TrackingPanel(track.callback, lang, interaction.user.id, recent)
-            await interaction.response.send_message(embed=e, view=panel, ephemeral=not share)
+            await interaction.response.send_message(embed=e, view=panel, ephemeral=not share, allowed_mentions=discord.AllowedMentions.none())
             panel.message = await interaction.original_response()
             return
         if not player:
@@ -385,19 +438,23 @@ def main():
             elif data:
                 known = {r['id'] for r in bot.directory.rows}
                 ids = [s['id'] for s in data.get('included', []) if s.get('type') == 'server' and s['id'] in known]
+                if not ids:
+                    # None of their servers is in the directory: watch where they actually played lately.
+                    recent_servers = recent_rust_servers(data)
+                    bot.store.save_servers(recent_servers)
+                    bot.directory.merge(recent_servers)
+                    ids = [r['id'] for r in recent_servers]
             else:
                 ids = [w.server_id for w in bot.store.watches() if w.steamid == 'bm:' + pid and w.channel_id == channel_id]
             if not ids:
                 await interaction.followup.send(embed=error_embed(t(lang, 'track.no_servers'), lang=lang), ephemeral=not share)
                 return
             existing = [w for w in bot.store.watches() if w.steamid == 'bm:' + pid and w.channel_id == channel_id and w.server_id in ids]
-            if any(w.owner_id != interaction.user.id for w in existing) and not admin:
+            # Anyone can add or renew; stopping someone else's watch needs its creator or a server manager.
+            if action == 'remove' and any(w.owner_id not in (0, interaction.user.id) for w in existing) and not manager:
                 await interaction.followup.send(embed=error_embed(t(lang, 'track.owner'), lang=lang), ephemeral=not share)
                 return
             if action == 'add':
-                if len([r for r in interaction.guild.roles if r.name.casefold() == 'wipe']) != 1:
-                    await interaction.followup.send(embed=error_embed(t(lang, 'track.need_role'), lang=lang), ephemeral=not share)
-                    return
                 lines = await presence_lines(bot, pid, data)
                 await remember(bot, interaction, bm_id=pid, steamid=steam_of(player), profile=data)
                 name = label or data['data']['attributes'].get('name', pid)
@@ -406,7 +463,8 @@ def main():
                 e = success_embed(t(lang, 'track.added', n=len(ids)))
                 if lines:
                     e.add_field(name=t(lang, 'activity.title'), value='\n'.join(lines[:6])[:1024], inline=False)
-                e.add_field(name=t(lang, 'track.summary.channel'), value=f'<#{channel_id}> · @wipe', inline=True)
+                role = alert_role(bot.store, interaction.guild.get_channel(channel_id) or interaction.channel) if hasattr(interaction.guild, 'get_channel') else None
+                e.add_field(name=t(lang, 'track.summary.channel'), value=f'<#{channel_id}> · ' + (f'{role.mention} + ' if role else '') + f'<@{interaction.user.id}>', inline=True)
                 e.add_field(name=t(lang, 'track.summary.expires'), value=f'<t:{int(time.time()+days*86400)}:F> · <t:{int(time.time()+days*86400)}:R>', inline=True)
                 e.add_field(name=t(lang, 'track.summary.manage'), value=t(lang, 'track.summary.help'), inline=False)
                 e.set_footer(text=t(lang, 'track.added.footer'))

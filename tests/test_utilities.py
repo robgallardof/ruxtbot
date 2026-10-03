@@ -55,7 +55,7 @@ def test_admin_commands_reject_dms(tmp_path):
         i.guild=None
         await bot.tree.get_command('pausealerts').callback(i)
         assert bot.store.settings(1) is None
-        assert 'administrators' in i.response.send_message.call_args.kwargs['embed'].description
+        assert 'server managers' in i.response.send_message.call_args.kwargs['embed'].description
     execute(tmp_path,case)
 
 

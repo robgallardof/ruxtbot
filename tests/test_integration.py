@@ -452,7 +452,7 @@ def test_member_tracking_ownership_expiry_and_public_share(bot):
         assert member.sent()['ephemeral'] is False
         stranger = FakeInteraction(admin=False, user_id=21)
         await cmd(bot, 'track')(stranger, 'remove', STEAMID)
-        assert 'belongs to another' in stranger.sent()['embed'].description
+        assert 'Someone else started' in stranger.sent()['embed'].description
         assert len(bot.store.watches()) == 1
         for name, args in [('player', (STEAMID, '5931597')), ('presence', (STEAMID,)), ('sessions', (STEAMID,)), ('who', (STEAMID,))]:
             i = FakeInteraction(user_id=30)
@@ -708,4 +708,86 @@ def test_link_steamid_once_like_the_real_api(bot):
         other.guild_id = 999
         await cmd(bot, 'presence')(other, STEAMID)
         assert 'linked once' in other.sent()['embed'].description
+    run(go())
+
+
+def test_tracking_is_for_everyone_without_a_wipe_role(bot):
+    async def go():
+        friend, me = FakeInteraction(admin=False, user_id=20), FakeInteraction(admin=False, user_id=21)
+        friend.guild.roles = me.guild.roles = []  # no "wipe" role at all
+        await cmd(bot, 'track')(friend, 'add', STEAMID)
+        assert 'Watching on **1**' in friend.sent()['embed'].description and '<@20>' in str(friend.sent()['embed'].fields)
+        bot.get_channel = lambda _: SimpleNamespace(guild=SimpleNamespace(id=1))
+        await cmd(bot, 'track')(me, 'list')
+        assert 'KingGallardo' in me.sent()['embed'].description and '<@20>' in me.sent()['embed'].description  # friends share one list
+        renew = FakeInteraction(admin=False, user_id=21)
+        await cmd(bot, 'track')(renew, 'add', STEAMID, days=15)
+        assert 'Watching' in renew.sent()['embed'].description and bot.store.watches()[0].owner_id == 20
+        # Alert with no role: pings whoever started the watch, never @everyone.
+        bot.store.set_state(bot.store.watches()[0], False)
+        channel = SimpleNamespace(guild=SimpleNamespace(id=1, roles=[]), send=AsyncMock())
+        bot.get_channel = lambda _: channel
+        bot.bm.cache.clear()
+        await app.RustBot.poll.coro(bot)
+        text, mentions = channel.send.call_args.args[0], channel.send.call_args.kwargs['allowed_mentions']
+        assert text.startswith('<@20> 🟢') and mentions.everyone is False and mentions.roles is False
+    run(go())
+
+
+def test_manage_server_can_configure_and_choose_the_alert_role(bot):
+    async def go():
+        i = FakeInteraction(admin=False)
+        i.user.guild_permissions.manage_guild = True
+        role = SimpleNamespace(id=77, name='raid', mention='<@&77>', mentionable=True)
+        await cmd(bot, 'settings')(i, 'en', True, 10, None, role)
+        assert bot.store.alert_role(1) == 77 and '<@&77>' in str(i.sent()['embed'].fields)
+        bot.store.add('bm:1128280744', '5931597', 2, 'King', owner_id=5)
+        bot.store.set_state(bot.store.watches()[0], False)
+        guild = SimpleNamespace(id=1, roles=[role, SimpleNamespace(name='wipe', mentionable=True, mention='<@&55>')], get_role=lambda rid: role if rid == 77 else None)
+        channel = SimpleNamespace(guild=guild, send=AsyncMock())
+        bot.get_channel = lambda _: channel
+        await app.RustBot.poll.coro(bot)
+        assert channel.send.call_args.args[0].startswith('<@&77> <@5> 🟢')
+        member = FakeInteraction(admin=False)
+        await cmd(bot, 'settings')(member)
+        assert 'Manage Server' in member.sent()['embed'].description
+    run(go())
+
+
+def test_track_uses_recent_servers_outside_the_directory(bot):
+    async def go():
+        bot.directory.rows = [r for r in bot.directory.rows if r['id'] != '5931597']
+        i = FakeInteraction(admin=False)
+        await cmd(bot, 'track')(i, 'add', STEAMID)
+        assert 'Watching on **1**' in i.sent()['embed'].description
+        assert bot.store.watches()[0].server_id == '5931597' and bot.directory.name('5931597') == 'Rusty Moose |US Medium|'
+    run(go())
+
+
+def test_candidates_online_first_with_battlemetrics_buttons(bot):
+    def handler(request):
+        path, url = request.url.path, str(request.url)
+        if path == '/players/quick-match':
+            return httpx.Response(200, json={'data': []})
+        if 'api.battlemetrics.com/players?' in url:
+            return httpx.Response(200, json={'data': [{'id': '1', 'attributes': {'name': 'KingGallardo', 'updatedAt': iso(1)}},
+                                                      {'id': '1128280744', 'attributes': {'name': 'KingGallardo', 'updatedAt': iso(900)}}]})
+        if path.startswith('/players/') and 'relationships' not in path:
+            pid = path.split('/')[2]
+            data = bm_player(pid, online=pid == '1128280744')
+            data['included'] = [r for r in data['included'] if (r.get('attributes') or {}).get('type') != 'steamID']
+            return httpx.Response(200, json=data)
+        return fake_http(request)
+
+    async def go():
+        transport = httpx.MockTransport(handler)
+        bot.bm.client = httpx.AsyncClient(transport=transport)
+        bot.who.client = httpx.AsyncClient(transport=transport, follow_redirects=True)
+        i = FakeInteraction()
+        await cmd(bot, 'who')(i, STEAMID)
+        bm = next(e for e in i.sent()['embeds'] if e.title == '📊 BattleMetrics')
+        assert bm.description.index('players/1128280744') < bm.description.index('players/1)')
+        urls = [b.url for b in i.sent()['view'].children if getattr(b, 'url', None) and '/players/' in b.url]
+        assert urls == ['https://www.battlemetrics.com/players/1128280744', 'https://www.battlemetrics.com/players/1']
+        i.sent()['view'].to_components()
     run(go())

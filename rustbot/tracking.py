@@ -71,6 +71,20 @@ class Store:
         self.conn.execute("INSERT OR REPLACE INTO settings VALUES(?,?,?,?,?)", (guild_id, channel_id, language, int(alerts), poll_interval))
         self.conn.commit()
 
+    def set_alert_role(self, guild_id: int, role_id: int | None):
+        self.conn.execute('CREATE TABLE IF NOT EXISTS alert_roles(guild_id INTEGER PRIMARY KEY,role_id INTEGER)')
+        if role_id:
+            self.conn.execute('INSERT OR REPLACE INTO alert_roles VALUES(?,?)', (guild_id, role_id))
+        else:
+            self.conn.execute('DELETE FROM alert_roles WHERE guild_id=?', (guild_id,))
+        self.conn.commit()
+
+    def alert_role(self, guild_id: int) -> int | None:
+        """Role chosen with /settings role:, or None (then a role named "wipe" is used if there is exactly one)."""
+        self.conn.execute('CREATE TABLE IF NOT EXISTS alert_roles(guild_id INTEGER PRIMARY KEY,role_id INTEGER)')
+        row = self.conn.execute('SELECT role_id FROM alert_roles WHERE guild_id=?', (guild_id,)).fetchone()
+        return row[0] if row else None
+
     def settings(self, guild_id):
         """(channel, language, alerts, interval) or None if the guild never used /settings."""
         return self.conn.execute("SELECT channel_id,language,alerts,poll_interval FROM settings WHERE guild_id=?", (guild_id,)).fetchone()

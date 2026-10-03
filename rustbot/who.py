@@ -175,7 +175,8 @@ class WhoService:
                 p['online'] = bool(live)
                 p['online_server'] = (live[0].get('attributes') or {}).get('name') if live else None
                 p['seen'] = max((ts for s in servers if (ts := iso_ts((s.get('meta') or {}).get('lastSeen')))), default=None)
-        top.sort(key=lambda p: (len({n.casefold() for n in p['shared']}) - 1, p.get('online', False), p.get('hours', 0)), reverse=True)
+        # Online first (they are usually the one being looked up), then names in common, then hours.
+        top.sort(key=lambda p: (p.get('online', False), len({n.casefold() for n in p['shared']}), p.get('hours', 0)), reverse=True)
         return top
 
     async def lookup(self, target: Target, bm_id: str | None = None) -> dict:
@@ -487,10 +488,10 @@ def bm_embed(report: dict, bm_configured: bool, lang: str = 'en') -> discord.Emb
     if candidates:
         lines = []
         best = likely(candidates)
-        for p in candidates:
+        for n, p in enumerate(candidates, start=1):
             ts = iso_ts(p['attributes'].get('updatedAt'))
-            icon = '⭐' if p is best else '🔎'
-            line = f"{icon} [{esc(p['attributes']['name'])}](https://www.battlemetrics.com/players/{p['id']}) · `{p['id']}`" + (' · ' + t(lang, 'who.bm.active', ts=ts) if ts else '')
+            icon = '⭐' if p is best else '🟢' if p.get('online') else '⚫'
+            line = f"**{n}.** {icon} [{esc(p['attributes']['name'])}](https://www.battlemetrics.com/players/{p['id']}) · `{p['id']}`" + (' · ' + t(lang, 'who.bm.active', ts=ts) if ts else '')
             shared = [n for n in p.get('shared', []) if n.casefold() != p['attributes']['name'].casefold()]
             if facts := candidate_facts(p, lang):
                 line += '\n-# ' + ('🎮 ' + t(lang, 'who.link.playing') + ' · ' if p.get('playing_now') else '') + facts
@@ -657,6 +658,11 @@ def register_who(bot, service: WhoService):
         view = LinksView(report['steamid'], report['bm_id'], interaction.user.id, shortcut_actions(bot, report, lang, bool(interaction.guild)))
         if report['steamid'] and not report['bm_id'] and report.get('bm_candidates'):
             view.add_item(link_picker(report, lang, share))
+            # Open each candidate on BattleMetrics to compare before choosing.
+            for n, p in enumerate(report['bm_candidates'][:5], start=1):
+                dot = '🟢' if p.get('online') else '⚫'
+                view.add_item(discord.ui.Button(label=f"{n}. {p['attributes']['name'][:24]}", emoji=dot, row=3,
+                                                url=f"https://www.battlemetrics.com/players/{p['id']}"))
         if report['steamid'] and 'steam' in report['errors'] and 'rustwho' in report['errors']:
             await interaction.followup.send(embed=error_embed(t(lang, 'who.both_down'), lang=lang), view=view, ephemeral=not share)
         else:
@@ -667,11 +673,11 @@ def register_who(bot, service: WhoService):
         """Pick which BattleMetrics profile is this SteamID; the link is saved in the guild's book and the profile reloads."""
         steamid, best = report['steamid'], likely(report['bm_candidates'])
         options = []
-        for p in report['bm_candidates'][:5]:
-            shared = [n for n in p.get('shared', []) if n.casefold() != p['attributes']['name'].casefold()]
+        for n, p in enumerate(report['bm_candidates'][:5], start=1):
+            shared = [x for x in p.get('shared', []) if x.casefold() != p['attributes']['name'].casefold()]
             detail = ' · '.join(x for x in (t(lang, 'who.link.shared', n=len(shared)) if shared else '', candidate_facts(p, lang)) if x) or t(lang, 'who.link.no_shared')
-            options.append(discord.SelectOption(label=f"{p['attributes']['name']} · BM {p['id']}"[:100], value=str(p['id']), description=detail[:100],
-                                                emoji='⭐' if p is best else '🔎', default=False))
+            options.append(discord.SelectOption(label=f"{n}. {p['attributes']['name']} · BM {p['id']}"[:100], value=str(p['id']), description=detail[:100],
+                                                emoji='⭐' if p is best else '🟢' if p.get('online') else '⚫'))
         select = discord.ui.Select(placeholder=t(lang, 'who.link.pick'), options=options, row=2)
 
         async def chosen(interaction):
