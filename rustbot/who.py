@@ -171,7 +171,9 @@ class WhoService:
                 servers = [s for s in d.get('included', []) if s.get('type') == 'server']
                 p['hours'] = sum((s.get('meta') or {}).get('timePlayed') or 0 for s in servers) / 3600
                 p['servers'] = len(servers)
-                p['online'] = any((s.get('meta') or {}).get('online') for s in servers)
+                live = [s for s in servers if (s.get('meta') or {}).get('online')]
+                p['online'] = bool(live)
+                p['online_server'] = (live[0].get('attributes') or {}).get('name') if live else None
                 p['seen'] = max((ts for s in servers if (ts := iso_ts((s.get('meta') or {}).get('lastSeen')))), default=None)
         top.sort(key=lambda p: (len({n.casefold() for n in p['shared']}) - 1, p.get('online', False), p.get('hours', 0)), reverse=True)
         return top
@@ -522,7 +524,7 @@ def candidate_facts(p: dict, lang: str) -> str:
     """Plain-text facts that help tell same-name profiles apart (used in select descriptions)."""
     facts = []
     if p.get('online'):
-        facts.append(t(lang, 'who.link.online'))
+        facts.append(t(lang, 'who.link.online_on', server=p['online_server'][:40]) if p.get('online_server') else t(lang, 'who.link.online'))
     elif p.get('seen'):
         facts.append(t(lang, 'who.link.seen', d=max(0, int((time.time() - p['seen']) // 86400))))
     if p.get('hours') is not None and 'hours' in p:

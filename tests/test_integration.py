@@ -693,6 +693,7 @@ def test_link_steamid_once_like_the_real_api(bot):
         bm = next(e for e in sent['embeds'] if e.title == '📊 BattleMetrics')
         assert '⭐ [KingGallardo](https://www.battlemetrics.com/players/1128280744)' in bm.description and 'robgallardof' in bm.description
         assert '[Gallardo] King Khalil' not in bm.description  # different name: never offered
+        assert '🟢 online on Rusty Moose |US Medium|' in bm.description
         picker = find(sent['view'], placeholder='Which BattleMetrics profile')
         assert picker.options[0].value == '1128280744' and str(picker.options[0].emoji) == '⭐'
         linked = await click(picker, values=['1128280744'])

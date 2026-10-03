@@ -367,6 +367,7 @@ STRINGS: dict[str, tuple[str, str]] = {
     'who.link.pick': ('🔗 Which BattleMetrics profile is this player?', '🔗 ¿Cuál perfil de BattleMetrics es este jugador?'),
     'who.link.shared': ('{n} name(s) in common with Steam', '{n} nombre(s) en común con Steam'),
     'who.link.online': ('🟢 online now', '🟢 conectado ahora'),
+    'who.link.online_on': ('🟢 online on {server}', '🟢 conectado en {server}'),
     'who.link.playing': ('Steam shows them in Rust right now', 'Steam lo muestra jugando Rust ahora'),
     'who.link.seen': ('seen {d} d ago', 'visto hace {d} d'),
     'who.link.servers': ('{n} servers', '{n} servidores'),
