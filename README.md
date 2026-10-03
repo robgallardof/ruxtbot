@@ -9,9 +9,10 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 | Area | Commands |
 | --- | --- |
 | 💥 Raid | `/raid`, `/raidcalc`, `/raidbudget`, `/raidcompare`, `/raidtools` |
-| 🛠️ Crafting | `/craft`, `/item`, `/sources` |
+| 🛠️ Crafting & base | `/craft`, `/item`, `/upkeep`, `/decay`, `/sources` |
 | 🖥️ Servers | `/server`, `/online`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe` |
-| 🕵️ Players | `/who`, `/findplayer`, `/player`, `/presence`, `/sessions`, `/playercompare`, `/steamid`, `/track` |
+| 🕵️ Players | `/who`, `/findplayer`, `/player`, `/presence`, `/sessions`, `/playercompare`, `/steamid` |
+| 🔔 Alerts (everyone) | `/track`, `/team`, `/wipealert`, `/serverwatch` |
 | ℹ️ Info | `/help`, `/examples`, `/author` |
 | ⚙️ Admin | `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers`, `/ping` |
 
@@ -69,6 +70,22 @@ After the first lookup the player goes into the guild's **player book** and ever
 - If none of the player's servers is in the directory, the servers where they played in the last 14 days are watched (at least the latest one) and added to the directory.
 - The first reading is silent and unknown data never counts as a disconnect.
 - **Server managers** (Administrator or Manage Server) **and the bot owner** can use `/settings`, `/pausealerts`, `/resumealerts`, `/status` and `/syncservers`.
+
+### More alerts: `/team`, `/wipealert`, `/serverwatch`
+
+One background loop checks these every 2 minutes, fetching each server and player once per round. Every first reading is silent; alerts go to the channel where they were created and ping whoever created them. Anyone can create them; removing someone else's needs its creator or a server manager.
+
+- `/team`: group up to 20 players (a rival clan), up to 25 teams per server. `action:Show` lists who is online and on which server; `action:Alerts on` posts whenever members connect or disconnect (unknown readings keep the previous state).
+- `/wipealert server:` pings when the server's last-wipe date changes; `forced:true` reminds one hour before the monthly forced wipe and when it goes live.
+- `/serverwatch server: above: below:` pings when the population crosses a threshold (for example, when it fills up on wipe day). 1–15 days.
+- `/track server:🌍` watches a player on any server; the alert names the server they joined or left.
+- **Stale online flags**: BattleMetrics keeps `online: true` while it cannot query a server (`queryStatus` other than `valid`). The bot treats that as unknown for alerts and shows it as 🟡 *unconfirmed* in `/who`, never as online.
+
+### Base: `/upkeep`, `/decay`
+
+- `/upkeep stone: stone_half: metal: hqm: wood: players:` gives resources per day and per week. Vanilla brackets: first 15 pieces 10 % of build cost per day, next 50 15 %, next 125 20 %, then 33.3 % (a 100-piece base pays 16 %). Full pieces: stone 300, wood 200, metal 200 fragments, armored 25 HQM; floors, triangles and half walls cost half.
+- Group tax since [Breach and Clear](https://rust.facepunch.com/news/breach-and-clear) (3 September 2026): first 4 players free, next 6 add 2 % each, every player after adds 4 %, capped at 300 %. Players authed on the TC or any code lock (guests included, and anyone deauthed in the last 24 h) count.
+- `/decay grade: health:` gives the time to full decay: twig 1 h, wood 3 h, stone 5 h, sheet metal 8 h, armored 12 h from full health ([Facepunch wiki](https://wiki.facepunch.com/rust/the_tool_cupboard)). Servers can change all of these with the decay convars.
 
 ## UX rules
 

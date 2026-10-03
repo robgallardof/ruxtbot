@@ -1,4 +1,6 @@
 import asyncio
+from datetime import datetime, timezone
+FRESH = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
 import httpx
 import pytest
 from rustbot.who import Target, WhoService, build_embeds, links, name_history, parse_target, steam_ids
@@ -55,7 +57,7 @@ def report_fixture():
         'rustwho': {'steamInfo': {'timeCreated': 1531931993}, 'steamBans': {'vacBans': 1, 'gameBans': 0, 'economyBan': 'none', 'daysSinceLastBan': 30},
                     'serverBanCount': 0, 'rustStats': {'kills': 10, 'deaths': 5, 'kd': 2.0, 'accuracyPct': 22, 'headshotPct': 12.5, 'observedAt': '2026-10-03T01:54:50.403Z'}},
         'bm': {'data': {'attributes': {'name': 'King'}}, 'included': [
-            {'type': 'server', 'id': '1', 'attributes': {'name': 'Rusty Moose'}, 'meta': {'timePlayed': 7200, 'online': True, 'firstSeen': '2023-01-01T00:00:00Z', 'lastSeen': '2026-10-01T00:00:00Z'}}]},
+            {'type': 'server', 'id': '1', 'attributes': {'name': 'Rusty Moose', 'status': 'online', 'queryStatus': 'valid', 'updatedAt': FRESH}, 'meta': {'timePlayed': 7200, 'online': True, 'firstSeen': '2023-01-01T00:00:00Z', 'lastSeen': '2026-10-01T00:00:00Z'}}]},
     }
 
 
@@ -119,3 +121,11 @@ def test_lookup_survives_a_failing_source_and_resolves_vanity():
 
 def test_numeric_battlemetrics_input():
     assert parse_target('123').bm_id == '123'
+
+
+def test_stale_online_flag_is_shown_as_unconfirmed():
+    """BattleMetrics keeps online=true while it cannot query the server (queryStatus timeout): never show that as online."""
+    report = report_fixture()
+    report['bm']['included'][-1]['attributes']['queryStatus'] = 'timeout'
+    bm = [e for e in build_embeds(report, lang='es') if (e.title or '').startswith('📊')][0]
+    assert bm.description.startswith('🟡') and 'no está confirmado' in bm.description

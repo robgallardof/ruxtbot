@@ -7,7 +7,7 @@ from .raid import builder_layout, home_layout
 from .raid_data import BEST, RaidData
 from .ui import YELLOW, OwnedLayout
 
-HELP_SECTIONS = ('help.raid', 'help.craft', 'help.servers', 'help.players', 'help.admin')
+HELP_SECTIONS = ('help.raid', 'help.craft', 'help.servers', 'help.players', 'help.alerts', 'help.admin')
 LOGO = 'https://wiki.rustclash.com/img/items180/explosive.timed.png'
 
 

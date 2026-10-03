@@ -8,6 +8,9 @@ from pathlib import Path
 from discord import app_commands
 
 
+ANY = '*'  # pseudo server: "any server" watches
+
+
 def profile_id(value: str) -> str:
     """BattleMetrics player ID: the bare number (a pasted profile link is tolerated too)."""
     match = re.fullmatch(r'(?:https?://(?:www\.)?battlemetrics\.com/players/)?([0-9]{1,16})/?', value.strip())
@@ -31,6 +34,8 @@ class ServerDirectory:
         so the wrong server is never used.
         """
         value = re.sub(r'^https?://(?:www\.)?battlemetrics\.com/servers/rust/', '', value.strip()).rstrip('/')
+        if value == ANY:
+            return ANY
         if re.fullmatch(r'[0-9]{1,12}', value):
             return value
         matches = [s for s in self.rows if s['name'].casefold() == value.casefold()]
@@ -39,6 +44,8 @@ class ServerDirectory:
         return matches[0]['id']
 
     def name(self, server_id: str) -> str:
+        if server_id == ANY:
+            return '🌍'
         return next((s['name'] for s in self.rows if s['id'] == server_id), server_id)
 
     def merge(self, rows):
@@ -48,7 +55,7 @@ class ServerDirectory:
         self.rows = sorted(merged.values(), key=lambda r: r['name'].casefold())
 
 
-def server_autocomplete(bot):
+def server_autocomplete(bot, include_any: bool = False):
     """Directory matches first; when the directory has few, live BattleMetrics results fill the list.
 
     Live searches need 3+ characters, are cached for a minute and give up after 2 s, because Discord
@@ -80,6 +87,8 @@ def server_autocomplete(bot):
             known = {r['id'] for r in rows}
             rows += [r for r in live if r['id'] not in known]
         choices = [app_commands.Choice(name=r['name'][:100], value=r['id']) for r in rows[:25]]
+        if include_any and (not query or any(word.startswith(query) for word in ('any', 'cualquier', 'todos', 'all', '🌍'))):
+            choices.insert(0, app_commands.Choice(name='🌍 Any server · Cualquier servidor', value=ANY))
         if query.isdigit() and not any(c.value == query for c in choices):
             choices.insert(0, app_commands.Choice(name=f'ID {query}', value=query))
         return choices[:25]

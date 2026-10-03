@@ -6,6 +6,25 @@ from urllib.parse import urlencode
 import httpx
 
 
+def fresh_server(server: dict) -> bool:
+    """BattleMetrics queried this server successfully in the last 5 minutes, so its player flags are current."""
+    attrs = server.get('attributes') or {}
+    if attrs.get('status') != 'online' or attrs.get('queryStatus') != 'valid':
+        return False
+    try:
+        age = (datetime.now(timezone.utc) - datetime.fromisoformat(attrs['updatedAt'].replace('Z', '+00:00'))).total_seconds()
+    except (KeyError, ValueError, TypeError, AttributeError):
+        return False
+    return 0 <= age <= 300
+
+
+def online_state(server: dict) -> str:
+    """'online' (confirmed now), 'stale' (BattleMetrics still says online but cannot reach the server) or 'offline'."""
+    if (server.get('meta') or {}).get('online') is not True:
+        return 'offline'
+    return 'online' if fresh_server(server) else 'stale'
+
+
 def steamid_from(profile: dict) -> str | None:
     """SteamID64 from a profile's identifiers, when the token is allowed to see them."""
     for row in profile.get('included', []):
@@ -76,19 +95,31 @@ class BattleMetrics:
         for server in data.get('included', []):
             if server.get('type') != 'server' or server.get('id') != server_id:
                 continue
-            attrs = server.get('attributes', {})
-            if attrs.get('status') != 'online' or attrs.get('queryStatus') != 'valid':
-                return None
-            try:
-                updated = datetime.fromisoformat(attrs['updatedAt'].replace('Z', '+00:00'))
-                age = (datetime.now(timezone.utc) - updated).total_seconds()
-                if not 0 <= age <= 300:
-                    return None
-            except (KeyError, ValueError, TypeError):
+            if not fresh_server(server):
                 return None
             online = server.get('meta', {}).get('online')
             return online if isinstance(online, bool) else None
         return None
+
+    async def presence_any(self, player_id: str) -> tuple[bool | None, str | None, str | None]:
+        """(online, server ID, server name) across every server, with the same freshness rules as player_online.
+
+        True: a fresh, valid server reports the player online. False: the server they were seen on last
+        is fresh and reports them offline. None (no server) in every other case.
+        """
+        data = await self.profile(player_id)
+        if data.get('data', {}).get('attributes', {}).get('private'):
+            return None, None, None
+        servers = [s for s in data.get('included', []) if s.get('type') == 'server']
+        fresh = fresh_server
+        name = lambda s: (s.get('attributes') or {}).get('name', s.get('id'))
+        live = [s for s in servers if fresh(s) and (s.get('meta') or {}).get('online') is True]
+        if live:
+            return True, live[0]['id'], name(live[0])
+        latest = max(servers, key=lambda s: (s.get('meta') or {}).get('lastSeen') or '', default=None)
+        if latest and fresh(latest) and (latest.get('meta') or {}).get('online') is False:
+            return False, latest['id'], name(latest)
+        return None, None, None
 
     async def search_servers(self, query: str) -> list[dict]:
         """Live Rust servers matching a name, most players first."""

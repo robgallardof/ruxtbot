@@ -7,6 +7,7 @@ from __future__ import annotations
 import logging
 import discord
 from discord import app_commands
+from .battlemetrics import online_state
 from .i18n import lang_for, t
 from .players import expand, player_autocomplete, player_error, remember, resolve_player, scope_of, steam_of
 from .ui import GREEN, OwnedView, brand_embed, error_embed
@@ -258,7 +259,7 @@ def register_activity(bot):
         lines = []
         for key in shared[:10]:
             a, b = (maps[0][key].get('meta') or {}), (maps[1][key].get('meta') or {})
-            together = ' 🟢🟢' if a.get('online') and b.get('online') else ''
+            together = ' 🟢🟢' if online_state(maps[0][key]) == online_state(maps[1][key]) == 'online' else ''
             seen = [iso_to_ts(m.get('lastSeen')) for m in (a, b)]
             lines.append(f"🖥️ **{safe(maps[0][key]['attributes'].get('name', key))}**{together}\n"
                          f"-# {safe(names[0])}: {hours(a.get('timePlayed'))}" + (f' · <t:{seen[0]}:R>' if seen[0] else '') +

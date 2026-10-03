@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 import discord
 import httpx
 from discord import app_commands
-from .battlemetrics import steamid_from
+from .battlemetrics import online_state, steamid_from
 from .i18n import lang_for, t
 from .players import expand, hub, player_autocomplete, player_error, remember, scope_of
 from .servers import profile_id
@@ -171,12 +171,14 @@ class WhoService:
                 servers = [s for s in d.get('included', []) if s.get('type') == 'server']
                 p['hours'] = sum((s.get('meta') or {}).get('timePlayed') or 0 for s in servers) / 3600
                 p['servers'] = len(servers)
-                live = [s for s in servers if (s.get('meta') or {}).get('online')]
+                live = [s for s in servers if online_state(s) == 'online']
+                stale = [s for s in servers if online_state(s) == 'stale']
                 p['online'] = bool(live)
                 p['online_server'] = (live[0].get('attributes') or {}).get('name') if live else None
+                p['stale_server'] = (stale[0].get('attributes') or {}).get('name') if stale and not live else None
                 p['seen'] = max((ts for s in servers if (ts := iso_ts((s.get('meta') or {}).get('lastSeen')))), default=None)
         # Online first (they are usually the one being looked up), then names in common, then hours.
-        top.sort(key=lambda p: (p.get('online', False), len({n.casefold() for n in p['shared']}), p.get('hours', 0)), reverse=True)
+        top.sort(key=lambda p: (p.get('online', False), bool(p.get('stale_server')), len({n.casefold() for n in p['shared']}), p.get('hours', 0)), reverse=True)
         return top
 
     async def lookup(self, target: Target, bm_id: str | None = None) -> dict:
@@ -453,10 +455,13 @@ def bm_embed(report: dict, bm_configured: bool, lang: str = 'en') -> discord.Emb
         attrs = data['data']['attributes']
         servers = [s for s in data.get('included', []) if s.get('type') == 'server']
         e = discord.Embed(title=f"📊 BattleMetrics · {attrs.get('name', report['bm_id'])}", url=f"https://www.battlemetrics.com/players/{report['bm_id']}", color=ORANGE)
-        online = [s for s in servers if (s.get('meta') or {}).get('online')]
+        online = [s for s in servers if online_state(s) == 'online']
+        stale = [s for s in servers if online_state(s) == 'stale']
         last = max(servers, key=lambda s: (s.get('meta') or {}).get('lastSeen') or '', default=None)
         if online:
             e.description = t(lang, 'who.bm.online', list=', '.join(f"**{esc(s['attributes']['name'])}**" for s in online[:3]))
+        elif stale and (ts := iso_ts((stale[0].get('meta') or {}).get('lastSeen'))):
+            e.description = t(lang, 'who.bm.stale', server=esc(stale[0]['attributes']['name']), ts=ts)
         elif last and (ts := iso_ts(last['meta'].get('lastSeen'))):
             e.description = t(lang, 'who.bm.last', ts=ts, server=esc(last['attributes']['name']))
         else:
@@ -475,7 +480,7 @@ def bm_embed(report: dict, bm_configured: bool, lang: str = 'en') -> discord.Emb
             for s in top:
                 meta = s.get('meta') or {}
                 seen = iso_ts(meta.get('lastSeen'))
-                dot = '🟢' if meta.get('online') else '▫️'
+                dot = {'online': '🟢', 'stale': '🟡'}.get(online_state(s), '▫️')
                 lines.append(f"{dot} [{esc(s['attributes']['name'][:48])}](https://www.battlemetrics.com/servers/rust/{s['id']}) — "
                              f"**{num(round((meta.get('timePlayed') or 0) / 3600, 1))} h**" + (f' · <t:{seen}:R>' if seen else ''))
             e.add_field(name=t(lang, 'who.bm.top'), value=clip('\n'.join(lines)), inline=False)
@@ -490,7 +495,7 @@ def bm_embed(report: dict, bm_configured: bool, lang: str = 'en') -> discord.Emb
         best = likely(candidates)
         for n, p in enumerate(candidates, start=1):
             ts = iso_ts(p['attributes'].get('updatedAt'))
-            icon = '⭐' if p is best else '🟢' if p.get('online') else '⚫'
+            icon = '⭐' if p is best else candidate_dot(p)
             line = f"**{n}.** {icon} [{esc(p['attributes']['name'])}](https://www.battlemetrics.com/players/{p['id']}) · `{p['id']}`" + (' · ' + t(lang, 'who.bm.active', ts=ts) if ts else '')
             shared = [n for n in p.get('shared', []) if n.casefold() != p['attributes']['name'].casefold()]
             if facts := candidate_facts(p, lang):
@@ -521,11 +526,17 @@ def likely(candidates: list[dict]) -> dict | None:
     return candidates[scores.index(max(scores))]
 
 
+def candidate_dot(p: dict) -> str:
+    return '🟢' if p.get('online') else '🟡' if p.get('stale_server') else '⚫'
+
+
 def candidate_facts(p: dict, lang: str) -> str:
     """Plain-text facts that help tell same-name profiles apart (used in select descriptions)."""
     facts = []
     if p.get('online'):
         facts.append(t(lang, 'who.link.online_on', server=p['online_server'][:40]) if p.get('online_server') else t(lang, 'who.link.online'))
+    elif p.get('stale_server'):
+        facts.append(t(lang, 'who.link.stale', server=p['stale_server'][:40]))
     elif p.get('seen'):
         facts.append(t(lang, 'who.link.seen', d=max(0, int((time.time() - p['seen']) // 86400))))
     if p.get('hours') is not None and 'hours' in p:
@@ -660,7 +671,7 @@ def register_who(bot, service: WhoService):
             view.add_item(link_picker(report, lang, share))
             # Open each candidate on BattleMetrics to compare before choosing.
             for n, p in enumerate(report['bm_candidates'][:5], start=1):
-                dot = '🟢' if p.get('online') else '⚫'
+                dot = candidate_dot(p)
                 view.add_item(discord.ui.Button(label=f"{n}. {p['attributes']['name'][:24]}", emoji=dot, row=3,
                                                 url=f"https://www.battlemetrics.com/players/{p['id']}"))
         if report['steamid'] and 'steam' in report['errors'] and 'rustwho' in report['errors']:
@@ -677,7 +688,7 @@ def register_who(bot, service: WhoService):
             shared = [x for x in p.get('shared', []) if x.casefold() != p['attributes']['name'].casefold()]
             detail = ' · '.join(x for x in (t(lang, 'who.link.shared', n=len(shared)) if shared else '', candidate_facts(p, lang)) if x) or t(lang, 'who.link.no_shared')
             options.append(discord.SelectOption(label=f"{n}. {p['attributes']['name']} · BM {p['id']}"[:100], value=str(p['id']), description=detail[:100],
-                                                emoji='⭐' if p is best else '🟢' if p.get('online') else '⚫'))
+                                                emoji='⭐' if p is best else candidate_dot(p)))
         select = discord.ui.Select(placeholder=t(lang, 'who.link.pick'), options=options, row=2)
 
         async def chosen(interaction):

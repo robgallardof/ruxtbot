@@ -4,6 +4,8 @@ Larger command groups live in their own modules:
     raid.py              /raid, /raidcalc, /raidbudget, /raidcompare, /raidtools
     who.py               /who, /steamid
     activity.py          /presence, /sessions, /online, /findplayer, /playercompare
+    alerts.py            /wipealert, /serverwatch, /team (+ their background loop)
+    base.py              /upkeep, /decay
     utility_commands.py  /ping, /status, /servers, /serversearch, /syncservers, /wipe, /forcewipe, alerts
     help.py              /help menu
     info_commands.py     /author, /examples
@@ -22,10 +24,12 @@ from .help import help_layout
 from .i18n import CommandTranslator, lang_for, t
 from .info_commands import register_info
 from .activity import register_activity, presence_lines
+from .alerts import register_alerts
+from .base import register_base
 from .raid import register_raid_commands
 from .raid_data import RaidData
 from .players import choice_label, expand, player_autocomplete, player_error, remember, resolve_player, scope_of, steam_of
-from .servers import ServerDirectory, server_autocomplete
+from .servers import ANY, ServerDirectory, server_autocomplete
 from .tracking import Store, transition
 from .track_ui import TrackingPanel
 from .ui import GREEN, GREY, RED, brand_embed, error_embed, reply, success_embed
@@ -57,12 +61,15 @@ class RustBot(commands.Bot):
         self.directory.merge(self.store.servers())
         self.server_choices = server_autocomplete(self)
         self.last_poll = {}  # (steamid, server, channel) -> last check, to honour the interval
+        self.extra_loops = []  # background loops registered by command modules (alerts)
         self.poll.change_interval(seconds=10)
 
     async def setup_hook(self):
         await self.tree.set_translator(CommandTranslator())
         await self.tree.sync()
         self.poll.start()
+        for loop in self.extra_loops:
+            loop.start()
 
     async def on_ready(self):
         logging.info('RuxtBot connected as %s', self.user)
@@ -70,6 +77,8 @@ class RustBot(commands.Bot):
 
     async def close(self):
         self.poll.cancel()
+        for loop in self.extra_loops:
+            loop.cancel()
         await self.bm.client.aclose()
         await self.who.client.aclose()
         self.store.conn.close()
@@ -103,8 +112,12 @@ class RustBot(commands.Bot):
                 self.last_poll[key] = time.monotonic()
                 observation_key = (w.steamid, w.server_id)
                 if observation_key not in observations:
-                    observations[observation_key] = await self.bm.player_online(w.server_id, w.steamid)
-                online = observations[observation_key]
+                    if w.server_id == ANY:
+                        # "Any server" watch: where they are (or were last) decides the server shown in the alert.
+                        observations[observation_key] = (await self.bm.presence_any(w.steamid[3:]) if w.steamid.startswith('bm:') else (None, None, None))
+                    else:
+                        observations[observation_key] = (await self.bm.player_online(w.server_id, w.steamid), w.server_id, None)
+                online, where_id, where_name = observations[observation_key]
                 if online is None:
                     continue
                 event = transition(w.was_online, online)
@@ -114,10 +127,10 @@ class RustBot(commands.Bot):
                     lang = saved[1] if saved and saved[1] in ('en', 'es') else 'en'
                     # The label comes from player data: escape it so it can never mention anyone.
                     label = discord.utils.escape_markdown(discord.utils.escape_mentions(w.label or w.steamid))
-                    name = discord.utils.escape_markdown(self.directory.name(w.server_id))
+                    name = discord.utils.escape_markdown(where_name or self.directory.name(where_id or w.server_id))
                     verb = t(lang, 'alert.connected' if online else 'alert.disconnected')
                     link = discord.ui.View()
-                    link.add_item(discord.ui.Button(label=t(lang, 'alert.button'), emoji='📊', url=f'https://www.battlemetrics.com/servers/rust/{w.server_id}'))
+                    link.add_item(discord.ui.Button(label=t(lang, 'alert.button'), emoji='📊', url=f'https://www.battlemetrics.com/servers/rust/{where_id or w.server_id}'))
                     await ch.send(f"{pings} {'🟢' if online else '🔴'} **{label}** {verb} **{name}** · <t:{int(time.time())}:R>".strip(), view=link,
                                   allowed_mentions=discord.AllowedMentions(roles=[role] if role else False,
                                                                            users=[discord.Object(w.owner_id)] if w.owner_id else False, everyone=False))
@@ -392,10 +405,10 @@ def main():
 
     # ── Watches ──
     @bot.tree.command(description='👀 Manage your temporary connection alerts')
-    @app_commands.describe(action='What to do', player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Server (empty = all known)', label='Name shown in alerts', days='Duration in days (maximum 15)', share='Publish the result in this channel')
+    @app_commands.describe(action='What to do', player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Server, 🌍 any server, or empty for their usual servers', label='Name shown in alerts', days='Duration in days (maximum 15)', share='Publish the result in this channel')
     @app_commands.choices(action=[app_commands.Choice(name='Add', value='add'), app_commands.Choice(name='Remove', value='remove'),
                                   app_commands.Choice(name='List', value='list')])
-    @app_commands.autocomplete(player=player_choices, server=server_choices)
+    @app_commands.autocomplete(player=player_choices, server=server_autocomplete(bot, include_any=True))
     async def track(interaction: discord.Interaction, action: str = 'list', player: str | None = None, server: str | None = None, label: str | None = None, days: app_commands.Range[int, 1, 15] = 7, share: bool = False):
         lang = lang_for(interaction)
         if not interaction.guild:
@@ -497,6 +510,8 @@ def main():
     register_who(bot, bot.who)
     register_info(bot)
     register_activity(bot)
+    register_alerts(bot, can_manage)
+    register_base(bot)
     bot.run(s.discord_token)
 
 
