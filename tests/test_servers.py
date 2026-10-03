@@ -315,3 +315,31 @@ def test_who_is_public_but_errors_stay_private(bot):
         await cmd(bot, 'who')(private, '1128280744', share=False)
         assert private.sent()['ephemeral'] is True
     run(go())
+
+
+def test_copy_buttons_send_plain_ids(bot):
+    from rustbot.who import build_embeds
+
+    async def go():
+        use(bot)
+        w = FakeInteraction()
+        await cmd(bot, 'who')(w, STEAMID, '1128280744')
+        copy = next(b for b in w.sent()['view'].children if getattr(b, 'label', '') == 'Copy IDs')
+        clicked = FakeInteraction(user_id=99)
+        await copy.callback(clicked)
+        text, kwargs = clicked.response.calls[-1][1][0], clicked.response.calls[-1][2]
+        assert text.split('\n') == [f'{STEAMID} — SteamID64', 'STEAM_0:0:444176606 — SteamID', '[U:1:888353212] — SteamID3',
+                                    '888353212 — Account ID', '1128280744 — BattleMetrics'] and kwargs['ephemeral']
+        f = FakeInteraction()
+        await cmd(bot, 'findplayer')(f, 'KingGallardo')
+        fc = FakeInteraction()
+        await next(b for b in f.sent()['view'].children if getattr(b, 'label', '') == 'Copy IDs').callback(fc)
+        assert fc.response.calls[-1][1][0].startswith('1128280744 — KingGallardo')
+        o = FakeInteraction()
+        await cmd(bot, 'online')(o, '5931597')
+        oc = FakeInteraction()
+        await next(b for b in o.sent()['view'].children if getattr(b, 'label', '') == 'Copy IDs').callback(oc)
+        assert '1128280744 — KingGallardo' in oc.response.calls[-1][1][0]
+    run(go())
+    report = {'steamid': STEAMID, 'bm_id': None, 'errors': [], 'steam': {'name': 'X', 'online_state': 'in-game', 'game': ''}}
+    assert 'In a game' in build_embeds(report, False)[0].description and 'a game' not in build_embeds(report, False, 'es')[0].description

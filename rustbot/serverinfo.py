@@ -444,8 +444,11 @@ def register_serverinfo(bot, can_manage):
         e.set_footer(text=t(lang, 'top.footer', page=page))
         view = OwnedView(interaction.user.id)
         if rows:
-            from .activity import profile_picker
+            from .activity import copy_ids_button, profile_picker
             view.add_item(profile_picker(bot, lang, rows))
+            copy = copy_ids_button(lang, rows)
+            copy.row = 1
+            view.add_item(copy)
         for emoji, delta, disabled in (('◀️', -1, page <= 1), ('▶️', 1, not more)):
             button = discord.ui.Button(emoji=emoji, style=discord.ButtonStyle.secondary, disabled=disabled, row=1)
 

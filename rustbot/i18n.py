@@ -421,6 +421,8 @@ STRINGS: dict[str, tuple[str, str]] = {
     'steamid.fail': ('Steam did not answer. Try again later.', 'Steam no respondió. Inténtalo más tarde.'),
     'server.footer': ('BattleMetrics · server ID {id}', 'BattleMetrics · ID del servidor {id}'),
     'who.button.watch': ('Watch 7 days', 'Seguir 7 días'),
+    'who.button.copy': ('Copy IDs', 'Copiar IDs'),
+    'who.status.ingame_hidden': ('🎮 In a game', '🎮 En una partida'),
     'who.button.sessions': ('Sessions', 'Sesiones'),
 
     # ── Tracking ownership and guided panel ──

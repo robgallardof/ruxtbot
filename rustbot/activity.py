@@ -67,6 +67,17 @@ def profile_picker(bot, lang: str, players: list[dict]) -> discord.ui.Select:
     return select
 
 
+def copy_ids_button(lang: str, players: list[dict]) -> discord.ui.Button:
+    """📋 Sends the listed players' BattleMetrics IDs as plain text (ID first, then the name), only to whoever clicks."""
+    button = discord.ui.Button(label=t(lang, 'who.button.copy'), emoji='📋', style=discord.ButtonStyle.secondary)
+
+    async def copy(interaction):
+        lines = [f"{p['id']} — {p.get('name') or ''}"[:120] for p in players[:25]]
+        await interaction.response.send_message('\n'.join(lines) or '—', ephemeral=True, allowed_mentions=discord.AllowedMentions.none())
+    button.callback = copy
+    return button
+
+
 def online_embed(lang: str, sid: str, attrs: dict, players: list[dict], page: int, query: str, marks: dict[str, str]) -> tuple[discord.Embed, int]:
     pages = max(1, -(-len(players) // ONLINE_PAGE))
     page = max(1, min(page, pages))
@@ -107,6 +118,10 @@ class OnlineView(OwnedView):
                 await interaction.response.edit_message(embed=e, view=view)
             button.callback = go
             self.add_item(button)
+        if chunk:
+            copy = copy_ids_button(lang, chunk)
+            copy.row = 1
+            self.add_item(copy)
 
 
 def register_activity(bot):
@@ -244,6 +259,7 @@ def register_activity(bot):
         view = OwnedView(interaction.user.id)
         if found:
             view.add_item(profile_picker(bot, lang, found[:25]))
+            view.add_item(copy_ids_button(lang, found))
         await interaction.followup.send(embed=e, view=view, ephemeral=not share)
         view.message = await interaction.original_response()
 

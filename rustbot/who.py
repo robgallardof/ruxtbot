@@ -328,7 +328,8 @@ def steam_embed(report: dict, lang: str = 'en') -> discord.Embed:
     banned = steam.get('vac_banned') or (bans.get('vacBans') or 0) > 0 or (bans.get('gameBans') or 0) > 0
 
     state = steam.get('online_state')
-    status = {'online': t(lang, 'who.status.online'), 'in-game': t(lang, 'who.status.ingame', game=esc(steam.get('game') or 'a game')),
+    ingame = t(lang, 'who.status.ingame', game=esc(steam['game'])) if steam.get('game') else t(lang, 'who.status.ingame_hidden')
+    status = {'online': t(lang, 'who.status.online'), 'in-game': ingame,
               'offline': t(lang, 'who.status.offline')}.get(state, t(lang, 'who.status.unknown'))
     privacy = t(lang, 'who.privacy.' + steam['privacy']) if steam.get('privacy') in ('public', 'friendsonly', 'private') else ''
     country = steam.get('location') or info.get('country')
@@ -597,10 +598,28 @@ def steamid_embed(steamid: str, lang: str) -> discord.Embed:
     return e
 
 
+def ids_text(steamid: str | None, bm_id: str | None) -> str:
+    """Every ID as plain text, one per line with the value first, so it copies cleanly (long press on mobile)."""
+    lines = []
+    if steamid:
+        ids = steam_ids(steamid)
+        lines += [f"{ids['steam64']} — SteamID64", f"{ids['steam2']} — SteamID", f"{ids['steam3']} — SteamID3", f"{ids['account']} — Account ID"]
+    if bm_id:
+        lines.append(f'{bm_id} — BattleMetrics')
+    return '\n'.join(lines)
+
+
+def copy_action(lang: str, steamid: str | None, bm_id: str | None):
+    async def copy(interaction):
+        await interaction.response.send_message(ids_text(steamid, bm_id), ephemeral=True)
+    return (t(lang, 'who.button.copy'), '📋', copy)
+
+
 def shortcut_actions(bot, report: dict, lang: str, in_guild: bool):
-    """Buttons under a profile: watch the player and open their sessions without retyping anything."""
+    """Buttons under a profile: copy its IDs, watch the player and open their sessions without retyping anything."""
+    copy = [copy_action(lang, report.get('steamid'), report.get('bm_id'))] if report.get('steamid') or report.get('bm_id') else []
     if not report.get('bm_id') or not bot.bm.token:
-        return []
+        return copy
 
     async def watch(interaction):
         await bot.tree.get_command('track').callback(interaction, action='add', player=report['bm_id'])
@@ -609,7 +628,7 @@ def shortcut_actions(bot, report: dict, lang: str, in_guild: bool):
         await bot.tree.get_command('sessions').callback(interaction, player=report['bm_id'])
 
     actions = [(t(lang, 'who.button.watch'), '👀', watch)] if in_guild else []
-    return actions + [(t(lang, 'who.button.sessions'), '🕒', sessions)]
+    return copy + actions + [(t(lang, 'who.button.sessions'), '🕒', sessions)]
 
 
 def register_who(bot, service: WhoService):
@@ -737,6 +756,6 @@ def register_who(bot, service: WhoService):
         if not sid:
             await interaction.followup.send(embed=error_embed(t(lang, 'steamid.bad'), lang=lang), ephemeral=True)
             return
-        await interaction.followup.send(embed=steamid_embed(sid, lang), view=LinksView(sid, None), ephemeral=True)
+        await interaction.followup.send(embed=steamid_embed(sid, lang), view=LinksView(sid, None, actions=[copy_action(lang, sid, None)]), ephemeral=True)
 
     return who
