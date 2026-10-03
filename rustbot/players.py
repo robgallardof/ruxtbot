@@ -66,10 +66,12 @@ async def resolve_player(bot, interaction, value: str | None) -> str:
     """BattleMetrics ID for what the user typed: a name from the book, a SteamID (cached, quick-match,
     then same-name profiles that list that SteamID) or a BattleMetrics ID."""
     value = expand(bot, interaction, value) or ''
+    steamid = steam_of(value)
+    if steamid and (linked := bot.store.bm_for_steam(scope_of(interaction), steamid)):
+        return linked
     try:
         return await bot.bm.resolve_player(value)
     except ValueError as exc:
-        steamid = steam_of(value)
         if str(exc) not in ('identity.permission', 'identity.missing') or not steamid:
             raise
         try:
@@ -142,7 +144,18 @@ async def player_error(bot, interaction, lang: str, exc: Exception | str, query:
     if key == 'identity.input' and query and not looks_like_id(query):
         key = 'identity.name'
     view = None
-    if key != 'identity.unavailable' and bot.bm.token:
+    steamid = steam_of(query) if query else None
+    if key in ('identity.missing', 'identity.permission') and steamid:
+        # The SteamID is fine, BattleMetrics just won't map it: link it once from the profile.
+        key = 'identity.link'
+        view = OwnedView(interaction.user.id)
+        link = discord.ui.Button(label=t(lang, 'identity.link.button'), emoji='🔗', style=discord.ButtonStyle.primary)
+
+        async def open_profile(i):
+            await bot.tree.get_command('who').callback(i, player=steamid)
+        link.callback = open_profile
+        view.add_item(link)
+    elif key != 'identity.unavailable' and bot.bm.token:
         view = OwnedView(interaction.user.id)
         view.add_item(search_button(bot, lang, query if query and not looks_like_id(query) else None))
     embed = error_embed(t(lang, key, q=esc(query or '')), t(lang, 'identity.hint'), lang)

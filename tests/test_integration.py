@@ -659,21 +659,52 @@ def test_steamid_loads_everything_even_without_quick_match(bot):
     run(go())
 
 
-def test_same_name_without_the_steamid_is_never_assumed(bot):
+def test_link_steamid_once_like_the_real_api(bot):
+    """Real token behaviour: quick-match answers 200 with no data and profiles only list names.
+    The user links the right profile once (ranked by names shared with Steam) and the SteamID loads everything after."""
     def handler(request):
-        if request.url.path == '/players/quick-match':
-            return httpx.Response(403, json={})
-        if request.url.path.startswith('/players/'):
-            data = bm_player('1128280744')
+        path, url = request.url.path, str(request.url)
+        if path == '/players/quick-match':
+            return httpx.Response(200, json={'data': []})
+        if 'api.battlemetrics.com/players?' in url:
+            return httpx.Response(200, json={'data': [{'id': '950321455', 'attributes': {'name': 'kingGallardo', 'updatedAt': iso(1)}},
+                                                      {'id': '1128280744', 'attributes': {'name': 'KingGallardo', 'updatedAt': iso(500)}},
+                                                      {'id': '600486137', 'attributes': {'name': '[Gallardo] King Khalil', 'updatedAt': iso(2)}}]})
+        if path.startswith('/players/') and 'relationships' not in path:
+            data = bm_player(path.split('/')[2])
             data['included'] = [r for r in data['included'] if (r.get('attributes') or {}).get('type') != 'steamID']
+            if path.split('/')[2] != '1128280744':
+                data['included'] = [r for r in data['included'] if r['type'] == 'server'] + [
+                    {'type': 'identifier', 'attributes': {'type': 'name', 'identifier': 'kingGallardo'}}]
             return httpx.Response(200, json=data)
+        if 'ajaxaliases' in url:
+            return httpx.Response(200, json=[{'newname': 'robgallardof', 'timechanged': '4 Jun, 2021 @ 6:33am'}])
         return fake_http(request)
 
     async def go():
         transport = httpx.MockTransport(handler)
         bot.bm.client = httpx.AsyncClient(transport=transport)
         bot.who.client = httpx.AsyncClient(transport=transport, follow_redirects=True)
-        i = FakeInteraction()
-        await cmd(bot, 'track')(i, 'add', STEAMID)
-        assert 'denied' in i.sent()['embed'].description and not bot.store.watches() and bot.store.identity(STEAMID) is None
+        t1 = FakeInteraction()
+        await cmd(bot, 'track')(t1, 'add', STEAMID)
+        assert 'linked once' in t1.sent()['embed'].description and not bot.store.watches()
+        opened = await click(next(b for b in t1.sent()['view'].children if b.label == 'Open profile and link'))
+        sent = opened.sent()
+        bm = next(e for e in sent['embeds'] if e.title == '📊 BattleMetrics')
+        assert '⭐ [KingGallardo](https://www.battlemetrics.com/players/1128280744)' in bm.description and 'robgallardof' in bm.description
+        assert '[Gallardo] King Khalil' not in bm.description  # different name: never offered
+        picker = find(sent['view'], placeholder='Which BattleMetrics profile')
+        assert picker.options[0].value == '1128280744' and str(picker.options[0].emoji) == '⭐'
+        linked = await click(picker, values=['1128280744'])
+        titles = [e.title or '' for e in linked.sent()['embeds']]
+        assert titles[0] == '👤 KingGallardo' and any(x.startswith('📊 BattleMetrics · KingGallardo') for x in titles)
+        # From now on the SteamID alone works everywhere.
+        t2 = FakeInteraction()
+        await cmd(bot, 'track')(t2, 'add', STEAMID)
+        assert 'Watching on **1**' in t2.sent()['embed'].description and bot.store.watches()[0].steamid == 'bm:1128280744'
+        # Links are per Discord server: another guild still has to link it itself.
+        other = FakeInteraction()
+        other.guild_id = 999
+        await cmd(bot, 'presence')(other, STEAMID)
+        assert 'linked once' in other.sent()['embed'].description
     run(go())

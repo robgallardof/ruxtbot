@@ -116,6 +116,11 @@ class Store:
         self.conn.execute('DELETE FROM players WHERE scope=? AND ref NOT IN (SELECT ref FROM players WHERE scope=? ORDER BY used_at DESC LIMIT 500)', (scope, scope))
         self.conn.commit()
 
+    def bm_for_steam(self, scope: int, steamid: str) -> str | None:
+        """BattleMetrics ID linked to this SteamID in this guild's book (verified or confirmed by a member)."""
+        row = self.conn.execute('SELECT bm_id FROM players WHERE scope=? AND steamid=? AND bm_id IS NOT NULL', (scope, steamid)).fetchone()
+        return row[0] if row else None
+
     def player_name(self, scope: int, bm_id: str) -> str | None:
         row = self.conn.execute('SELECT name FROM players WHERE scope=? AND bm_id=? AND name IS NOT NULL', (scope, bm_id)).fetchone()
         return row[0] if row else None

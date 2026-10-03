@@ -16,7 +16,7 @@ import httpx
 from discord import app_commands
 from .battlemetrics import steamid_from
 from .i18n import lang_for, t
-from .players import expand, hub, player_autocomplete, player_error, remember
+from .players import expand, hub, player_autocomplete, player_error, remember, scope_of
 from .servers import profile_id
 from .tracking import STEAMID64_MIN as STEAM64_BASE, valid_steamid64
 from .ui import ORANGE, RED, STEAM_BLUE, YELLOW, OwnedView, error_embed
@@ -149,18 +149,31 @@ class WhoService:
     async def bm_detail(self, bm_id: str) -> dict:
         return await self.bm.request(f'players/{bm_id}?include=server,identifier')
 
-    async def bm_candidates(self, name: str) -> list[dict]:
-        """Up to 3 BattleMetrics profiles with exactly the same name, each with the other names it used."""
+    async def bm_candidates(self, name: str, known: set[str] | None = None) -> list[dict]:
+        """Up to 5 BattleMetrics profiles named like the player, most likely first.
+
+        `known` holds every name the player used on Steam/RustWho (casefolded). A profile that also used
+        those names is far more likely to be the same person, so candidates are ranked by names in common.
+        """
+        known = (known or set()) | {name.casefold()}
         rows = await self.bm.search_players(name)
-        exact = [p for p in rows if p['attributes'].get('name', '').casefold() == name.casefold()]
-        top = sorted(exact, key=lambda p: p['attributes'].get('updatedAt') or '', reverse=True)[:3]
+        named = [p for p in rows if p['attributes'].get('name', '').casefold() in known]
+        top = sorted(named, key=lambda p: p['attributes'].get('updatedAt') or '', reverse=True)[:5]
         details = await asyncio.gather(*(self.bm_detail(p['id']) for p in top), return_exceptions=True)
         for p, d in zip(top, details):
+            p['shared'], p['names'] = [], []
             if isinstance(d, dict):
                 p['detail'], p['steamid'] = d, steamid_from(d)
-                p['names'] = [i['attributes']['identifier'] for i in d.get('included', [])
-                              if i.get('type') == 'identifier' and i['attributes'].get('type') == 'name'
-                              and i['attributes'].get('identifier', '').casefold() != name.casefold()][:5]
+                used = list(dict.fromkeys(i['attributes'].get('identifier', '') for i in d.get('included', [])
+                                          if i.get('type') == 'identifier' and i['attributes'].get('type') == 'name'))
+                p['shared'] = [n for n in used if n.casefold() in known]
+                p['names'] = [n for n in used if n.casefold() != name.casefold()][:5]
+                servers = [s for s in d.get('included', []) if s.get('type') == 'server']
+                p['hours'] = sum((s.get('meta') or {}).get('timePlayed') or 0 for s in servers) / 3600
+                p['servers'] = len(servers)
+                p['online'] = any((s.get('meta') or {}).get('online') for s in servers)
+                p['seen'] = max((ts for s in servers if (ts := iso_ts((s.get('meta') or {}).get('lastSeen')))), default=None)
+        top.sort(key=lambda p: (len({n.casefold() for n in p['shared']}) - 1, p.get('online', False), p.get('hours', 0)), reverse=True)
         return top
 
     async def lookup(self, target: Target, bm_id: str | None = None) -> dict:
@@ -204,7 +217,10 @@ class WhoService:
         name = (report.get('steam') or {}).get('name') or ((report.get('rustwho') or {}).get('steamInfo') or {}).get('name')
         if steamid and not bm_id and name and self.bm.token:
             try:
-                report['bm_candidates'] = await self.bm_candidates(name)
+                report['bm_candidates'] = await self.bm_candidates(name, {n.casefold() for n, _, _ in name_history(report)})
+                in_rust = (report.get('steam') or {}).get('online_state') == 'in-game' and (report.get('steam') or {}).get('game') == 'Rust'
+                for p in report['bm_candidates']:
+                    p['playing_now'] = in_rust and p.get('online', False)
             except Exception as exc:
                 logging.info('who: bm search failed: %r', exc)
             # Plan B: a same-name profile that lists this exact SteamID is the player; load it as if quick-match found it.
@@ -468,17 +484,52 @@ def bm_embed(report: dict, bm_configured: bool, lang: str = 'en') -> discord.Emb
     candidates = report.get('bm_candidates') or []
     if candidates:
         lines = []
+        best = likely(candidates)
         for p in candidates:
             ts = iso_ts(p['attributes'].get('updatedAt'))
-            line = f"🔎 [{esc(p['attributes']['name'])}](https://www.battlemetrics.com/players/{p['id']})" + (' · ' + t(lang, 'who.bm.active', ts=ts) if ts else '')
-            if p.get('names'):
+            icon = '⭐' if p is best else '🔎'
+            line = f"{icon} [{esc(p['attributes']['name'])}](https://www.battlemetrics.com/players/{p['id']}) · `{p['id']}`" + (' · ' + t(lang, 'who.bm.active', ts=ts) if ts else '')
+            shared = [n for n in p.get('shared', []) if n.casefold() != p['attributes']['name'].casefold()]
+            if facts := candidate_facts(p, lang):
+                line += '\n-# ' + ('🎮 ' + t(lang, 'who.link.playing') + ' · ' if p.get('playing_now') else '') + facts
+            if shared:
+                line += '\n-# 🔗 ' + t(lang, 'who.bm.shared', names=', '.join(esc(n) for n in shared[:5]))
+            elif p.get('names'):
                 line += '\n-# ' + t(lang, 'who.bm.candidate_names', names=', '.join(esc(n) for n in p['names']))
             lines.append(line)
-        e.description = t(lang, 'who.bm.candidates') + '\n' + '\n'.join(lines)
+        e.description = t(lang, 'who.bm.candidates') + '\n' + '\n'.join(lines) + '\n\n' + t(lang, 'who.bm.link_hint')
     else:
-        e.description = t(lang, 'who.bm.no_candidates')
-    e.description += '\n\n' + t(lang, report.get('resolution_error') or 'identity.missing')
+        e.description = t(lang, 'who.bm.no_candidates') + '\n\n' + t(lang, report.get('resolution_error') or 'identity.missing')
     return e
+
+
+def likely(candidates: list[dict]) -> dict | None:
+    """The clearly most likely candidate, or None when nothing tells them apart.
+
+    Strongest hint: Steam says the player is in Rust right now and exactly one candidate is online on
+    BattleMetrics. Otherwise: the only candidate sharing the most extra names with the Steam account.
+    """
+    playing = [p for p in candidates if p.get('playing_now')]
+    if len(playing) == 1:
+        return playing[0]
+    scores = [len({n.casefold() for n in p.get('shared', []) if n.casefold() != p['attributes']['name'].casefold()}) for p in candidates]
+    if not scores or max(scores) == 0 or scores.count(max(scores)) > 1:
+        return None
+    return candidates[scores.index(max(scores))]
+
+
+def candidate_facts(p: dict, lang: str) -> str:
+    """Plain-text facts that help tell same-name profiles apart (used in select descriptions)."""
+    facts = []
+    if p.get('online'):
+        facts.append(t(lang, 'who.link.online'))
+    elif p.get('seen'):
+        facts.append(t(lang, 'who.link.seen', d=max(0, int((time.time() - p['seen']) // 86400))))
+    if p.get('hours') is not None and 'hours' in p:
+        facts.append(f"{num(round(p['hours']))} h")
+    if p.get('servers'):
+        facts.append(t(lang, 'who.link.servers', n=p['servers']))
+    return ' · '.join(facts)
 
 
 def build_embeds(report: dict, bm_configured: bool = True, lang: str = 'en') -> list[discord.Embed]:
@@ -582,7 +633,14 @@ def register_who(bot, service: WhoService):
             if now - stamp >= COOLDOWN_SECONDS:
                 cooldowns.pop(uid, None)
         cooldowns[interaction.user.id] = now
-        await interaction.response.defer(ephemeral=not share, thinking=True)
+        await show(interaction, lang, target, bm_id, share)
+
+    async def show(interaction, lang, target, bm_id, share):
+        """Look the player up and send the profile; shared by /who and the link picker (which skips the cooldown)."""
+        if target.steamid and not bm_id:
+            bm_id = bot.store.bm_for_steam(scope_of(interaction), target.steamid)
+        if not interaction.response.is_done():
+            await interaction.response.defer(ephemeral=not share, thinking=True)
         try:
             report = await service.lookup(target, bm_id)
         except VanityNotFound as exc:
@@ -595,11 +653,32 @@ def register_who(bot, service: WhoService):
             return
         await remember(bot, interaction, bm_id=report['bm_id'], steamid=report['steamid'], name=report_name(report))
         view = LinksView(report['steamid'], report['bm_id'], interaction.user.id, shortcut_actions(bot, report, lang, bool(interaction.guild)))
+        if report['steamid'] and not report['bm_id'] and report.get('bm_candidates'):
+            view.add_item(link_picker(report, lang, share))
         if report['steamid'] and 'steam' in report['errors'] and 'rustwho' in report['errors']:
             await interaction.followup.send(embed=error_embed(t(lang, 'who.both_down'), lang=lang), view=view, ephemeral=not share)
         else:
             await interaction.followup.send(embeds=build_embeds(report, bool(service.bm.token), lang), view=view, ephemeral=not share)
         view.message = await interaction.original_response()
+
+    def link_picker(report: dict, lang: str, share: bool) -> discord.ui.Select:
+        """Pick which BattleMetrics profile is this SteamID; the link is saved in the guild's book and the profile reloads."""
+        steamid, best = report['steamid'], likely(report['bm_candidates'])
+        options = []
+        for p in report['bm_candidates'][:5]:
+            shared = [n for n in p.get('shared', []) if n.casefold() != p['attributes']['name'].casefold()]
+            detail = ' · '.join(x for x in (t(lang, 'who.link.shared', n=len(shared)) if shared else '', candidate_facts(p, lang)) if x) or t(lang, 'who.link.no_shared')
+            options.append(discord.SelectOption(label=f"{p['attributes']['name']} · BM {p['id']}"[:100], value=str(p['id']), description=detail[:100],
+                                                emoji='⭐' if p is best else '🔎', default=False))
+        select = discord.ui.Select(placeholder=t(lang, 'who.link.pick'), options=options, row=2)
+
+        async def chosen(interaction):
+            pid = interaction.data['values'][0]
+            name = next((p['attributes']['name'] for p in report['bm_candidates'] if str(p['id']) == pid), None)
+            bot.store.remember_player(scope_of(interaction), report_name(report) or name, steamid, pid)
+            await show(interaction, lang_for(interaction), Target(steamid=steamid), pid, share)
+        select.callback = chosen
+        return select
 
     @bot.tree.command(name='steamid', description='🆔 Convert a player to every SteamID format')
     @app_commands.describe(player='Name you looked up before, SteamID64, STEAM_0, [U:1:…] or Steam custom URL')
