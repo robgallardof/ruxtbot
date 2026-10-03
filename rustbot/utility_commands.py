@@ -137,30 +137,6 @@ def register_utilities(bot, catalog, require_admin):
             return
         await interaction.response.send_message(embed=e, view=ServerPagesView(lang, rows, query, page, interaction.user.id), ephemeral=True)
 
-    @bot.tree.command(name='serversearch', description='🔎 Search any Rust server on BattleMetrics')
-    @app_commands.describe(query='Server name to search')
-    async def server_search(interaction, query: app_commands.Range[str, 2, 100]):
-        lang = lang_for(interaction)
-        await interaction.response.defer(ephemeral=True)
-        try:
-            rows = await bot.bm.search_servers(query)
-        except Exception:
-            await interaction.followup.send(embed=error_embed(t(lang, 'search.fail'), lang=lang), ephemeral=True)
-            return
-        lines = []
-        for s in rows[:10]:
-            a = s['attributes']
-            dot = '🟢' if a.get('status') == 'online' else '🔴'
-            queue = (a.get('details') or {}).get('rust_queued_players')
-            extra = f" · ⏳ {queue}" if queue else ''
-            rank = f" · 🏆 #{a['rank']:,}" if a.get('rank') else ''
-            flag = f" · {a['country']}" if a.get('country') else ''
-            lines.append(f"{dot} [{discord.utils.escape_markdown(a['name'][:70])}](https://www.battlemetrics.com/servers/rust/{s['id']})\n"
-                         f"-# 👥 {a.get('players', 0)}/{a.get('maxPlayers', 0)}{extra}{rank}{flag} · 🆔 `{s['id']}`")
-        e = brand_embed(t(lang, 'search.title', q=query), '\n'.join(lines) or t(lang, 'search.none'))
-        e.set_footer(text=t(lang, 'search.footer'))
-        await interaction.followup.send(embed=e, ephemeral=True)
-
     @bot.tree.command(name='syncservers', description='📥 Import servers from a BattleMetrics profile')
     @app_commands.describe(profile='SteamID64 or BattleMetrics player ID whose servers are imported')
     async def sync_servers(interaction, profile: str = '1128280744'):

@@ -6,6 +6,9 @@ Larger command groups live in their own modules:
     activity.py          /presence, /sessions, /online, /findplayer, /playercompare
     alerts.py            /wipealert, /serverwatch, /team (+ their background loop)
     base.py              /upkeep, /decay
+    profiles.py          /me (per-member settings)
+    serverinfo.py        /server, /sv, /ip, /setserver, /delserver, /serverstats, /leaderboard, /serversearch, /rust
+    maintenance.py       /version, /update, /restart
     utility_commands.py  /ping, /status, /servers, /serversearch, /syncservers, /wipe, /forcewipe, alerts
     help.py              /help menu
     info_commands.py     /author, /examples
@@ -26,6 +29,9 @@ from .info_commands import register_info
 from .activity import register_activity, presence_lines
 from .alerts import register_alerts
 from .base import register_base
+from .maintenance import register_maintenance
+from .profiles import register_profiles
+from .serverinfo import register_serverinfo, spark
 from .raid import register_raid_commands
 from .raid_data import RaidData
 from .players import choice_label, expand, player_autocomplete, player_error, remember, resolve_player, scope_of, steam_of
@@ -232,7 +238,15 @@ def main():
     async def help(interaction: discord.Interaction):
         async def open_players(i):
             await bot.tree.get_command('who').callback(i)
-        layout = help_layout(raid, lang_for(interaction), interaction.user.id, open_players)
+        async def open_sv(i):
+            await bot.tree.get_command('sv').callback(i)
+
+        async def open_track(i):
+            await bot.tree.get_command('track').callback(i)
+
+        async def open_me(i):
+            await bot.tree.get_command('me').callback(i)
+        layout = help_layout(raid, lang_for(interaction), interaction.user.id, open_players, {'sv': open_sv, 'track': open_track, 'me': open_me})
         await interaction.response.send_message(view=layout, ephemeral=True)
         layout.message = await interaction.original_response()
 
@@ -327,50 +341,6 @@ def main():
     server_choices = bot.server_choices
     player_choices = player_autocomplete(bot)
 
-    @bot.tree.command(description='🖥️ Live server status: players, queue, map and wipe')
-    @app_commands.describe(server='Server name or BattleMetrics server ID')
-    @app_commands.autocomplete(server=server_choices)
-    async def server(interaction: discord.Interaction, server: str):
-        lang = lang_for(interaction)
-        await interaction.response.defer(ephemeral=True)
-        try:
-            sid = bot.directory.resolve(server)
-        except ValueError:
-            await interaction.followup.send(embed=error_embed(t(lang, 'server.pick'), lang=lang), ephemeral=True)
-            return
-        try:
-            a = (await bot.bm.server(sid))['attributes']
-        except Exception:
-            await interaction.followup.send(embed=error_embed(t(lang, 'server.fail'), t(lang, 'server.fail.hint'), lang), ephemeral=True)
-            return
-        d = a.get('details') or {}
-        online = a.get('status') == 'online'
-        players, cap = a.get('players') or 0, a.get('maxPlayers') or 0
-        pct = round(100 * players / cap) if cap else 0
-        e = brand_embed(f"🖥️ {a.get('name', 'Server')}", color=GREEN if online else RED)
-        e.url = f'https://www.battlemetrics.com/servers/rust/{sid}'
-        parts = [t(lang, 'server.online') if online else '🔴 ' + str(a.get('status', '?')).capitalize(), t(lang, 'server.players', p=players, m=cap, pct=pct)]
-        if d.get('rust_queued_players'):
-            parts.append(t(lang, 'server.queue', n=d['rust_queued_players']))
-        e.description = ' · '.join(parts) + f"\n`{'█' * round(pct / 10)}{'░' * (10 - round(pct / 10))}`"
-        if d.get('map'):
-            size = d.get('rust_world_size')
-            e.add_field(name=t(lang, 'server.map'), value=str(d['map']) + (f' · {size:,} m' if isinstance(size, int) else ''))
-        if a.get('rank'):
-            e.add_field(name=t(lang, 'server.rank'), value=f"#{a['rank']:,}")
-        if a.get('country'):
-            e.add_field(name=t(lang, 'server.country'), value=a['country'])
-        if stamp := iso_to_ts(d.get('rust_last_wipe')):
-            e.add_field(name=t(lang, 'server.last_wipe'), value=f'<t:{stamp}:R>')
-        if stamp := iso_to_ts(d.get('rust_next_wipe')):
-            e.add_field(name=t(lang, 'server.next_wipe'), value=f'<t:{stamp}:R>')
-        if a.get('ip') and a.get('port'):
-            e.add_field(name=t(lang, 'server.connect'), value=f"`client.connect {a['ip']}:{a['port']}`", inline=False)
-        if d.get('rust_headerimage'):
-            e.set_image(url=d['rust_headerimage'])
-        e.set_footer(text=t(lang, 'server.footer', id=sid))
-        await interaction.followup.send(embed=e, ephemeral=True)
-
     @bot.tree.command(description='🟢 Is a player online right now?')
     @app_commands.describe(player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Server (empty = every synchronized server)', share='Publish the result in this channel')
     @app_commands.autocomplete(player=player_choices, server=server_choices)
@@ -400,6 +370,20 @@ def main():
         await remember(bot, interaction, bm_id=pid, steamid=steam_of(player))
         key, color = {True: ('player.online', GREEN), False: ('player.offline', RED), None: ('player.unknown', GREY)}[online]
         e = brand_embed(description=f"{t(lang, key)}\n🖥️ {discord.utils.escape_markdown(bot.directory.name(sid))}", color=color)
+        try:
+            info = await bot.bm.player_server(pid, sid)
+            daily = await bot.bm.player_history(pid, sid, 30)
+        except Exception:
+            info, daily = {}, []
+        if info.get('timePlayed') is not None:
+            e.add_field(name=t(lang, 'who.bm.played'), value=f"**{info['timePlayed'] / 3600:,.1f} h**")
+        if first := iso_to_ts(info.get('firstSeen')):
+            e.add_field(name=t(lang, 'who.bm.first'), value=f'<t:{first}:D>')
+        if last := iso_to_ts(info.get('lastSeen')):
+            e.add_field(name=t(lang, 'player.last'), value=f'<t:{last}:R>')
+        if any(v for _, v in daily):
+            hours = [v / 3600 for _, v in daily]
+            e.add_field(name=t(lang, 'player.daily'), value=f'```\n{spark(hours, 30)}\n```' + t(lang, 'player.daily.value', total=f'{sum(hours):,.1f}', best=f'{max(hours):,.1f}'), inline=False)
         e.set_footer(text=t(lang, 'player.footer'))
         await interaction.followup.send(embed=e, ephemeral=not share)
 
@@ -512,6 +496,9 @@ def main():
     register_activity(bot)
     register_alerts(bot, can_manage)
     register_base(bot)
+    register_profiles(bot)
+    register_serverinfo(bot, can_manage)
+    register_maintenance(bot)
     bot.run(s.discord_token)
 
 

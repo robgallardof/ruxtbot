@@ -11,11 +11,12 @@ ICON = 'https://wiki.rustclash.com/img/items180/{}.png'
 
 # (section key, icon shortName) in display order; texts live in i18n.STRINGS.
 EXAMPLE_SECTIONS = [
-    ('examples.raid', 'explosive.timed'),
-    ('examples.craft', 'ammo.rocket.basic'),
+    ('examples.setup', 'computerstation'),
     ('examples.servers', 'map'),
     ('examples.players', 'door.hinged.toptier'),
-    ('examples.admin', 'cupboard.tool'),
+    ('examples.admin', 'smart.alarm'),
+    ('examples.raid', 'explosive.timed'),
+    ('examples.craft', 'cupboard.tool'),
 ]
 
 
@@ -47,4 +48,5 @@ def register_info(bot) -> None:
 
     @bot.tree.command(name='examples', description='📖 Examples of what the bot does and how to use it')
     async def examples(interaction: discord.Interaction):
-        await interaction.response.send_message(view=examples_layout(lang_for(interaction)), ephemeral=True)
+        # Public on purpose: examples are meant to be seen (and copied) by everyone in the channel.
+        await interaction.response.send_message(view=examples_layout(lang_for(interaction)))

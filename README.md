@@ -8,15 +8,40 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 
 | Area | Commands |
 | --- | --- |
+| ⚡ Start here | `/me`, `/sv`, `/ip`, `/help`, `/examples` |
 | 💥 Raid | `/raid`, `/raidcalc`, `/raidbudget`, `/raidcompare`, `/raidtools` |
 | 🛠️ Crafting & base | `/craft`, `/item`, `/upkeep`, `/decay`, `/sources` |
-| 🖥️ Servers | `/server`, `/online`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe` |
+| 🖥️ Servers | `/server`, `/online`, `/serverstats`, `/leaderboard`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe`, `/rust` |
 | 🕵️ Players | `/who`, `/findplayer`, `/player`, `/presence`, `/sessions`, `/playercompare`, `/steamid` |
 | 🔔 Alerts (everyone) | `/track`, `/team`, `/wipealert`, `/serverwatch` |
-| ℹ️ Info | `/help`, `/examples`, `/author` |
-| ⚙️ Admin | `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers`, `/ping` |
+| ⚙️ Server managers | `/setserver`, `/delserver`, `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers` |
+| 🏷️ Bot | `/version` (everyone), `/update`, `/restart` (bot owner), `/author`, `/ping` |
 
-`/help` opens an interactive menu with buttons that launch the raid planner and the base calculator.
+`/help` is a menu with buttons for the common next steps: 👤 My profile, 🎮 Our server, 🔎 Find player, 👀 Track and the raid tools. `/examples` is posted publicly so everyone in the channel can copy them.
+
+### Your settings: `/me`
+
+Settings are stored per Discord user and follow you to every server. `/me battlemetrics:<profile URL or ID>` saves your BattleMetrics profile; `/me server:` saves a default server; `/me forget:true` deletes everything. `/me` alone shows a card with buttons (set profile, who is on my server, find a player here, forget me).
+
+Commands whose `server` is optional (`/server`, `/online`, `/serverstats`, `/leaderboard`) use, in order: the server you are playing on right now (from your BattleMetrics profile), your default server, then the Discord server's default `/sv` entry. `/findplayer` lists matches **on your current server first**: they are online right next to you, so that is the quickest way to get someone's BattleMetrics ID.
+
+### Our server: `/sv`, `/ip`, `/setserver`
+
+A server manager saves the community's servers once: `/setserver name:Main address:1.2.3.4:28015` (the whole `client.connect …` line also works), optionally with `battlemetrics:` for live data, and `default:true` for the one `/sv` shows first. If you only pick the BattleMetrics server, the address is read from it. `/sv` and `/ip` post **publicly**: name, live status and the `client.connect` line in a code block, with a **📋 Copy connect** button that replies with just the plain line for easy copying.
+
+### Server tools (BattleMetrics)
+
+- `/server`: live card with population and queue, official/community/modded, **rates** (gather, craft, scrap), group or team limit, upkeep and decay multipliers, blueprint wipes, kits, PvE, map size with its **RustMaps** page and thumbnail, last and next wipes (plus the following ones), FPS and uptime, and the connect line. Buttons: Copy connect, Online, Stats, Top, BattleMetrics, RustMaps, website.
+- `/serverstats period:24 h|7 days|30 days`: player-count graph (sparkline) with peak, average and low; current and best rank; unique and new players; outages and total downtime.
+- `/leaderboard period:all time|30 days|7 days|24 h`: players with the most hours on a server, paged, with a picker that opens their profile.
+- `/serversearch`: name, country, minimum players, gather (1x, 2x, 3x+), maximum group (solo, duo, trio, quad), type, wiped in the last N days and PvE. BattleMetrics ignores or rejects most Rust feature filters (checked 2026-10-03), so the bot fetches up to 100 servers and filters them itself. A picker opens the full card.
+- `/player player: server:` adds hours on that server, first and last seen, and a 30-day hours-per-day graph.
+- `/rust`: players and servers worldwide, with the 24-hour range and 7-day peak.
+- `/upkeep server:` and `/decay server:` apply that server's upkeep and decay multipliers.
+
+### Version and updates
+
+`/version` shows the bot version, the commit it is running, uptime, ping and how many Discords and commands it has. The bot owner (the Discord application owner, or IDs in `BOT_OWNER_IDS`) also gets **Update & restart** and **Restart** buttons, and can use `/update` and `/restart`. `/update` runs `git pull --ff-only`, reinstalls requirements only if `requirements.txt` changed, and restarts the process in place. A copy uploaded without git says so and is updated from the host panel. Only fixed commands run: nothing typed by a user reaches a shell.
 
 ### Raid
 

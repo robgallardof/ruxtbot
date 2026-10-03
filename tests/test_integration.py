@@ -163,7 +163,7 @@ def test_every_command_is_registered_localized_and_serializable(bot):
     async def go():
         from rustbot.i18n import CommandTranslator
         names = sorted(c.name for c in bot.tree.get_commands())
-        assert names == sorted(['upkeep', 'decay', 'wipealert', 'serverwatch', 'team', 'online', 'findplayer', 'playercompare', 'steamid', 'presence', 'sessions', 'author', 'craft', 'examples', 'forcewipe', 'help', 'item', 'pausealerts', 'ping', 'player', 'raid', 'raidbudget',
+        assert names == sorted(['me', 'sv', 'ip', 'setserver', 'delserver', 'serverstats', 'leaderboard', 'rust', 'version', 'update', 'restart', 'upkeep', 'decay', 'wipealert', 'serverwatch', 'team', 'online', 'findplayer', 'playercompare', 'steamid', 'presence', 'sessions', 'author', 'craft', 'examples', 'forcewipe', 'help', 'item', 'pausealerts', 'ping', 'player', 'raid', 'raidbudget',
                                 'raidcalc', 'raidcompare', 'raidtools', 'resumealerts', 'server', 'servers', 'serversearch', 'settings',
                                 'sources', 'status', 'syncservers', 'track', 'who', 'wipe'])
         for command in bot.tree.get_commands():
@@ -310,7 +310,7 @@ def test_server_commands(bot):
         await cmd(bot, 'serversearch')(j, 'moose')
         assert 'Rusty Moose' in j.sent()['embed'].description and '833/850' in j.sent()['embed'].description
         k = FakeInteraction()
-        await cmd(bot, 'wipe')(k, 'Rustoria.co - US Mondays')
+        await cmd(bot, 'wipe')(k, '12410930')
         assert '<t:' in k.sent()['embed'].description
         f = FakeInteraction()
         await cmd(bot, 'forcewipe')(f)

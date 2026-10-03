@@ -10,6 +10,7 @@ from discord import app_commands
 from .battlemetrics import online_state
 from .i18n import lang_for, t
 from .players import expand, player_autocomplete, player_error, remember, resolve_player, scope_of, steam_of
+from .profiles import current_server, default_server
 from .ui import GREEN, OwnedView, brand_embed, error_embed
 from .utility_commands import iso_to_ts
 
@@ -176,16 +177,22 @@ def register_activity(bot):
         await interaction.followup.send(embed=e, ephemeral=not share)
 
     @bot.tree.command(description='👥 Who is online on a server right now')
-    @app_commands.describe(server='Server name or BattleMetrics server ID', name='Only players whose name contains this', share='Publish the result in this channel')
+    @app_commands.describe(server='Server name or BattleMetrics server ID (empty = yours)', name='Only players whose name contains this', share='Publish the result in this channel')
     @app_commands.autocomplete(server=servers)
-    async def online(interaction: discord.Interaction, server: str, name: str = '', share: bool = False):
+    async def online(interaction: discord.Interaction, server: str | None = None, name: str = '', share: bool = False):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
-        try:
-            sid = bot.directory.resolve(server)
-        except ValueError:
-            await fail(interaction, lang, 'server.pick', share)
-            return
+        if server:
+            try:
+                sid = bot.directory.resolve(server)
+            except ValueError:
+                await fail(interaction, lang, 'server.pick', share)
+                return
+        else:
+            sid, _ = await default_server(bot, interaction)
+            if not sid:
+                await interaction.followup.send(embed=error_embed(t(lang, 'server.none_default'), t(lang, 'server.none_default.hint'), lang), ephemeral=not share)
+                return
         try:
             attrs, found = await bot.bm.server_players(sid)
             attrs = attrs.get('attributes') or {}
@@ -218,12 +225,24 @@ def register_activity(bot):
         rows.sort(key=lambda p: ((p.get('attributes') or {}).get('name', '').casefold() != exact, -(iso_to_ts((p.get('attributes') or {}).get('updatedAt')) or 0)))
         found = [{'id': str(p['id']), 'name': (p.get('attributes') or {}).get('name') or str(p['id']),
                   'seen': iso_to_ts((p.get('attributes') or {}).get('updatedAt'))} for p in rows[:15]]
-        lines = [f"**{safe(p['name'])}** · `{p['id']}`" + (f" · {t(lang, 'who.bm.active', ts=p['seen'])}" if p['seen'] else '') for p in found]
-        e = brand_embed(t(lang, 'find.title', q=safe(name)), '\n'.join(lines) or t(lang, 'find.none'))
-        e.set_footer(text=t(lang, 'find.footer'))
+        here, here_name = [], None
+        sid, here_name = await current_server(bot, interaction.user.id)
+        if sid:
+            try:
+                _, players_here = await bot.bm.server_players(sid)
+                here = [p for p in players_here if exact in p['name'].casefold()][:10]
+            except Exception as exc:
+                logging.info('findplayer: server %s failed: %r', sid, exc)
+        ids_here = {p['id'] for p in here}
+        found = here + [p for p in found if p['id'] not in ids_here]
+        lines = [f"**{safe(p['name'])}** · `{p['id']}`" + (f" · {t(lang, 'who.bm.active', ts=p['seen'])}" if p.get('seen') else '') for p in found if p['id'] not in ids_here]
+        e = brand_embed(t(lang, 'find.title', q=safe(name)), '\n'.join(lines[:15]) or (t(lang, 'find.none') if not here else None))
+        if here:
+            e.insert_field_at(0, name=t(lang, 'find.here', server=safe(here_name)), value='\n'.join(f"🟢 **{safe(p['name'])}** · `{p['id']}`" for p in here)[:1024], inline=False)
+        e.set_footer(text=t(lang, 'find.footer') + ('' if sid else ' · ' + t(lang, 'find.tip_me')))
         view = OwnedView(interaction.user.id)
         if found:
-            view.add_item(profile_picker(bot, lang, found))
+            view.add_item(profile_picker(bot, lang, found[:25]))
         await interaction.followup.send(embed=e, view=view, ephemeral=not share)
         view.message = await interaction.original_response()
 

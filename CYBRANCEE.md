@@ -12,9 +12,14 @@ This project targets Cybrancee's **Discord Bot Hosting → Python** product. Do 
    - `RUST_TRACKER_STATE_PATH`: `rustbot.sqlite3`.
    - `RUST_POLL_INTERVAL_SECONDS`: `10`.
    - `RUST_LOG_LEVEL`: `INFO`.
+   - `BOT_OWNER_IDS`: optional, comma-separated Discord user IDs that may use `/update` and `/restart` (the application owner always can).
    - `RUST_DATA_PATH`: `data/rust_catalog.yml` (`data/raid.json` and `data/servers.json` are read from the same folder).
 5. Start the server from the console. Slash commands are registered on first start; Discord can take a few minutes to show them.
 
 ## The right secret
 
 `DISCORD_TOKEN` is the **Bot Token**. The application's Client Secret and Public Key are not used to connect to the Discord Gateway and must not go in this variable.
+
+## Updating
+
+With the Git integration, `/update` in Discord pulls the latest commit and restarts the bot (bot owner only); `/version` shows the commit that is running. Without git (files uploaded over SFTP), upload the new files and restart from the panel.

@@ -6,6 +6,17 @@ from urllib.parse import urlencode
 import httpx
 
 
+def _iso(timestamp: float) -> str:
+    return datetime.fromtimestamp(int(timestamp), timezone.utc).isoformat().replace('+00:00', 'Z')
+
+
+def _ts(value) -> int | None:
+    try:
+        return int(datetime.fromisoformat(value.replace('Z', '+00:00')).timestamp())
+    except (AttributeError, ValueError, TypeError):
+        return None
+
+
 def fresh_server(server: dict) -> bool:
     """BattleMetrics queried this server successfully in the last 5 minutes, so its player flags are current."""
     attrs = server.get('attributes') or {}
@@ -125,6 +136,74 @@ class BattleMetrics:
         """Live Rust servers matching a name, most players first."""
         params = urlencode({'filter[search]': query, 'filter[game]': 'rust', 'page[size]': 10, 'sort': '-players'})
         return (await self.request(f'servers?{params}'))['data']
+
+    async def find_servers(self, search: str = '', country: str | None = None, min_players: int = 0, size: int = 100) -> list[dict]:
+        """Up to `size` live Rust servers, most players first. Feature filters are applied by the caller,
+        because BattleMetrics ignores or rejects most Rust feature filters (checked 2026-10-03)."""
+        params = {'filter[game]': 'rust', 'filter[status]': 'online', 'sort': '-players', 'page[size]': size}
+        if search:
+            params['filter[search]'] = search
+        if country:
+            params['filter[countries][]'] = country.upper()
+        if min_players:
+            params['filter[players][min]'] = min_players
+        return (await self.request(f'servers?{urlencode(params)}'))['data']
+
+    async def history(self, server_id: str, kind: str, days: int, resolution: str | None = None) -> list[tuple[int, float]]:
+        """(timestamp, value) points of a server history: player-count, rank, time-played, first-time or unique-player."""
+        stop = datetime.now(timezone.utc).replace(microsecond=0)
+        params = {'start': _iso(stop.timestamp() - days * 86400), 'stop': _iso(stop.timestamp())}
+        if resolution:
+            params['resolution'] = resolution
+        data = (await self.request(f'servers/{server_id}/{kind}-history?{urlencode(params)}')).get('data', [])
+        points = []
+        for row in data:
+            attrs = row.get('attributes') or {}
+            try:
+                stamp = int(datetime.fromisoformat(attrs['timestamp'].replace('Z', '+00:00')).timestamp())
+            except (KeyError, ValueError, AttributeError):
+                continue
+            if isinstance(attrs.get('value'), (int, float)):
+                points.append((stamp, attrs['value']))
+        return sorted(points)
+
+    async def outages(self, server_id: str, days: int) -> list[tuple[int, int | None]]:
+        """(start, stop) of the server's outages in the last `days` days, newest first; stop None = still down."""
+        rows = (await self.request(f'servers/{server_id}/relationships/outages?page[size]=50')).get('data', [])
+        cutoff, out = time.time() - days * 86400, []
+        for row in rows:
+            attrs = row.get('attributes') or {}
+            start, stop = _ts(attrs.get('start')), _ts(attrs.get('stop'))
+            if start and start >= cutoff:
+                out.append((start, stop))
+        return sorted(out, reverse=True)
+
+    async def leaderboard(self, server_id: str, days: int | None = None, offset: int = 0, size: int = 10) -> tuple[list[dict], bool]:
+        """Players with the most time on a server (all time, or the last `days` days) and whether more pages exist."""
+        if days:
+            now = time.time()
+            period = f'{_iso(now - days * 86400)}:{_iso(now)}'
+        else:
+            period = 'AT'
+        params = urlencode({'filter[period]': period, 'page[size]': size, 'page[offset]': offset})
+        data = await self.request(f'servers/{server_id}/relationships/leaderboards/time?{params}')
+        rows = [{'id': str(r['id']), 'name': (r.get('attributes') or {}).get('name') or str(r['id']),
+                 'seconds': (r.get('attributes') or {}).get('value') or 0, 'rank': (r.get('attributes') or {}).get('rank')} for r in data.get('data', [])]
+        return rows, bool((data.get('links') or {}).get('next'))
+
+    async def player_server(self, player_id: str, server_id: str) -> dict:
+        """firstSeen, lastSeen, timePlayed and online for one player on one server."""
+        return (await self.request(f'players/{player_id}/servers/{server_id}')).get('data', {}).get('attributes') or {}
+
+    async def player_history(self, player_id: str, server_id: str, days: int = 30) -> list[tuple[int, float]]:
+        """Seconds played per day on a server (BattleMetrics allows at most three months)."""
+        stop = time.time()
+        params = urlencode({'start': _iso(stop - min(days, 90) * 86400), 'stop': _iso(stop)})
+        data = (await self.request(f'players/{player_id}/time-played-history/{server_id}?{params}')).get('data', [])
+        return sorted((stamp, (r.get('attributes') or {}).get('value') or 0) for r in data if (stamp := _ts((r.get('attributes') or {}).get('timestamp'))))
+
+    async def game(self, game_id: str = 'rust') -> dict:
+        return (await self.request(f'games/{game_id}')).get('data', {}).get('attributes') or {}
 
     async def search_players(self, name: str) -> list[dict]:
         """Players by name (the public API cannot search by SteamID)."""
