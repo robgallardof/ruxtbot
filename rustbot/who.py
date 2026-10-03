@@ -16,7 +16,7 @@ import httpx
 from discord import app_commands
 from .battlemetrics import steamid_from
 from .i18n import lang_for, t
-from .players import player_autocomplete, remember
+from .players import expand, hub, player_autocomplete, player_error, remember
 from .servers import profile_id
 from .tracking import STEAMID64_MIN as STEAM64_BASE, valid_steamid64
 from .ui import ORANGE, RED, STEAM_BLUE, YELLOW, OwnedView, error_embed
@@ -547,12 +547,18 @@ def register_who(bot, service: WhoService):
     @app_commands.describe(player='Name you looked up before, SteamID64, STEAM_0 or BattleMetrics player ID',
                            bm_id='BattleMetrics player ID (optional, numbers only)', share='Publish the result in this channel')
     @app_commands.autocomplete(player=players)
-    async def who(interaction: discord.Interaction, player: str, bm_id: str | None = None, share: bool = False):
+    async def who(interaction: discord.Interaction, player: str | None = None, bm_id: str | None = None, share: bool = False):
         lang = lang_for(interaction)
+        if not player and not bm_id:
+            embed, view = hub(bot, interaction, lang)
+            await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
+            view.message = await interaction.original_response()
+            return
+        player = expand(bot, interaction, player) or bm_id
         try:
             target = parse_target(player)
         except ValueError:
-            await interaction.response.send_message(embed=error_embed(t(lang, 'who.bad_input'), lang=lang), ephemeral=not share)
+            await player_error(bot, interaction, lang, 'identity.input', player, share)
             return
         try:
             bm_id = profile_id(bm_id) if bm_id else None
@@ -572,7 +578,8 @@ def register_who(bot, service: WhoService):
         try:
             report = await service.lookup(target, bm_id)
         except VanityNotFound as exc:
-            await interaction.followup.send(embed=error_embed(t(lang, 'who.bad_vanity', v=esc(exc.vanity)), lang=lang), ephemeral=not share)
+            # Not a Steam custom URL either: most likely an in-game name, so offer to search it.
+            await player_error(bot, interaction, lang, 'identity.name', exc.vanity, share)
             return
         except Exception:
             logging.exception('who lookup failed')
@@ -593,7 +600,7 @@ def register_who(bot, service: WhoService):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=True)
         try:
-            target = parse_target(player)
+            target = parse_target(expand(bot, interaction, player))
         except ValueError:
             target = Target()
         try:

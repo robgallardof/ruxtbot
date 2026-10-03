@@ -11,7 +11,8 @@ HELP_SECTIONS = ('help.raid', 'help.craft', 'help.servers', 'help.players', 'hel
 LOGO = 'https://wiki.rustclash.com/img/items180/explosive.timed.png'
 
 
-def help_layout(data: RaidData, lang: str, owner_id: int | None = None) -> OwnedLayout:
+def help_layout(data: RaidData, lang: str, owner_id: int | None = None, open_players=None) -> OwnedLayout:
+    """`open_players`: coroutine that opens the player lookup panel (the /who hub)."""
     view = OwnedLayout(owner_id)
     box = ui.Container(accent_colour=YELLOW)
     box.add_item(ui.Section(ui.TextDisplay(f"# {t(lang, 'help.title')}\n{t(lang, 'help.intro')}"), accessory=ui.Thumbnail(LOGO)))
@@ -33,6 +34,10 @@ def help_layout(data: RaidData, lang: str, owner_id: int | None = None) -> Owned
             open_button = ui.Button(label=t(lang, 'raid.open'), emoji='💥', style=discord.ButtonStyle.danger)
             open_button.callback = open_planner
             box.add_item(ui.Section(ui.TextDisplay(t(lang, key)), accessory=open_button))
+        elif key == 'help.players' and open_players:
+            find_button = ui.Button(label=t(lang, 'help.players.button'), emoji='🔎', style=discord.ButtonStyle.primary)
+            find_button.callback = open_players
+            box.add_item(ui.Section(ui.TextDisplay(t(lang, key)), accessory=find_button))
         else:
             box.add_item(ui.TextDisplay(t(lang, key)))
     calc_button = ui.Button(label=t(lang, 'raid.calc.button'), emoji='🧮', style=discord.ButtonStyle.primary)

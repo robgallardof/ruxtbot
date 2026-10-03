@@ -581,3 +581,47 @@ def test_servers_accept_any_id_and_autocomplete_live(bot):
         typed = await complete(FakeInteraction(), '123456')
         assert typed[0].value == '123456'
     run(go())
+
+
+def test_friendly_names_errors_and_hub(bot):
+    async def go():
+        # Unknown name: friendly error with a one-click search.
+        u = FakeInteraction()
+        await cmd(bot, 'player')(u, 'KingGallardo', '5931597')
+        assert "don't know a player called «KingGallardo»" in u.sent()['embed'].description
+        search = next(b for b in u.sent()['view'].children if b.label == 'Search «KingGallardo»')
+        found = await click(search)
+        assert '`1128280744`' in found.sent()['embed'].description
+        # /who with nothing opens the hub; after one lookup the player is listed there.
+        await cmd(bot, 'who')(FakeInteraction(), STEAMID)
+        h = FakeInteraction()
+        await cmd(bot, 'who')(h)
+        assert h.sent()['embed'].title == '🕵️ Look up a player'
+        recent = find(h.sent()['view'], placeholder='Recent players')
+        assert recent.options[0].label == 'KingGallardo' and recent.options[0].value == STEAMID
+        # A typed name (no suggestion picked) now resolves from the book.
+        p = FakeInteraction()
+        await cmd(bot, 'player')(p, 'kinggallardo', '5931597')
+        assert 'Online' in p.sent()['embed'].description
+        # Without a server, /player shows where the player is.
+        w = FakeInteraction()
+        await cmd(bot, 'player')(w, 'KingGallardo')
+        assert 'Rusty Moose' in w.sent()['embed'].description
+    run(go())
+
+
+def test_track_panel_quick_watch_and_help_players_button(bot):
+    async def go():
+        bot.store.remember_player(1, 'KingGallardo', STEAMID, '1128280744')
+        i = FakeInteraction(admin=False)
+        await cmd(bot, 'track')(i)
+        quick = find(i.sent()['view'], placeholder='Watch a recent player')
+        assert quick.options[0].value == STEAMID
+        done = await click(quick, values=[STEAMID], admin=False)
+        assert 'Watching on **1**' in done.sent()['embed'].description
+        assert 6.99 * 86400 < bot.store.watches()[0].expires_at - __import__('time').time() <= 7 * 86400
+        h = FakeInteraction()
+        await cmd(bot, 'help')(h)
+        opened = await click(find(h.sent()['view'], label='Find player'))
+        assert opened.sent()['embed'].title == '🕵️ Look up a player'
+    run(go())

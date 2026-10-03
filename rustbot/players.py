@@ -6,7 +6,13 @@ paste an ID again. The book is per guild (per user in DMs), so names never leak 
 from __future__ import annotations
 import logging
 import re
+import discord
 from discord import app_commands
+from .i18n import t
+from .ui import YELLOW, OwnedView, error_embed
+
+# What an explicit identifier looks like; anything else is treated as a name to look up in the book.
+ID_LIKE = re.compile(r'^\s*(?:[0-9]{1,17}|STEAM_[0-5]:[01]:\d+|\[?U:1:\d+\]?|<?https?://\S+>?)\s*$', re.I)
 
 
 def scope_of(interaction) -> int:
@@ -54,3 +60,106 @@ def steam_of(value: str) -> str | None:
         return parse_target(value).steamid
     except ValueError:
         return None
+
+
+def looks_like_id(value: str | None) -> bool:
+    return bool(ID_LIKE.match(value or ''))
+
+
+def expand(bot, interaction, value: str | None) -> str | None:
+    """A typed name becomes the ID of the matching player in the book (exact name first, else a single partial match).
+
+    IDs and links pass through untouched; an unknown or ambiguous name is returned as typed.
+    """
+    if not value or looks_like_id(value):
+        return value
+    typed = value.strip()
+    rows = bot.store.known_players(scope_of(interaction), typed, limit=50)
+    exact = [r for r in rows if (r[0] or '').casefold() == typed.casefold()]
+    refs = {steamid or bm_id for _, steamid, bm_id in (exact or rows)}
+    return refs.pop() if len(refs) == 1 else value
+
+
+def esc(value) -> str:
+    return discord.utils.escape_markdown(discord.utils.escape_mentions(str(value)))[:60]
+
+
+class AskModal(discord.ui.Modal):
+    """One-field form; the answer goes to `on_value(interaction, text)`."""
+
+    def __init__(self, title: str, label: str, placeholder: str, on_value):
+        super().__init__(title=title[:45])
+        self.field = discord.ui.TextInput(label=label[:45], placeholder=placeholder[:100], min_length=2, max_length=100)
+        self.add_item(self.field)
+        self.on_value = on_value
+
+    async def on_submit(self, interaction):
+        await self.on_value(interaction, self.field.value.strip())
+
+
+def search_button(bot, lang: str, query: str | None = None) -> discord.ui.Button:
+    """🔎 Search «name» on BattleMetrics in one click; without a usable name it asks for one."""
+    async def find(interaction, name):
+        await bot.tree.get_command('findplayer').callback(interaction, name=name[:64])
+
+    if query and 2 <= len(query.strip()) <= 64:
+        button = discord.ui.Button(label=t(lang, 'player.search_for', q=query.strip()[:40]), emoji='🔎', style=discord.ButtonStyle.primary)
+
+        async def run(interaction):
+            await find(interaction, query.strip())
+    else:
+        button = discord.ui.Button(label=t(lang, 'player.search'), emoji='🔎', style=discord.ButtonStyle.primary)
+
+        async def run(interaction):
+            await interaction.response.send_modal(AskModal(t(lang, 'player.search'), t(lang, 'player.ask_name'), 'KingGallardo', find))
+    button.callback = run
+    return button
+
+
+async def player_error(bot, interaction, lang: str, exc: Exception | str, query: str | None = None, share: bool = False):
+    """Friendly error for a player that could not be resolved, with a button to search it by name."""
+    key = exc if isinstance(exc, str) else (str(exc) if isinstance(exc, ValueError) and str(exc).startswith('identity.')
+                                          else 'identity.input' if isinstance(exc, ValueError) else 'identity.unavailable')
+    if key == 'identity.input' and query and not looks_like_id(query):
+        key = 'identity.name'
+    view = None
+    if key != 'identity.unavailable' and bot.bm.token:
+        view = OwnedView(interaction.user.id)
+        view.add_item(search_button(bot, lang, query if query and not looks_like_id(query) else None))
+    embed = error_embed(t(lang, key, q=esc(query or '')), t(lang, 'identity.hint'), lang)
+    kwargs = {'embed': embed, 'ephemeral': not share, **({'view': view} if view else {})}
+    if interaction.response.is_done():
+        await interaction.followup.send(**kwargs)
+    else:
+        await interaction.response.send_message(**kwargs)
+
+
+def hub(bot, interaction, lang: str) -> tuple[discord.Embed, OwnedView]:
+    """Panel for /who with no player: recent players, search by name, or type an ID."""
+    rows = bot.store.known_players(scope_of(interaction), limit=25)
+    view = OwnedView(interaction.user.id)
+
+    async def who(i, value):
+        await bot.tree.get_command('who').callback(i, player=value)
+
+    if rows:
+        select = discord.ui.Select(placeholder=t(lang, 'hub.recent'), options=[
+            discord.SelectOption(label=(name or steamid or bm_id)[:100], value=steamid or bm_id,
+                                 description=(f'SteamID {steamid}' if steamid else f'BattleMetrics ID {bm_id}')[:100], emoji='🕵️')
+            for name, steamid, bm_id in rows])
+
+        async def picked(i):
+            await who(i, i.data['values'][0])
+        select.callback = picked
+        view.add_item(select)
+    if bot.bm.token:
+        view.add_item(search_button(bot, lang))
+    ask = discord.ui.Button(label=t(lang, 'hub.enter_id'), emoji='🆔', style=discord.ButtonStyle.secondary)
+
+    async def ask_id(i):
+        await i.response.send_modal(AskModal(t(lang, 'hub.enter_id'), t(lang, 'hub.id_label'), '76561198… / 1128280744', who))
+    ask.callback = ask_id
+    view.add_item(ask)
+    body = t(lang, 'hub.body') if rows else t(lang, 'hub.body') + '\n\n' + t(lang, 'hub.empty')
+    embed = discord.Embed(title=t(lang, 'hub.title'), description=body, color=YELLOW)
+    return embed, view

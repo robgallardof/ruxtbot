@@ -8,7 +8,7 @@ import logging
 import discord
 from discord import app_commands
 from .i18n import lang_for, t
-from .players import player_autocomplete, remember, scope_of, steam_of
+from .players import expand, player_autocomplete, player_error, remember, scope_of, steam_of
 from .ui import GREEN, OwnedView, brand_embed, error_embed
 from .utility_commands import iso_to_ts
 
@@ -119,12 +119,13 @@ def register_activity(bot):
     async def presence(interaction: discord.Interaction, player: str, page: app_commands.Range[int, 1, 1000] = 1, share: bool = False):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
+        player = expand(bot, interaction, player)
         try:
             pid = await bot.bm.resolve_player(player)
             data = await bot.bm.profile(pid)
             lines = await presence_lines(bot, pid, data)
         except Exception as exc:
-            await fail(interaction, lang, identity_error(exc), share)
+            await player_error(bot, interaction, lang, exc, player, share)
             return
         await remember(bot, interaction, bm_id=pid, steamid=steam_of(player), profile=data)
         pages = max(1, (len(lines) + 9) // 10)
@@ -141,12 +142,17 @@ def register_activity(bot):
     async def sessions(interaction: discord.Interaction, player: str, server: str | None = None, share: bool = False):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
+        player = expand(bot, interaction, player)
+        try:
+            sid = bot.directory.resolve(server) if server else None
+        except ValueError:
+            await fail(interaction, lang, 'server.pick', share)
+            return
         try:
             pid = await bot.bm.resolve_player(player)
-            sid = bot.directory.resolve(server) if server else None
             data = await bot.bm.sessions(pid, sid)
         except Exception as exc:
-            await fail(interaction, lang, identity_error(exc), share)
+            await player_error(bot, interaction, lang, exc, player, share)
             return
         await remember(bot, interaction, bm_id=pid, steamid=steam_of(player))
         names = {r['id']: r['attributes'].get('name', r['id']) for r in data.get('included', []) if r.get('type') == 'server'}
@@ -226,8 +232,15 @@ def register_activity(bot):
     async def playercompare(interaction: discord.Interaction, first: str, second: str, share: bool = False):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
+        first, second = expand(bot, interaction, first), expand(bot, interaction, second)
+        ids = []
+        for raw in (first, second):
+            try:
+                ids.append(await bot.bm.resolve_player(raw))
+            except Exception as exc:
+                await player_error(bot, interaction, lang, exc, raw, share)
+                return
         try:
-            ids = [await bot.bm.resolve_player(first), await bot.bm.resolve_player(second)]
             profiles = [await bot.bm.profile(pid) for pid in ids]
         except Exception as exc:
             await fail(interaction, lang, identity_error(exc), share)

@@ -31,6 +31,11 @@ Every player option takes a **SteamID64** (`7656119…`), `STEAM_0:X:Y`, `[U:1:N
 
 After the first lookup the player goes into the guild's **player book** and every player option **autocompletes by name** (`KingGallardo · 7656119…`). The book is per Discord server (per user in DMs), keeps the 500 most recent players and never shares names between servers.
 
+- **Type the name and press Enter**: a name typed without picking a suggestion is looked up in the book (exact name first, otherwise a single partial match).
+- **Errors always offer a way out**: an unknown name shows a **🔎 Search «name»** button that runs the BattleMetrics name search in one click.
+- `/who` with no options opens a panel: recent players, search by name, or enter a SteamID / BattleMetrics ID. `/help` has a **Find player** button that opens it.
+- `/player player:` without a server shows where the player is (same as `/presence`).
+- `/track` lists recent players in a **⚡ Watch for 7 days** picker: one click, nothing to type. The form accepts names too.
 - `/findplayer name:` searches BattleMetrics by in-game name and shows each **BattleMetrics ID**; pick one to open the full profile.
 - `/online server:` lists who is playing right now (20 per page, time in the current session). 👀 marks watched players, ⭐ players you looked up before; the picker opens a profile.
 - `/playercompare first: second:` lists the servers two players have in common, hours of each and 🟢🟢 when both are online (possible teammates; not proof).

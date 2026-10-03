@@ -24,7 +24,7 @@ from .info_commands import register_info
 from .activity import register_activity, presence_lines
 from .raid import register_raid_commands
 from .raid_data import RaidData
-from .players import player_autocomplete, remember, steam_of
+from .players import choice_label, expand, player_autocomplete, player_error, remember, scope_of, steam_of
 from .servers import ServerDirectory, server_autocomplete
 from .tracking import Store, transition
 from .track_ui import TrackingPanel
@@ -169,7 +169,9 @@ def main():
     # ── Help ──
     @bot.tree.command(description='📚 Main menu: every RuxtBot tool')
     async def help(interaction: discord.Interaction):
-        layout = help_layout(raid, lang_for(interaction), interaction.user.id)
+        async def open_players(i):
+            await bot.tree.get_command('who').callback(i)
+        layout = help_layout(raid, lang_for(interaction), interaction.user.id, open_players)
         await interaction.response.send_message(view=layout, ephemeral=True)
         layout.message = await interaction.original_response()
 
@@ -305,18 +307,26 @@ def main():
         e.set_footer(text=t(lang, 'server.footer', id=sid))
         await interaction.followup.send(embed=e, ephemeral=True)
 
-    @bot.tree.command(description='🟢 Is a player online on a server right now?')
-    @app_commands.describe(player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Server name or BattleMetrics server ID', share='Publish the result in this channel')
+    @bot.tree.command(description='🟢 Is a player online right now?')
+    @app_commands.describe(player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Server (empty = every synchronized server)', share='Publish the result in this channel')
     @app_commands.autocomplete(player=player_choices, server=server_choices)
-    async def player(interaction: discord.Interaction, player: str, server: str, share: bool = False):
+    async def player(interaction: discord.Interaction, player: str, server: str | None = None, share: bool = False):
+        if not server:
+            # Without a server the useful answer is "where is this player": the presence overview.
+            await bot.tree.get_command('presence').callback(interaction, player=player, share=share)
+            return
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
+        player = expand(bot, interaction, player)
         try:
             sid = bot.directory.resolve(server)
+        except ValueError:
+            await interaction.followup.send(embed=error_embed(t(lang, 'server.pick'), lang=lang), ephemeral=not share)
+            return
+        try:
             pid = await bot.bm.resolve_player(player)
-        except ValueError as exc:
-            key = str(exc) if str(exc).startswith('identity.') else 'identity.input'
-            await interaction.followup.send(embed=error_embed(t(lang, key), lang=lang), ephemeral=not share)
+        except Exception as exc:
+            await player_error(bot, interaction, lang, exc, player, share)
             return
         try:
             online = await bot.bm.player_online(sid, 'bm:' + pid)
@@ -348,7 +358,8 @@ def main():
                     f"{discord.utils.escape_markdown(bot.directory.name(w.server_id))} → <#{w.channel_id}> · <t:{int(w.expires_at)}:R>" for w in mine]
             e = brand_embed(t(lang, 'track.title', n=len(rows)), '\n'.join(rows)[:4000] or t(lang, 'track.none'))
             e.add_field(name=t(lang, 'track.panel.title'), value=t(lang, 'track.panel.help'), inline=False)
-            panel = TrackingPanel(track.callback, lang, interaction.user.id)
+            recent = [(choice_label(name, steamid, bm_id), steamid or bm_id) for name, steamid, bm_id in bot.store.known_players(scope_of(interaction), limit=25)]
+            panel = TrackingPanel(track.callback, lang, interaction.user.id, recent)
             await interaction.response.send_message(embed=e, view=panel, ephemeral=not share)
             panel.message = await interaction.original_response()
             return
@@ -356,8 +367,13 @@ def main():
             await interaction.response.send_message(embed=error_embed(t(lang, 'track.need_profile'), t(lang, 'track.need_profile.hint'), lang), ephemeral=not share)
             return
         await interaction.response.defer(ephemeral=not share)
+        player = expand(bot, interaction, player)
         try:
             pid = await bot.bm.resolve_player(player)
+        except Exception as exc:
+            await player_error(bot, interaction, lang, exc, player, share)
+            return
+        try:
             saved = bot.store.settings(interaction.guild_id)
             channel_id = saved[0] if saved else interaction.channel_id
             data = await bot.bm.profile(pid) if action == 'add' else None
@@ -399,7 +415,8 @@ def main():
                 e = success_embed(t(lang, 'track.removed', n=len(ids)))
             await interaction.followup.send(embed=e, ephemeral=not share, allowed_mentions=discord.AllowedMentions.none())
         except ValueError as exc:
-            key = str(exc) if str(exc).startswith('identity.') else 'identity.input'
+            # The player is already resolved here, so a ValueError means the server option.
+            key = str(exc) if str(exc).startswith('identity.') else 'server.pick'
             await interaction.followup.send(embed=error_embed(t(lang, key), lang=lang), ephemeral=not share)
         except Exception:
             await interaction.followup.send(embed=error_embed(t(lang, 'track.fail'), lang=lang), ephemeral=not share)
