@@ -25,6 +25,7 @@ from .raid import register_raid_commands
 from .raid_data import RaidData
 from .servers import ServerDirectory
 from .tracking import Store, transition
+from .track_ui import TrackingPanel
 from .ui import GREEN, GREY, RED, brand_embed, error_embed, reply, success_embed
 from .utility_commands import iso_to_ts, register_utilities
 from .who import WhoService, register_who
@@ -330,7 +331,7 @@ def main():
     @app_commands.choices(action=[app_commands.Choice(name='Add', value='add'), app_commands.Choice(name='Remove', value='remove'),
                                   app_commands.Choice(name='List', value='list')])
     @app_commands.autocomplete(server=server_choices)
-    async def track(interaction: discord.Interaction, action: str, profile: str | None = None, server: str | None = None, label: str | None = None, days: app_commands.Range[int, 1, 15] = 7, share: bool = False):
+    async def track(interaction: discord.Interaction, action: str = 'list', profile: str | None = None, server: str | None = None, label: str | None = None, days: app_commands.Range[int, 1, 15] = 7, share: bool = False):
         lang = lang_for(interaction)
         if not interaction.guild:
             await interaction.response.send_message(embed=error_embed(t(lang, 'track.guild'), lang=lang), ephemeral=not share)
@@ -342,7 +343,10 @@ def main():
             rows = [f"{dot.get(w.was_online, '⚪')} **{discord.utils.escape_markdown(w.label or w.steamid)}** · "
                     f"{discord.utils.escape_markdown(bot.directory.name(w.server_id))} → <#{w.channel_id}> · <t:{int(w.expires_at)}:R>" for w in mine]
             e = brand_embed(t(lang, 'track.title', n=len(rows)), '\n'.join(rows)[:4000] or t(lang, 'track.none'))
-            await interaction.response.send_message(embed=e, ephemeral=not share)
+            e.add_field(name=t(lang, 'track.panel.title'), value=t(lang, 'track.panel.help'), inline=False)
+            panel = TrackingPanel(track.callback, lang, interaction.user.id)
+            await interaction.response.send_message(embed=e, view=panel, ephemeral=not share)
+            panel.message = await interaction.original_response()
             return
         if not profile:
             await interaction.response.send_message(embed=error_embed(t(lang, 'track.need_profile'), t(lang, 'track.need_profile.hint'), lang), ephemeral=not share)
@@ -380,7 +384,10 @@ def main():
                 e = success_embed(t(lang, 'track.added', n=len(ids)))
                 if lines:
                     e.add_field(name=t(lang, 'activity.title'), value='\n'.join(lines[:6])[:1024], inline=False)
-                e.set_footer(text=t(lang, 'track.added.footer') + f' · {days} days / días')
+                e.add_field(name=t(lang, 'track.summary.channel'), value=f'<#{channel_id}> · @wipe', inline=True)
+                e.add_field(name=t(lang, 'track.summary.expires'), value=f'<t:{int(time.time()+days*86400)}:F> · <t:{int(time.time()+days*86400)}:R>', inline=True)
+                e.add_field(name=t(lang, 'track.summary.manage'), value=t(lang, 'track.summary.help'), inline=False)
+                e.set_footer(text=t(lang, 'track.added.footer'))
             else:
                 for sid in ids:
                     bot.store.remove('bm:' + pid, sid, channel_id)

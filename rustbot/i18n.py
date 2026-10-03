@@ -467,3 +467,26 @@ COMMAND_ES.update({
     'Duration in days (maximum 15)': 'Duración en días (máximo 15)',
     'Publish the result in this channel': 'Publicar el resultado en este canal',
 })
+
+STRINGS.update({
+    'track.form.add': ('Watch for {days} days', 'Seguir durante {days} días'),
+    'track.form.remove': ('Stop watching a player', 'Dejar de seguir a un jugador'),
+    'track.form.player': ('SteamID or BattleMetrics player ID', 'SteamID o ID de jugador BattleMetrics'),
+    'track.form.label': ('Nickname (optional)', 'Apodo (opcional)'),
+    'track.button.add': ('Watch · {days} days', 'Seguir · {days} días'),
+    'track.button.stop': ('Stop watching', 'Dejar de seguir'),
+    'track.button.refresh': ('My watches', 'Mis seguimientos'),
+    'track.panel.title': ('Start here', 'Empieza aquí'),
+    'track.panel.help': ('Choose 7 or 15 days, then enter the SteamID. Known synchronized servers are selected automatically. 🟢 Online · 🔴 Offline · ⚪ Unknown. Alerts mention @wipe.', 'Elige 7 o 15 días e introduce el SteamID. Los servidores conocidos sincronizados se seleccionan automáticamente. 🟢 Conectado · 🔴 Desconectado · ⚪ Sin datos. Los avisos mencionan a @wipe.'),
+    'track.summary.channel': ('Alerts go to', 'Avisos en'),
+    'track.summary.expires': ('Stops automatically', 'Finaliza automáticamente'),
+    'track.summary.manage': ('Manage or share', 'Gestionar o compartir'),
+    'track.summary.help': ('Open /track to manage watches. Use share:true on player reports to show them to friends in this channel.', 'Abre /track para gestionar seguimientos. Usa share:true en las consultas para mostrarlas a tus amigos en este canal.'),
+    'track.none': ('No active watches. Choose a duration below to get started.', 'No tienes seguimientos activos. Elige una duración abajo para empezar.'),
+})
+for _key in ('help.admin', 'examples.admin'):
+    _en, _es = STRINGS[_key]
+    STRINGS[_key] = (_en.replace('`/track` connection alerts · ', '').replace('/track action:Add profile:<BM link>', '/track'),
+                     _es.replace('`/track` avisos de conexión · ', '').replace('/track action:Añadir profile:<enlace BM>', '/track'))
+_en, _es = STRINGS['help.players']
+STRINGS['help.players'] = (_en + '\n`/track` → guided 7/15-day watches for everyone · `share:true` → share reports', _es + '\n`/track` → seguimiento guiado de 7/15 días para todos · `share:true` → compartir fichas')

@@ -93,3 +93,7 @@ Expiry is stored in SQLite and survives restarts. Expired watches are removed be
 Use `share:true` on `/track`, `/player`, `/who`, `/presence` or `/sessions` to publish the response in the channel where you invoked it. Friends can view and share the public Discord message. Replies remain private by default; this does not send DMs or post to unrelated chats.
 
 Performance: duplicate player/server observations are reused within each polling cycle; expired watch timing entries are discarded; profile cache entries expire after eight seconds with a 256-profile cap; expired `/who` cooldown entries are removed. BattleMetrics rate-limit backoff remains enabled. These are bounded-state improvements, not a measured production memory benchmark.
+
+### Guided tracking panel
+
+Type `/track` with no arguments. Choose **Watch · 7 days** or **Watch · 15 days**, enter a SteamID and optionally a nickname. **Stop watching** removes your watches for that player in the configured alert channel; **My watches** refreshes the list. Each panel is controlled by its opener and expires after five minutes. The confirmation shows the destination channel, @wipe, and exact expiry. English and Spanish are supported.

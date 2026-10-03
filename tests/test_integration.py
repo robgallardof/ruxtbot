@@ -364,7 +364,7 @@ def test_admin_flow_track_settings_alerts_status(bot):
         assert not bot.store.watches()
         nope = FakeInteraction(admin=False)
         await cmd(bot, 'track')(nope, 'list', None, None, None)
-        assert 'No watches' in nope.sent()['embed'].description
+        assert 'No active watches' in nope.sent()['embed'].description
     run(go())
 
 
@@ -452,5 +452,31 @@ def test_member_tracking_ownership_expiry_and_public_share(bot):
             assert i.sent()['ephemeral'] is False
         owner = FakeInteraction(admin=False, user_id=20)
         await cmd(bot, 'track')(owner, 'remove', STEAMID)
+        assert not bot.store.watches()
+    run(go())
+
+
+def test_guided_tracking_panel_and_modal(bot):
+    async def go():
+        from unittest.mock import AsyncMock
+        from rustbot.track_ui import TrackModal
+        i = FakeInteraction(locale='es-ES', admin=False)
+        await cmd(bot, 'track')(i)
+        panel = i.sent()['view']
+        assert [b.label for b in panel.children] == ['Seguir · 7 días', 'Seguir · 15 días', 'Dejar de seguir', 'Mis seguimientos']
+        click_i = FakeInteraction(locale='es-ES', admin=False)
+        click_i.response.send_modal = AsyncMock()
+        await panel.children[1].callback(click_i)
+        modal = click_i.response.send_modal.call_args.args[0]
+        assert modal.days == 15
+        modal.player._value = STEAMID
+        modal.nickname._value = 'Compañero'
+        submit = FakeInteraction(locale='es-ES', admin=False)
+        await modal.on_submit(submit)
+        assert bot.store.watches()[0].label == 'Compañero'
+        assert any(f.name == 'Finaliza automáticamente' for f in submit.sent()['embed'].fields)
+        stop = TrackModal(cmd(bot, 'track'), 'es', 7, 'remove')
+        stop.player._value = STEAMID
+        await stop.on_submit(FakeInteraction(locale='es-ES', admin=False))
         assert not bot.store.watches()
     run(go())
