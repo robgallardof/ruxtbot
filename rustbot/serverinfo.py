@@ -164,6 +164,7 @@ class ServerView(discord.ui.View):
 
     def __init__(self, bot, lang: str, sid: str | None, a: dict | None, address: str | None):
         super().__init__(timeout=900)
+        self.message = None
         d = (a or {}).get('details') or {}
         maps = d.get('rust_maps') if isinstance(d.get('rust_maps'), dict) else {}
         if address:
@@ -189,6 +190,17 @@ class ServerView(discord.ui.View):
         site = d.get('rust_url')
         if isinstance(site, str) and site.startswith(('http://', 'https://')):
             self.add_item(discord.ui.Button(label=t(lang, 'server.button.site'), emoji='🌐', url=site[:512], row=1))
+
+    async def on_timeout(self):
+        # Link buttons keep working; the others are disabled so nobody gets "This interaction failed".
+        for item in self.children:
+            if not getattr(item, 'url', None):
+                item.disabled = True
+        if self.message:
+            try:
+                await self.message.edit(view=self)
+            except discord.HTTPException:
+                pass
 
 
 def server_matches(a: dict, gather: str | None, group: str | None, kind: str | None, wiped_days: int | None, pve: bool | None) -> bool:
@@ -258,7 +270,12 @@ def register_serverinfo(bot, can_manage):
         else:
             embed = preset_embed(lang, preset)
         address = preset[1] if preset and preset[1] else (f"{a['ip']}:{a['port']}" if a and a.get('ip') and a.get('port') else None)
-        await reply(interaction, ephemeral=not public, embed=embed, view=ServerView(bot, lang, sid, a, address))
+        view = ServerView(bot, lang, sid, a, address)
+        await reply(interaction, ephemeral=not public, embed=embed, view=view)
+        try:
+            view.message = await interaction.original_response()
+        except discord.HTTPException:
+            pass
 
     def preset_embed(lang, preset):
         e = brand_embed(f'🖥️ {preset[0]}', color=YELLOW)

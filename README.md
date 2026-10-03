@@ -19,6 +19,8 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 
 `/help` is a menu with buttons for the common next steps: 👤 My profile, 🎮 Our server, 🔎 Find player, 👀 Track and the raid tools. `/examples` is posted publicly so everyone in the channel can copy them.
 
+Commands mentioned in `/help`, `/examples` and the welcome message are **clickable**: after the startup sync the bot knows each command's ID, so `` `/sv` `` becomes a Discord command mention that opens the command when tapped. Commands written with options stay as code so they can be copied. When the bot joins a server it posts a short setup guide (in the server's language) in the system channel, or the first channel it can write in, with a button that shows the examples.
+
 ### Your settings: `/me`
 
 Settings are stored per Discord user and follow you to every server. `/me battlemetrics:<profile URL or ID>` saves your BattleMetrics profile; `/me server:` saves a default server; `/me forget:true` deletes everything. `/me` alone shows a card with buttons (set profile, who is on my server, find a player here, forget me).

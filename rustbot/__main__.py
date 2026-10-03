@@ -24,7 +24,7 @@ from .battlemetrics import BattleMetrics
 from .catalog import Catalog
 from .config import Settings
 from .help import help_layout
-from .i18n import CommandTranslator, lang_for, t
+from .i18n import CommandTranslator, lang_for, normalize_lang, t
 from .info_commands import register_info
 from .activity import register_activity, presence_lines
 from .alerts import register_alerts
@@ -38,7 +38,7 @@ from .players import choice_label, expand, player_autocomplete, player_error, re
 from .servers import ANY, ServerDirectory, server_autocomplete
 from .tracking import Store, transition
 from .track_ui import TrackingPanel
-from .ui import GREEN, GREY, RED, brand_embed, error_embed, reply, success_embed
+from .ui import GREEN, GREY, RED, brand_embed, error_embed, linkify, reply, success_embed
 from .utility_commands import iso_to_ts, register_utilities
 from .who import WhoService, register_who
 
@@ -68,14 +68,40 @@ class RustBot(commands.Bot):
         self.server_choices = server_autocomplete(self)
         self.last_poll = {}  # (steamid, server, channel) -> last check, to honour the interval
         self.extra_loops = []  # background loops registered by command modules (alerts)
+        self.command_ids: dict[str, int] = {}
         self.poll.change_interval(seconds=10)
 
     async def setup_hook(self):
         await self.tree.set_translator(CommandTranslator())
-        await self.tree.sync()
+        synced = await self.tree.sync()
+        # IDs make `/command` in help and examples clickable (</name:id> mentions).
+        self.command_ids = {command.name: command.id for command in synced}
         self.poll.start()
         for loop in self.extra_loops:
             loop.start()
+
+    async def on_guild_join(self, guild: discord.Guild):
+        """Post a short getting-started guide where the bot can talk, in the server's language."""
+        lang = normalize_lang(getattr(guild, 'preferred_locale', None))
+        channel = guild.system_channel
+        if not channel or not channel.permissions_for(guild.me).send_messages:
+            channel = next((c for c in guild.text_channels if c.permissions_for(guild.me).send_messages), None)
+        if not channel:
+            return
+        e = brand_embed(t(lang, 'welcome.title'), linkify(t(lang, 'welcome.body'), self.command_ids))
+        e.set_thumbnail(url='https://wiki.rustclash.com/img/items180/explosive.timed.png')
+        e.set_footer(text=t(lang, 'welcome.footer'))
+        view = discord.ui.View(timeout=None)
+        examples = discord.ui.Button(label=t(lang, 'welcome.examples'), emoji='📖', style=discord.ButtonStyle.primary)
+
+        async def show_examples(interaction):
+            await self.tree.get_command('examples').callback(interaction)
+        examples.callback = show_examples
+        view.add_item(examples)
+        try:
+            await channel.send(embed=e, view=view)
+        except discord.HTTPException:
+            logging.info('welcome message failed in guild %s', guild.id)
 
     async def on_ready(self):
         logging.info('RuxtBot connected as %s', self.user)
@@ -246,7 +272,7 @@ def main():
 
         async def open_me(i):
             await bot.tree.get_command('me').callback(i)
-        layout = help_layout(raid, lang_for(interaction), interaction.user.id, open_players, {'sv': open_sv, 'track': open_track, 'me': open_me})
+        layout = help_layout(raid, lang_for(interaction), interaction.user.id, open_players, {'sv': open_sv, 'track': open_track, 'me': open_me}, bot.command_ids)
         await interaction.response.send_message(view=layout, ephemeral=True)
         layout.message = await interaction.original_response()
 

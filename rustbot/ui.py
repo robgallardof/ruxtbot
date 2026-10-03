@@ -5,6 +5,7 @@ Every command goes through these helpers so the bot looks consistent
 """
 from __future__ import annotations
 import logging
+import re
 import discord
 from .i18n import lang_for, t
 
@@ -15,6 +16,20 @@ ORANGE = 0xE67E22   # in progress / warnings
 RED = 0xC0392B      # errors / bans
 GREY = 0x95A5A6     # no data
 STEAM_BLUE = 0x1B2838
+
+
+COMMAND_CODE = re.compile(r'`/([a-z0-9_-]+)`')
+
+
+def linkify(text: str, ids: dict[str, int] | None) -> str:
+    """Turn `/command` (no options) into a clickable command mention: tapping it opens the command in the chat box.
+
+    Commands written with options stay as code so they can still be copied. Without IDs (before the first
+    sync, or in tests) the text is returned unchanged.
+    """
+    if not ids:
+        return text
+    return COMMAND_CODE.sub(lambda m: f'</{m[1]}:{ids[m[1]]}>' if m[1] in ids else m[0], text)
 
 
 def brand_embed(title: str | None = None, description: str | None = None, color: int = YELLOW) -> discord.Embed:

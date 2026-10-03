@@ -1,4 +1,5 @@
 """/me, /sv, /ip, /setserver, /server cards, /serverstats, /leaderboard, /serversearch, /rust, /player extras and /version."""
+from types import SimpleNamespace
 from unittest.mock import AsyncMock, patch
 import httpx
 from rustbot import maintenance
@@ -210,4 +211,29 @@ def test_upkeep_uses_the_server_multiplier(bot):
         await cmd(bot, 'upkeep')(i, stone=100, server='5931597')
         e = i.sent()['embed']
         assert 'upkeep ×0.5' in e.description and '**2,400** / day' in e.fields[0].value   # 100 × 300 × 16% × 0.5
+    run(go())
+
+
+def test_clickable_commands_and_welcome(bot):
+    from rustbot.ui import linkify
+    assert linkify('`/sv` · `/who player:1`', {'sv': 42, 'who': 7}) == '</sv:42> · `/who player:1`'
+    assert linkify('`/sv`', {}) == '`/sv`'
+
+    async def go():
+        bot.command_ids = {'sv': 11, 'server': 12, 'who': 13, 'examples': 14}
+        h = FakeInteraction()
+        await cmd(bot, 'help')(h)
+        text = '\n'.join(i.content for i in h.sent()['view'].walk_children() if isinstance(getattr(i, 'content', None), str))
+        assert '</sv:11>' in text and '</server:12>' in text
+        ex = FakeInteraction()
+        await cmd(bot, 'examples')(ex)
+        text = '\n'.join(i.content for i in ex.sent()['view'].walk_children() if isinstance(getattr(i, 'content', None), str))
+        assert '`/who player:76561198848618940`' in text            # commands with options stay copyable
+        me = SimpleNamespace(id=1)
+        channel = SimpleNamespace(permissions_for=lambda _: SimpleNamespace(send_messages=True), send=AsyncMock())
+        guild = SimpleNamespace(id=1, me=me, system_channel=channel, text_channels=[], preferred_locale='es-ES')
+        await bot.on_guild_join(guild)
+        e = channel.send.call_args.kwargs['embed']
+        assert e.title.startswith('👋 ¡Gracias') and '</sv:11>' in e.description
+        assert [c.label for c in channel.send.call_args.kwargs['view'].children] == ['Ver ejemplos']
     run(go())

@@ -135,8 +135,8 @@ STRINGS: dict[str, tuple[str, str]] = {
                     '### 🔔 Avisos (todos)\n`/track` un jugador se conecta o desconecta (un servidor, sus habituales o 🌍 cualquiera) · `/team` un clan entero: quién está y dónde · `/wipealert` un servidor hace wipe, o se acerca el forzado · `/serverwatch` un servidor se llena o se vacía\n-# Los avisos mencionan a quien los creó, en el canal donde se crearon.'),
     'help.admin': ('### ⚙️ Server managers\n`/setserver` · `/delserver` servers for `/sv` · `/settings` alert channel, role and language · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers`\n-# `/version` for everyone · `/update` · `/restart` bot owner only',
                    '### ⚙️ Gestores del servidor\n`/setserver` · `/delserver` servidores de `/sv` · `/settings` canal, rol e idioma de avisos · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers`\n-# `/version` para todos · `/update` · `/restart` solo el dueño del bot'),
-    'help.footer': ('`/examples` shows ready-to-copy examples · `/author` · replies follow your Discord language (English/Spanish).',
-                    '`/examples` muestra ejemplos listos para copiar · `/author` · las respuestas siguen el idioma de tu Discord (inglés/español).'),
+    'help.footer': ('Tap any command to open it · `/examples` ready-to-copy examples · `/version` · `/author` · replies follow your Discord language (English/Spanish).',
+                    'Toca cualquier comando para abrirlo · `/examples` ejemplos listos para copiar · `/version` · `/author` · las respuestas siguen el idioma de tu Discord (inglés/español).'),
 
     # ── Author & examples ──
     'author.title': ('👑 Author', '👑 Autor'),
@@ -538,6 +538,19 @@ STRINGS: dict[str, tuple[str, str]] = {
     'team.offline': ('Offline', 'Desconectados'),
     'team.where': ('Where', 'Dónde'),
     'team.show.footer': ('🔴 offline · ⚪ unknown (not the same as offline) · BattleMetrics data', '🔴 desconectado · ⚪ sin datos (no es desconectado) · datos de BattleMetrics'),
+
+    # ── Welcome (bot added to a server) ──
+    'welcome.title': ('👋 Thanks for adding RuxtBot!', '👋 ¡Gracias por añadir RuxtBot!'),
+    'welcome.body': ('Rust raids, crafting, servers, players and alerts, in English and Spanish (each member sees their Discord language).\n\n'
+                     '**Set up in one minute**\n1️⃣ `/setserver` → save your server: everyone gets `/sv` and `/ip` with the connect line\n'
+                     '2️⃣ `/settings` → channel (and optional role) for alerts\n3️⃣ Everyone: `/me` → save your BattleMetrics profile, then `/online` and `/findplayer` just work\n\n'
+                     'Then try `/help` for the menu, `/server`, `/who`, `/track`, `/team` and `/raid`.',
+                     'Raids, crafteo, servidores, jugadores y avisos de Rust, en inglés y español (cada miembro lo ve en el idioma de su Discord).\n\n'
+                     '**Configúralo en un minuto**\n1️⃣ `/setserver` → guarda tu servidor: todos tendrán `/sv` e `/ip` con la línea de connect\n'
+                     '2️⃣ `/settings` → canal (y rol opcional) para los avisos\n3️⃣ Todos: `/me` → guarda tu perfil de BattleMetrics y `/online` y `/findplayer` funcionan solos\n\n'
+                     'Luego prueba `/help` para el menú, `/server`, `/who`, `/track`, `/team` y `/raid`.'),
+    'welcome.footer': ('Tap any command above to open it.', 'Toca cualquier comando de arriba para abrirlo.'),
+    'welcome.examples': ('Show examples', 'Ver ejemplos'),
 
     # ── /me ──
     'me.title': ('👤 {name}', '👤 {name}'),
