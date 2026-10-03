@@ -1,0 +1,1806 @@
+{
+ "meta": {
+  "version": "Raid data 2026-10-02",
+  "rustly": {
+   "url": "https://rustly.com/raid/",
+   "note": "Rustly API v1, datamine + measured in game",
+   "gameVersion": "2633.288.1"
+  },
+  "rustclash": {
+   "url": "https://wiki.rustclash.com/",
+   "note": "RustClash durability tables, hard side"
+  },
+  "icons": "https://wiki.rustclash.com/img/items180/"
+ },
+ "explosives": {
+  "explosive556": {
+   "name": "Explosive 5.56 Rifle Ammo",
+   "icon": "https://wiki.rustclash.com/img/items180/ammo.rifle.explosive.png",
+   "group": "explosive",
+   "cost": {
+    "sulfur": 25.0,
+    "charcoal": 30.0,
+    "metalFragments": 5.0
+   }
+  },
+  "c4": {
+   "name": "Timed Explosive Charge (C4)",
+   "icon": "https://wiki.rustclash.com/img/items180/explosive.timed.png",
+   "group": "explosive",
+   "cost": {
+    "sulfur": 2200.0,
+    "charcoal": 3000.0,
+    "metalFragments": 200.0
+   }
+  },
+  "rocket": {
+   "name": "Rocket",
+   "icon": "https://wiki.rustclash.com/img/items180/ammo.rocket.basic.png",
+   "group": "explosive",
+   "cost": {
+    "sulfur": 1400.0,
+    "charcoal": 1950.0,
+    "metalFragments": 100.0
+   }
+  },
+  "satchel": {
+   "name": "Satchel Charge",
+   "icon": "https://wiki.rustclash.com/img/items180/explosive.satchel.png",
+   "group": "explosive",
+   "cost": {
+    "sulfur": 480.0,
+    "charcoal": 720.0,
+    "metalFragments": 80.0
+   }
+  },
+  "propane_bomb": {
+   "name": "Propane Explosive Bomb",
+   "icon": "https://wiki.rustclash.com/img/items180/catapult.ammo.explosive.png",
+   "group": "explosive",
+   "cost": {
+    "sulfur": 900.0,
+    "charcoal": 1350.0,
+    "metalFragments": 0.0
+   }
+  },
+  "hv_rocket": {
+   "name": "High Velocity Rocket",
+   "icon": "https://wiki.rustclash.com/img/items180/ammo.rocket.hv.png",
+   "group": "explosive",
+   "cost": {
+    "sulfur": 200.0,
+    "charcoal": 300.0,
+    "metalFragments": 0.0
+   }
+  },
+  "beancan": {
+   "name": "Beancan Grenade",
+   "icon": "https://wiki.rustclash.com/img/items180/grenade.beancan.png",
+   "group": "explosive",
+   "cost": {
+    "sulfur": 120.0,
+    "charcoal": 180.0,
+    "metalFragments": 20.0
+   }
+  },
+  "f1": {
+   "name": "F1 Grenade",
+   "icon": "https://wiki.rustclash.com/img/items180/grenade.f1.png",
+   "group": "explosive",
+   "cost": {
+    "sulfur": 60.0,
+    "charcoal": 90.0,
+    "metalFragments": 25.0
+   }
+  },
+  "incendiary_rocket": {
+   "name": "Incendiary Rocket",
+   "icon": "https://wiki.rustclash.com/img/items180/ammo.rocket.fire.png",
+   "group": "fire",
+   "cost": {
+    "sulfur": 300.0,
+    "charcoal": 450.0,
+    "metalFragments": 0.0
+   }
+  },
+  "molotov": {
+   "name": "Molotov Cocktail",
+   "icon": "https://wiki.rustclash.com/img/items180/grenade.molotov.png",
+   "group": "fire",
+   "cost": {
+    "sulfur": 0,
+    "charcoal": 0,
+    "metalFragments": 0
+   }
+  },
+  "fire_arrow": {
+   "name": "Fire Arrow",
+   "icon": "https://wiki.rustclash.com/img/items180/arrow.fire.png",
+   "group": "fire",
+   "cost": {
+    "sulfur": 0,
+    "charcoal": 0,
+    "metalFragments": 0
+   }
+  },
+  "catapult_propane": {
+   "name": "Catapult · Propane Bomb",
+   "icon": "https://wiki.rustclash.com/img/items180/catapult.ammo.explosive.png",
+   "group": "siege",
+   "cost": {
+    "sulfur": 900,
+    "charcoal": 1350,
+    "metalFragments": 0
+   }
+  },
+  "mortar": {
+   "name": "Mortar Shell",
+   "icon": "https://wiki.rustclash.com/img/items180/ammo.mortar.basic.png",
+   "group": "siege",
+   "cost": {
+    "sulfur": 300,
+    "charcoal": 450,
+    "metalFragments": 0
+   }
+  },
+  "mlrs": {
+   "name": "MLRS Rocket",
+   "icon": "https://wiki.rustclash.com/img/items180/ammo.rocket.mlrs.png",
+   "group": "siege",
+   "cost": null
+  },
+  "he_grenade": {
+   "name": "40mm HE Grenade",
+   "icon": "https://wiki.rustclash.com/img/items180/ammo.grenadelauncher.he.png",
+   "group": "siege",
+   "cost": null
+  },
+  "hammerhead": {
+   "name": "Ballista · Hammerhead Bolt",
+   "icon": "https://wiki.rustclash.com/img/items180/ballista.bolt.hammerhead.png",
+   "group": "siege",
+   "cost": {
+    "sulfur": 0,
+    "charcoal": 0,
+    "metalFragments": 0
+   }
+  },
+  "ram": {
+   "name": "Battering Ram (hits)",
+   "icon": "https://wiki.rustclash.com/img/items180/batteringram.png",
+   "group": "siege",
+   "cost": null
+  },
+  "cannonball": {
+   "name": "Cannon · Cannonball",
+   "icon": "https://wiki.rustclash.com/img/items180/cannonball.png",
+   "group": "siege",
+   "cost": {
+    "sulfur": 15,
+    "charcoal": 22.5,
+    "metalFragments": 0
+   }
+  }
+ },
+ "targets": {
+  "wooden-wall": {
+   "name": "Wooden Wall",
+   "category": "walls",
+   "hp": 250,
+   "icon": "https://wiki.rustclash.com/img/items180/wood.png",
+   "aliases": [
+    "wood wall",
+    "muro madera",
+    "pared madera"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/wooden-wall/",
+   "hard": {
+    "incendiary_rocket": 1,
+    "explosive556": 49,
+    "satchel": 3,
+    "hv_rocket": 9,
+    "propane_bomb": 2,
+    "beancan": 18,
+    "c4": 1,
+    "rocket": 2,
+    "f1": 189,
+    "molotov": 4,
+    "fire_arrow": 125,
+    "mortar": 5
+   },
+   "soft": {
+    "incendiary_rocket": 1,
+    "explosive556": 49,
+    "satchel": 3,
+    "hv_rocket": 9,
+    "propane_bomb": 2,
+    "beancan": 18,
+    "c4": 1,
+    "rocket": 2,
+    "f1": 189,
+    "molotov": 4,
+    "fire_arrow": 125
+   }
+  },
+  "stone-wall": {
+   "name": "Stone Wall",
+   "category": "walls",
+   "hp": 500,
+   "icon": "https://wiki.rustclash.com/img/items180/stones.png",
+   "aliases": [
+    "muro piedra",
+    "pared piedra"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/stone-wall/",
+   "hard": {
+    "c4": 2,
+    "explosive556": 185,
+    "satchel": 10,
+    "rocket": 4,
+    "propane_bomb": 7,
+    "hv_rocket": 32,
+    "beancan": 64,
+    "f1": 872,
+    "catapult_propane": 4,
+    "mortar": 17
+   },
+   "soft": {
+    "c4": 2,
+    "explosive556": 185,
+    "satchel": 10,
+    "rocket": 4,
+    "propane_bomb": 7,
+    "hv_rocket": 32,
+    "beancan": 64,
+    "f1": 872
+   }
+  },
+  "sheet-metal-wall": {
+   "name": "Sheet Metal Wall",
+   "category": "walls",
+   "hp": 1000,
+   "icon": "https://wiki.rustclash.com/img/items180/sheetmetal.png",
+   "aliases": [
+    "metal wall",
+    "muro metal",
+    "pared metal"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/sheet-metal-wall/",
+   "hard": {
+    "c4": 4,
+    "explosive556": 400,
+    "satchel": 23,
+    "rocket": 8,
+    "propane_bomb": 13,
+    "hv_rocket": 67,
+    "beancan": 131,
+    "f1": 9616,
+    "catapult_propane": 8,
+    "mortar": 34
+   },
+   "soft": {
+    "c4": 4,
+    "explosive556": 400,
+    "satchel": 23,
+    "rocket": 8,
+    "propane_bomb": 13,
+    "hv_rocket": 67,
+    "beancan": 131,
+    "f1": 9616
+   }
+  },
+  "armored-wall": {
+   "name": "Armored Wall",
+   "category": "walls",
+   "hp": 2000,
+   "icon": "https://wiki.rustclash.com/img/items180/metal.refined.png",
+   "aliases": [
+    "hq wall",
+    "hqwall",
+    "muro blindado",
+    "pared blindada"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/armored-wall/",
+   "hard": {
+    "c4": 8,
+    "explosive556": 799,
+    "rocket": 15,
+    "satchel": 46,
+    "propane_bomb": 25,
+    "hv_rocket": 134,
+    "beancan": 262,
+    "f1": 20409,
+    "catapult_propane": 15,
+    "mortar": 67
+   },
+   "soft": {
+    "c4": 8,
+    "explosive556": 799,
+    "rocket": 15,
+    "satchel": 46,
+    "propane_bomb": 25,
+    "hv_rocket": 134,
+    "beancan": 262,
+    "f1": 20409
+   }
+  },
+  "wooden-door": {
+   "name": "Wooden Door",
+   "category": "doors",
+   "hp": 200,
+   "icon": "https://wiki.rustclash.com/img/items180/door.hinged.wood.png",
+   "aliases": [
+    "wood door",
+    "wooddoor",
+    "puerta madera"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/wooden-door/",
+   "hard": {
+    "incendiary_rocket": 1,
+    "explosive556": 19,
+    "hv_rocket": 4,
+    "beancan": 7,
+    "propane_bomb": 1,
+    "satchel": 2,
+    "rocket": 1,
+    "c4": 1,
+    "f1": 85,
+    "molotov": 2,
+    "fire_arrow": 50,
+    "catapult_propane": 1,
+    "mortar": 2,
+    "mlrs": 1,
+    "he_grenade": 3,
+    "hammerhead": 4,
+    "ram": 1,
+    "cannonball": 67
+   }
+  },
+  "sheet-metal-door": {
+   "name": "Sheet Metal Door",
+   "category": "doors",
+   "hp": 250,
+   "icon": "https://wiki.rustclash.com/img/items180/door.hinged.metal.png",
+   "aliases": [
+    "sheet door",
+    "metal door",
+    "puerta metal"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/sheet-metal-door/",
+   "hard": {
+    "explosive556": 63,
+    "propane_bomb": 2,
+    "satchel": 4,
+    "c4": 1,
+    "hv_rocket": 11,
+    "beancan": 21,
+    "rocket": 2,
+    "f1": 500,
+    "catapult_propane": 2,
+    "mortar": 6,
+    "mlrs": 1,
+    "he_grenade": 9,
+    "hammerhead": 13,
+    "ram": 4,
+    "cannonball": 500
+   }
+  },
+  "garage-door": {
+   "name": "Garage Door",
+   "category": "doors",
+   "hp": 600,
+   "icon": "https://wiki.rustclash.com/img/items180/wall.frame.garagedoor.png",
+   "aliases": [
+    "garage",
+    "garaje",
+    "puerta garaje"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/garage-door/",
+   "hard": {
+    "explosive556": 150,
+    "rocket": 3,
+    "satchel": 9,
+    "c4": 2,
+    "propane_bomb": 5,
+    "hv_rocket": 26,
+    "beancan": 49,
+    "f1": 1200,
+    "catapult_propane": 3,
+    "mortar": 13,
+    "mlrs": 3,
+    "he_grenade": 22,
+    "hammerhead": 30,
+    "ram": 8,
+    "cannonball": 1200
+   }
+  },
+  "armored-door": {
+   "name": "Armored Door",
+   "category": "doors",
+   "hp": 1000,
+   "icon": "https://wiki.rustclash.com/img/items180/door.hinged.toptier.png",
+   "aliases": [
+    "hq door",
+    "hqdoor",
+    "puerta hq",
+    "puerta blindada"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/armored-door/",
+   "hard": {
+    "explosive556": 250,
+    "c4": 3,
+    "rocket": 5,
+    "satchel": 15,
+    "propane_bomb": 8,
+    "hv_rocket": 42,
+    "beancan": 82,
+    "f1": 2000,
+    "catapult_propane": 5,
+    "mortar": 21,
+    "mlrs": 4,
+    "he_grenade": 36,
+    "hammerhead": 50,
+    "ram": 13,
+    "cannonball": 2000
+   }
+  },
+  "tool-cupboard": {
+   "name": "Tool Cupboard",
+   "category": "deployables",
+   "hp": 100,
+   "icon": "https://wiki.rustclash.com/img/items180/cupboard.tool.png",
+   "aliases": [
+    "tc",
+    "cupboard",
+    "armario"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/tool-cupboard/",
+   "hard": {
+    "explosive556": 10,
+    "incendiary_rocket": 1,
+    "hv_rocket": 2,
+    "satchel": 1,
+    "beancan": 4,
+    "propane_bomb": 1,
+    "rocket": 1,
+    "c4": 1,
+    "f1": 43
+   }
+  },
+  "auto-turret": {
+   "name": "Auto Turret",
+   "category": "deployables",
+   "hp": 1000,
+   "icon": "https://wiki.rustclash.com/img/items180/autoturret.png",
+   "aliases": [
+    "turret",
+    "torreta"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/auto-turret/",
+   "hard": {
+    "incendiary_rocket": 1,
+    "hv_rocket": 3,
+    "f1": 10,
+    "satchel": 4,
+    "beancan": 16,
+    "explosive556": 112,
+    "c4": 2,
+    "propane_bomb": 6,
+    "rocket": 4,
+    "molotov": 7,
+    "fire_arrow": 58
+   }
+  },
+  "wooden-floor": {
+   "name": "Wooden Floor",
+   "category": "floors",
+   "hp": 250,
+   "icon": "https://wiki.rustclash.com/img/items180/wood.png",
+   "aliases": [
+    "wood floor",
+    "piso madera",
+    "suelo madera"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/wooden-floor/",
+   "hard": {
+    "incendiary_rocket": 1,
+    "explosive556": 49,
+    "satchel": 3,
+    "hv_rocket": 9,
+    "propane_bomb": 2,
+    "beancan": 18,
+    "c4": 1,
+    "rocket": 2,
+    "f1": 189,
+    "molotov": 4,
+    "fire_arrow": 125
+   },
+   "soft": {
+    "incendiary_rocket": 1,
+    "explosive556": 49,
+    "satchel": 3,
+    "hv_rocket": 9,
+    "propane_bomb": 2,
+    "beancan": 18,
+    "c4": 1,
+    "rocket": 2,
+    "f1": 189,
+    "molotov": 4,
+    "fire_arrow": 125
+   }
+  },
+  "stone-floor": {
+   "name": "Stone Floor",
+   "category": "floors",
+   "hp": 500,
+   "icon": "https://wiki.rustclash.com/img/items180/stones.png",
+   "aliases": [
+    "piso piedra",
+    "suelo piedra"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/stone-floor/",
+   "hard": {
+    "c4": 2,
+    "explosive556": 185,
+    "satchel": 10,
+    "rocket": 4,
+    "propane_bomb": 7,
+    "hv_rocket": 32,
+    "beancan": 64,
+    "f1": 872
+   },
+   "soft": {
+    "c4": 2,
+    "explosive556": 185,
+    "satchel": 10,
+    "rocket": 4,
+    "propane_bomb": 7,
+    "hv_rocket": 32,
+    "beancan": 64,
+    "f1": 872
+   }
+  },
+  "sheet-metal-floor": {
+   "name": "Sheet Metal Floor",
+   "category": "floors",
+   "hp": 1000,
+   "icon": "https://wiki.rustclash.com/img/items180/sheetmetal.png",
+   "aliases": [
+    "metal floor",
+    "piso metal"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/sheet-metal-floor/",
+   "hard": {
+    "c4": 4,
+    "explosive556": 400,
+    "satchel": 23,
+    "rocket": 8,
+    "propane_bomb": 13,
+    "hv_rocket": 67,
+    "beancan": 131,
+    "f1": 9616
+   },
+   "soft": {
+    "c4": 4,
+    "explosive556": 400,
+    "satchel": 23,
+    "rocket": 8,
+    "propane_bomb": 13,
+    "hv_rocket": 67,
+    "beancan": 131,
+    "f1": 9616
+   }
+  },
+  "armored-floor": {
+   "name": "Armored Floor",
+   "category": "floors",
+   "hp": 2000,
+   "icon": "https://wiki.rustclash.com/img/items180/metal.refined.png",
+   "aliases": [
+    "hq floor",
+    "piso blindado"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/armored-floor/",
+   "hard": {
+    "c4": 8,
+    "explosive556": 799,
+    "rocket": 15,
+    "satchel": 46,
+    "propane_bomb": 25,
+    "hv_rocket": 134,
+    "beancan": 262,
+    "f1": 20409
+   },
+   "soft": {
+    "c4": 8,
+    "explosive556": 799,
+    "rocket": 15,
+    "satchel": 46,
+    "propane_bomb": 25,
+    "hv_rocket": 134,
+    "beancan": 262,
+    "f1": 20409
+   }
+  },
+  "sheet-metal-double-door": {
+   "name": "Sheet Metal Double Door",
+   "category": "doors",
+   "hp": 250,
+   "icon": "https://wiki.rustclash.com/img/items180/door.double.hinged.metal.png",
+   "aliases": [
+    "metal double door",
+    "puerta doble metal"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/sheet-metal-double-door/",
+   "hard": {
+    "explosive556": 63,
+    "propane_bomb": 2,
+    "satchel": 4,
+    "c4": 1,
+    "hv_rocket": 11,
+    "beancan": 21,
+    "rocket": 2,
+    "f1": 500
+   }
+  },
+  "armored-double-door": {
+   "name": "Armored Double Door",
+   "category": "doors",
+   "hp": 1000,
+   "icon": "https://wiki.rustclash.com/img/items180/door.double.hinged.toptier.png",
+   "aliases": [
+    "hq double door",
+    "puerta doble blindada"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/armored-double-door/",
+   "hard": {
+    "explosive556": 250,
+    "c4": 3,
+    "rocket": 5,
+    "satchel": 15,
+    "propane_bomb": 8,
+    "hv_rocket": 42,
+    "beancan": 82,
+    "f1": 2000
+   }
+  },
+  "bradley-apc": {
+   "name": "Bradley APC",
+   "category": "vehicles",
+   "hp": 1000,
+   "icon": null,
+   "aliases": [
+    "bradley",
+    "tanque"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/bradley-apc/",
+   "hard": {
+    "hv_rocket": 7,
+    "f1": 40,
+    "c4": 3,
+    "satchel": 20,
+    "rocket": 11
+   }
+  },
+  "tugboat": {
+   "name": "Tugboat",
+   "category": "vehicles",
+   "hp": 3000,
+   "icon": null,
+   "aliases": [
+    "tug",
+    "remolcador"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/tugboat/",
+   "hard": {
+    "hv_rocket": 11,
+    "f1": 68,
+    "c4": 4,
+    "satchel": 27,
+    "explosive556": 769,
+    "rocket": 16,
+    "propane_bomb": 27,
+    "beancan": 261,
+    "incendiary_rocket": 1200
+   }
+  },
+  "rhib": {
+   "name": "RHIB",
+   "category": "vehicles",
+   "hp": 500,
+   "icon": null,
+   "aliases": [
+    "boat",
+    "lancha"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/rhib/",
+   "hard": {
+    "hv_rocket": 2,
+    "f1": 8,
+    "c4": 1,
+    "satchel": 5,
+    "explosive556": 129,
+    "rocket": 3,
+    "propane_bomb": 5,
+    "beancan": 44,
+    "incendiary_rocket": 200
+   }
+  },
+  "motor-rowboat": {
+   "name": "Rowboat",
+   "category": "vehicles",
+   "hp": 400,
+   "icon": null,
+   "aliases": [
+    "rowboat",
+    "bote"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/motor-rowboat/",
+   "hard": {
+    "hv_rocket": 1,
+    "f1": 4,
+    "satchel": 1,
+    "beancan": 7,
+    "explosive556": 45,
+    "c4": 1,
+    "propane_bomb": 3,
+    "rocket": 2,
+    "incendiary_rocket": 16
+   }
+  },
+  "pt-boat": {
+   "name": "PT Boat",
+   "category": "vehicles",
+   "hp": 1000,
+   "icon": null,
+   "aliases": [
+    "pt",
+    "patrol boat"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/pt-boat/",
+   "hard": {
+    "hv_rocket": 3,
+    "f1": 15,
+    "satchel": 9,
+    "c4": 2,
+    "explosive556": 257,
+    "propane_bomb": 9,
+    "rocket": 6,
+    "beancan": 87,
+    "incendiary_rocket": 400
+   }
+  },
+  "solo-submarine": {
+   "name": "Solo Submarine",
+   "category": "vehicles",
+   "hp": 500,
+   "icon": null,
+   "aliases": [
+    "solo sub",
+    "submarino"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/solo-submarine/",
+   "hard": {
+    "hv_rocket": 1,
+    "f1": 5,
+    "explosive556": 26,
+    "satchel": 2,
+    "c4": 1,
+    "beancan": 19,
+    "propane_bomb": 3,
+    "rocket": 2,
+    "incendiary_rocket": 200
+   }
+  },
+  "duo-submarine": {
+   "name": "Duo Submarine",
+   "category": "vehicles",
+   "hp": 700,
+   "icon": null,
+   "aliases": [
+    "duo sub",
+    "submarino doble"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/duo-submarine/",
+   "hard": {
+    "hv_rocket": 2,
+    "f1": 7,
+    "explosive556": 36,
+    "satchel": 3,
+    "c4": 1,
+    "propane_bomb": 3,
+    "rocket": 2,
+    "beancan": 26,
+    "incendiary_rocket": 280
+   }
+  },
+  "minicopter": {
+   "name": "Minicopter",
+   "category": "vehicles",
+   "hp": 750,
+   "icon": null,
+   "aliases": [
+    "mini",
+    "minicoptero"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/minicopter/",
+   "hard": {
+    "hv_rocket": 3,
+    "f1": 14,
+    "satchel": 3,
+    "explosive556": 63,
+    "c4": 1,
+    "incendiary_rocket": 8,
+    "propane_bomb": 3,
+    "rocket": 2,
+    "beancan": 25
+   }
+  },
+  "scrap-transport-helicopter": {
+   "name": "Scrap Transport Helicopter",
+   "category": "vehicles",
+   "hp": 1000,
+   "icon": null,
+   "aliases": [
+    "scrap heli",
+    "heli",
+    "helicoptero"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/scrap-transport-helicopter/",
+   "hard": {
+    "f1": 8,
+    "satchel": 2,
+    "hv_rocket": 5,
+    "beancan": 13,
+    "explosive556": 84,
+    "c4": 1,
+    "propane_bomb": 3,
+    "rocket": 2,
+    "incendiary_rocket": 10
+   }
+  },
+  "attack-helicopter": {
+   "name": "Attack Helicopter",
+   "category": "vehicles",
+   "hp": 850,
+   "icon": null,
+   "aliases": [
+    "attack heli",
+    "helicoptero ataque"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/attack-helicopter/",
+   "hard": {
+    "hv_rocket": 3,
+    "f1": 16,
+    "satchel": 3,
+    "explosive556": 71,
+    "c4": 1,
+    "incendiary_rocket": 9,
+    "propane_bomb": 3,
+    "rocket": 2,
+    "beancan": 29
+   }
+  },
+  "hot-air-balloon": {
+   "name": "Hot Air Balloon",
+   "category": "vehicles",
+   "hp": 1500,
+   "icon": "https://wiki.rustclash.com/img/items180/hab.armor.png",
+   "aliases": [
+    "hab",
+    "balloon",
+    "globo"
+   ],
+   "source": "rustly",
+   "url": "https://rustly.com/raid/hot-air-balloon/",
+   "hard": {
+    "f1": 19,
+    "satchel": 3,
+    "hv_rocket": 8,
+    "beancan": 24,
+    "explosive556": 167,
+    "c4": 2,
+    "rocket": 5,
+    "propane_bomb": 8,
+    "incendiary_rocket": 60
+   }
+  },
+  "high-external-stone-wall": {
+   "name": "High External Stone Wall",
+   "category": "walls",
+   "hp": 500,
+   "icon": "https://wiki.rustclash.com/img/items180/wall.external.high.stone.png",
+   "aliases": [
+    "high stone wall",
+    "muro externo piedra"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/high-external-stone-wall",
+   "hard": {
+    "explosive556": 182,
+    "c4": 2,
+    "rocket": 4,
+    "satchel": 10,
+    "propane_bomb": 7,
+    "hv_rocket": 32,
+    "beancan": 46,
+    "f1": 182,
+    "catapult_propane": 4,
+    "mortar": 17,
+    "mlrs": 3,
+    "he_grenade": 29,
+    "ram": 10,
+    "cannonball": 715
+   }
+  },
+  "high-external-wooden-wall": {
+   "name": "High External Wooden Wall",
+   "category": "walls",
+   "hp": 500,
+   "icon": "https://wiki.rustclash.com/img/items180/wall.external.high.png",
+   "aliases": [
+    "high wood wall",
+    "muro externo madera"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/high-external-wooden-wall",
+   "hard": {
+    "explosive556": 96,
+    "c4": 2,
+    "rocket": 3,
+    "satchel": 6,
+    "propane_bomb": 4,
+    "hv_rocket": 18,
+    "beancan": 26,
+    "f1": 118,
+    "incendiary_rocket": 1,
+    "molotov": 7,
+    "catapult_propane": 3,
+    "mortar": 10,
+    "mlrs": 2,
+    "he_grenade": 16,
+    "ram": 6,
+    "cannonball": 295
+   }
+  },
+  "high-external-stone-gate": {
+   "name": "High External Stone Gate",
+   "category": "walls",
+   "hp": 500,
+   "icon": "https://wiki.rustclash.com/img/items180/gates.external.high.stone.png",
+   "aliases": [
+    "stone gate",
+    "puerta externa piedra"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/high-external-stone-gate",
+   "hard": {
+    "explosive556": 182,
+    "c4": 2,
+    "rocket": 4,
+    "satchel": 10,
+    "propane_bomb": 7,
+    "hv_rocket": 32,
+    "beancan": 46,
+    "f1": 182,
+    "catapult_propane": 4,
+    "mortar": 17,
+    "mlrs": 3,
+    "he_grenade": 29,
+    "hammerhead": 40,
+    "ram": 10,
+    "cannonball": 715
+   }
+  },
+  "high-external-wooden-gate": {
+   "name": "High External Wooden Gate",
+   "category": "walls",
+   "hp": 500,
+   "icon": "https://wiki.rustclash.com/img/items180/gates.external.high.wood.png",
+   "aliases": [
+    "wood gate",
+    "puerta externa madera"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/high-external-wooden-gate",
+   "hard": {
+    "explosive556": 96,
+    "c4": 2,
+    "rocket": 3,
+    "satchel": 6,
+    "propane_bomb": 4,
+    "hv_rocket": 18,
+    "beancan": 26,
+    "f1": 118,
+    "incendiary_rocket": 1,
+    "molotov": 7,
+    "catapult_propane": 3,
+    "mortar": 10,
+    "mlrs": 2,
+    "he_grenade": 16,
+    "hammerhead": 23,
+    "ram": 6,
+    "cannonball": 295
+   }
+  },
+  "ladder-hatch": {
+   "name": "Ladder Hatch",
+   "category": "floors",
+   "hp": 250,
+   "icon": "https://wiki.rustclash.com/img/items180/floor.ladder.hatch.png",
+   "aliases": [
+    "hatch",
+    "escotilla"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/ladder-hatch",
+   "hard": {
+    "explosive556": 63,
+    "c4": 1,
+    "rocket": 2,
+    "satchel": 4,
+    "propane_bomb": 2,
+    "hv_rocket": 11,
+    "beancan": 18,
+    "f1": 50,
+    "catapult_propane": 2,
+    "mortar": 6,
+    "mlrs": 1,
+    "he_grenade": 9,
+    "hammerhead": 13,
+    "ram": 4,
+    "cannonball": 500
+   }
+  },
+  "armored-ladder-hatch": {
+   "name": "Armored Ladder Hatch",
+   "category": "floors",
+   "hp": 1000,
+   "icon": "https://wiki.rustclash.com/img/items180/floor.ladder.hatch.toptier.png",
+   "aliases": [
+    "hq hatch",
+    "escotilla blindada"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/armored-ladder-hatch",
+   "hard": {
+    "explosive556": 250,
+    "c4": 3,
+    "rocket": 5,
+    "satchel": 15,
+    "propane_bomb": 8,
+    "hv_rocket": 42,
+    "beancan": 69,
+    "f1": 200,
+    "catapult_propane": 5,
+    "mortar": 21,
+    "mlrs": 4,
+    "he_grenade": 36,
+    "hammerhead": 50,
+    "ram": 13,
+    "cannonball": 2000
+   }
+  },
+  "triangle-ladder-hatch": {
+   "name": "Triangle Ladder Hatch",
+   "category": "floors",
+   "hp": 250,
+   "icon": "https://wiki.rustclash.com/img/items180/floor.triangle.ladder.hatch.png",
+   "aliases": [
+    "triangle hatch",
+    "escotilla triangular"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/triangle-ladder-hatch",
+   "hard": {
+    "explosive556": 63,
+    "c4": 1,
+    "rocket": 2,
+    "satchel": 4,
+    "propane_bomb": 2,
+    "hv_rocket": 11,
+    "beancan": 18,
+    "f1": 50,
+    "catapult_propane": 2,
+    "mortar": 6,
+    "mlrs": 1,
+    "he_grenade": 9,
+    "hammerhead": 13,
+    "ram": 4,
+    "cannonball": 500
+   }
+  },
+  "armored-triangle-ladder-hatch": {
+   "name": "Armored Triangle Ladder Hatch",
+   "category": "floors",
+   "hp": 1000,
+   "icon": "https://wiki.rustclash.com/img/items180/floor.triangle.ladder.hatch.toptier.png",
+   "aliases": [
+    "hq triangle hatch"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/armored-triangle-ladder-hatch",
+   "hard": {
+    "explosive556": 250,
+    "c4": 3,
+    "rocket": 5,
+    "satchel": 15,
+    "propane_bomb": 8,
+    "hv_rocket": 42,
+    "beancan": 69,
+    "f1": 200,
+    "catapult_propane": 5,
+    "mortar": 21,
+    "mlrs": 4,
+    "he_grenade": 36,
+    "hammerhead": 50,
+    "ram": 13,
+    "cannonball": 2000
+   }
+  },
+  "shotgun-trap": {
+   "name": "Shotgun Trap",
+   "category": "deployables",
+   "hp": 300,
+   "icon": "https://wiki.rustclash.com/img/items180/guntrap.png",
+   "aliases": [
+    "gun trap",
+    "trampa escopeta"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/shotgun-trap",
+   "hard": {
+    "explosive556": 30,
+    "c4": 1,
+    "rocket": 2,
+    "satchel": 1,
+    "propane_bomb": 2,
+    "hv_rocket": 1,
+    "beancan": 7,
+    "f1": 5,
+    "catapult_propane": 2,
+    "mortar": 2,
+    "mlrs": 1,
+    "he_grenade": 8,
+    "hammerhead": 15,
+    "ram": 3,
+    "cannonball": 3
+   }
+  },
+  "flame-turret": {
+   "name": "Flame Turret",
+   "category": "deployables",
+   "hp": 300,
+   "icon": "https://wiki.rustclash.com/img/items180/flameturret.png",
+   "aliases": [
+    "lanzallamas"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/flame-turret",
+   "hard": {
+    "explosive556": 30,
+    "c4": 1,
+    "rocket": 2,
+    "satchel": 1,
+    "propane_bomb": 2,
+    "hv_rocket": 1,
+    "beancan": 7,
+    "f1": 5,
+    "catapult_propane": 2,
+    "mortar": 2,
+    "mlrs": 1,
+    "he_grenade": 8,
+    "hammerhead": 15,
+    "ram": 3,
+    "cannonball": 3
+   }
+  },
+  "sam-site": {
+   "name": "SAM Site",
+   "category": "deployables",
+   "hp": 1000,
+   "icon": "https://wiki.rustclash.com/img/items180/samsite.png",
+   "aliases": [
+    "sam",
+    "antiaereo"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/sam-site",
+   "hard": {
+    "explosive556": 200,
+    "c4": 1,
+    "rocket": 4,
+    "satchel": 2,
+    "propane_bomb": 6,
+    "hv_rocket": 34,
+    "beancan": 16,
+    "f1": 20,
+    "incendiary_rocket": 1,
+    "molotov": 2,
+    "catapult_propane": 4,
+    "mortar": 11,
+    "mlrs": 3,
+    "he_grenade": 16,
+    "ram": 8,
+    "cannonball": 20
+   }
+  },
+  "metal-shop-front": {
+   "name": "Metal Shop Front",
+   "category": "windows",
+   "hp": 750,
+   "icon": "https://wiki.rustclash.com/img/items180/wall.frame.shopfront.metal.png",
+   "aliases": [
+    "shop front",
+    "mostrador"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/metal-shop-front",
+   "hard": {
+    "explosive556": 300,
+    "c4": 3,
+    "rocket": 6,
+    "satchel": 18,
+    "propane_bomb": 10,
+    "hv_rocket": 50,
+    "beancan": 99,
+    "f1": 7229,
+    "catapult_propane": 6,
+    "mortar": 25,
+    "mlrs": 5,
+    "he_grenade": 43,
+    "ram": 15,
+    "cannonball": 7143
+   }
+  },
+  "reinforced-glass-window": {
+   "name": "Reinforced Glass Window",
+   "category": "windows",
+   "hp": 500,
+   "icon": "https://wiki.rustclash.com/img/items180/wall.window.bars.toptier.png",
+   "aliases": [
+    "reinforced window",
+    "ventana reforzada"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/reinforced-glass-window",
+   "hard": {
+    "explosive556": 200,
+    "c4": 2,
+    "rocket": 4,
+    "satchel": 12,
+    "propane_bomb": 7,
+    "hv_rocket": 34,
+    "beancan": 56,
+    "f1": 497,
+    "catapult_propane": 4,
+    "mortar": 17,
+    "mlrs": 3,
+    "he_grenade": 29,
+    "ram": 10,
+    "cannonball": 4762
+   }
+  },
+  "strengthened-glass-window": {
+   "name": "Strengthened Glass Window",
+   "category": "windows",
+   "hp": 350,
+   "icon": "https://wiki.rustclash.com/img/items180/wall.window.glass.reinforced.png",
+   "aliases": [
+    "glass window",
+    "ventana cristal"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/strengthened-glass-window",
+   "hard": {
+    "explosive556": 140,
+    "c4": 2,
+    "rocket": 3,
+    "satchel": 9,
+    "propane_bomb": 5,
+    "hv_rocket": 24,
+    "beancan": 39,
+    "f1": 348,
+    "catapult_propane": 3,
+    "mortar": 12,
+    "mlrs": 2,
+    "he_grenade": 20,
+    "ram": 7,
+    "cannonball": 3334
+   }
+  },
+  "metal-horizontal-embrasure": {
+   "name": "Metal Horizontal embrasure",
+   "category": "windows",
+   "hp": 500,
+   "icon": "https://wiki.rustclash.com/img/items180/shutter.metal.embrasure.a.png",
+   "aliases": [
+    "embrasure",
+    "tronera"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/metal-horizontal-embrasure",
+   "hard": {
+    "explosive556": 167,
+    "c4": 2,
+    "rocket": 4,
+    "satchel": 13,
+    "propane_bomb": 7,
+    "hv_rocket": 31,
+    "beancan": 59,
+    "f1": 286,
+    "incendiary_rocket": 2,
+    "molotov": 14,
+    "catapult_propane": 4,
+    "mortar": 17,
+    "mlrs": 3,
+    "he_grenade": 28,
+    "ram": 10,
+    "cannonball": 250
+   }
+  },
+  "metal-vertical-embrasure": {
+   "name": "Metal Vertical Embrasure",
+   "category": "windows",
+   "hp": 500,
+   "icon": "https://wiki.rustclash.com/img/items180/shutter.metal.embrasure.b.png",
+   "aliases": [
+    "vertical embrasure",
+    "tronera vertical"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/metal-vertical-embrasure",
+   "hard": {
+    "explosive556": 167,
+    "c4": 2,
+    "rocket": 4,
+    "satchel": 13,
+    "propane_bomb": 7,
+    "hv_rocket": 31,
+    "beancan": 59,
+    "f1": 286,
+    "incendiary_rocket": 2,
+    "molotov": 14,
+    "catapult_propane": 4,
+    "mortar": 17,
+    "mlrs": 3,
+    "he_grenade": 28,
+    "ram": 10,
+    "cannonball": 250
+   }
+  },
+  "metal-window-bars": {
+   "name": "Metal Window Bars",
+   "category": "windows",
+   "hp": 500,
+   "icon": "https://wiki.rustclash.com/img/items180/wall.window.bars.metal.png",
+   "aliases": [
+    "window bars",
+    "barrotes"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/metal-window-bars",
+   "hard": {
+    "explosive556": 200,
+    "c4": 2,
+    "rocket": 4,
+    "satchel": 12,
+    "propane_bomb": 7,
+    "hv_rocket": 34,
+    "beancan": 56,
+    "f1": 497,
+    "catapult_propane": 4,
+    "mortar": 17,
+    "mlrs": 3,
+    "he_grenade": 29,
+    "ram": 10,
+    "cannonball": 4762
+   }
+  },
+  "prison-cell-gate": {
+   "name": "Prison Cell Gate",
+   "category": "windows",
+   "hp": 300,
+   "icon": "https://wiki.rustclash.com/img/items180/wall.frame.cell.gate.png",
+   "aliases": [
+    "cell gate",
+    "reja celda"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/prison-cell-gate",
+   "hard": {
+    "explosive556": 75,
+    "c4": 1,
+    "rocket": 2,
+    "satchel": 5,
+    "propane_bomb": 3,
+    "hv_rocket": 13,
+    "beancan": 21,
+    "f1": 60,
+    "catapult_propane": 2,
+    "mortar": 7,
+    "mlrs": 2,
+    "he_grenade": 11,
+    "hammerhead": 15,
+    "ram": 4,
+    "cannonball": 600
+   }
+  },
+  "prison-cell-wall": {
+   "name": "Prison Cell Wall",
+   "category": "windows",
+   "hp": 300,
+   "icon": "https://wiki.rustclash.com/img/items180/wall.frame.cell.png",
+   "aliases": [
+    "cell wall",
+    "pared celda"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/prison-cell-wall",
+   "hard": {
+    "explosive556": 75,
+    "c4": 1,
+    "rocket": 2,
+    "satchel": 5,
+    "propane_bomb": 3,
+    "hv_rocket": 13,
+    "beancan": 21,
+    "f1": 60,
+    "catapult_propane": 2,
+    "mortar": 7,
+    "mlrs": 2,
+    "he_grenade": 11,
+    "ram": 4,
+    "cannonball": 600
+   }
+  },
+  "chainlink-fence-gate": {
+   "name": "Chainlink Fence Gate",
+   "category": "windows",
+   "hp": 75,
+   "icon": "https://wiki.rustclash.com/img/items180/wall.frame.fence.gate.png",
+   "aliases": [
+    "fence gate",
+    "puerta valla"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/chainlink-fence-gate",
+   "hard": {
+    "explosive556": 15,
+    "c4": 1,
+    "rocket": 1,
+    "satchel": 1,
+    "propane_bomb": 1,
+    "hv_rocket": 3,
+    "beancan": 5,
+    "f1": 15,
+    "catapult_propane": 1,
+    "mortar": 2,
+    "mlrs": 1,
+    "he_grenade": 3,
+    "hammerhead": 3,
+    "ram": 1,
+    "cannonball": 150
+   }
+  },
+  "chainlink-fence": {
+   "name": "Chainlink Fence",
+   "category": "windows",
+   "hp": 100,
+   "icon": "https://wiki.rustclash.com/img/items180/wall.frame.fence.png",
+   "aliases": [
+    "fence",
+    "valla"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/chainlink-fence",
+   "hard": {
+    "explosive556": 20,
+    "c4": 1,
+    "rocket": 1,
+    "satchel": 2,
+    "propane_bomb": 1,
+    "hv_rocket": 4,
+    "beancan": 6,
+    "f1": 20,
+    "catapult_propane": 1,
+    "mortar": 2,
+    "mlrs": 1,
+    "he_grenade": 3,
+    "ram": 1,
+    "cannonball": 200
+   }
+  },
+  "wood-double-door": {
+   "name": "Wood Double Door",
+   "category": "doors",
+   "hp": 200,
+   "icon": "https://wiki.rustclash.com/img/items180/door.double.hinged.wood.png",
+   "aliases": [
+    "wood double door",
+    "puerta doble madera"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/wood-double-door",
+   "hard": {
+    "explosive556": 18,
+    "c4": 1,
+    "rocket": 1,
+    "satchel": 2,
+    "propane_bomb": 1,
+    "hv_rocket": 4,
+    "beancan": 6,
+    "f1": 23,
+    "incendiary_rocket": 1,
+    "molotov": 2,
+    "catapult_propane": 1,
+    "mortar": 2,
+    "mlrs": 1,
+    "he_grenade": 3,
+    "hammerhead": 4,
+    "ram": 1,
+    "cannonball": 67
+   }
+  },
+  "metal-barricade": {
+   "name": "Metal Barricade",
+   "category": "windows",
+   "hp": 600,
+   "icon": "https://wiki.rustclash.com/img/items180/barricade.metal.png",
+   "aliases": [
+    "barricada metal"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/metal-barricade",
+   "hard": {
+    "explosive556": 109,
+    "c4": 1,
+    "rocket": 3,
+    "satchel": 4,
+    "propane_bomb": 4,
+    "hv_rocket": 20,
+    "beancan": 38,
+    "f1": 343,
+    "catapult_propane": 3,
+    "mortar": 10,
+    "mlrs": 2,
+    "he_grenade": 17,
+    "ram": 6,
+    "cannonball": 300
+   }
+  },
+  "concrete-barricade": {
+   "name": "Concrete Barricade",
+   "category": "windows",
+   "hp": 500,
+   "icon": "https://wiki.rustclash.com/img/items180/barricade.concrete.png",
+   "aliases": [
+    "barricada concreto"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/concrete-barricade",
+   "hard": {
+    "explosive556": 50,
+    "c4": 1,
+    "rocket": 2,
+    "satchel": 2,
+    "propane_bomb": 2,
+    "hv_rocket": 10,
+    "beancan": 10,
+    "f1": 15,
+    "catapult_propane": 2,
+    "mortar": 5,
+    "mlrs": 1,
+    "he_grenade": 8,
+    "ram": 4,
+    "cannonball": 15
+   }
+  },
+  "large-wood-box": {
+   "name": "Large Wood Box",
+   "category": "deployables",
+   "hp": 300,
+   "icon": "https://wiki.rustclash.com/img/items180/box.wooden.large.png",
+   "aliases": [
+    "box",
+    "caja",
+    "caja grande"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/large-wood-box",
+   "hard": {
+    "explosive556": 30,
+    "c4": 1,
+    "rocket": 1,
+    "satchel": 1,
+    "propane_bomb": 2,
+    "hv_rocket": 2,
+    "beancan": 5,
+    "f1": 4,
+    "incendiary_rocket": 1,
+    "molotov": 1,
+    "catapult_propane": 1,
+    "mortar": 3,
+    "mlrs": 1,
+    "he_grenade": 5,
+    "hammerhead": 40,
+    "ram": 3,
+    "cannonball": 4
+   }
+  },
+  "vending-machine": {
+   "name": "Vending Machine",
+   "category": "deployables",
+   "hp": 1250,
+   "icon": "https://wiki.rustclash.com/img/items180/vending.machine.png",
+   "aliases": [
+    "vending",
+    "maquina expendedora"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/vending-machine",
+   "hard": {
+    "explosive556": 499,
+    "c4": 5,
+    "rocket": 10,
+    "satchel": 29,
+    "propane_bomb": 16,
+    "hv_rocket": 84,
+    "beancan": 139,
+    "f1": 1241,
+    "catapult_propane": 10,
+    "mortar": 41,
+    "mlrs": 8,
+    "he_grenade": 70,
+    "ram": 25,
+    "cannonball": 1238
+   }
+  },
+  "large-furnace": {
+   "name": "Large Furnace",
+   "category": "deployables",
+   "hp": 1500,
+   "icon": "https://wiki.rustclash.com/img/items180/furnace.large.png",
+   "aliases": [
+    "furnace",
+    "horno grande"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/large-furnace",
+   "hard": {
+    "explosive556": 150,
+    "c4": 2,
+    "rocket": 5,
+    "satchel": 3,
+    "propane_bomb": 8,
+    "hv_rocket": 8,
+    "beancan": 24,
+    "f1": 19,
+    "incendiary_rocket": 1,
+    "molotov": 5,
+    "catapult_propane": 5,
+    "mortar": 11,
+    "mlrs": 4,
+    "he_grenade": 24,
+    "hammerhead": 200,
+    "ram": 12,
+    "cannonball": 18
+   }
+  },
+  "workbench-level-3": {
+   "name": "Workbench Level 3",
+   "category": "deployables",
+   "hp": 750,
+   "icon": "https://wiki.rustclash.com/img/items180/workbench3.png",
+   "aliases": [
+    "t3",
+    "workbench",
+    "banco de trabajo 3"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/workbench-level-3",
+   "hard": {
+    "explosive556": 250,
+    "c4": 2,
+    "rocket": 6,
+    "satchel": 10,
+    "propane_bomb": 10,
+    "hv_rocket": 46,
+    "beancan": 89,
+    "f1": 429,
+    "incendiary_rocket": 2,
+    "molotov": 21,
+    "catapult_propane": 6,
+    "mortar": 25,
+    "mlrs": 5,
+    "he_grenade": 42,
+    "ram": 15,
+    "cannonball": 375
+   }
+  },
+  "floor-grill": {
+   "name": "Floor grill",
+   "category": "floors",
+   "hp": 250,
+   "icon": "https://wiki.rustclash.com/img/items180/floor.grill.png",
+   "aliases": [
+    "grill",
+    "rejilla"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/floor-grill",
+   "hard": {
+    "explosive556": 63,
+    "c4": 1,
+    "rocket": 2,
+    "satchel": 4,
+    "propane_bomb": 2,
+    "hv_rocket": 11,
+    "beancan": 18,
+    "f1": 50,
+    "catapult_propane": 2,
+    "mortar": 6,
+    "mlrs": 1,
+    "he_grenade": 9,
+    "ram": 4,
+    "cannonball": 500
+   }
+  },
+  "tesla-coil": {
+   "name": "Tesla Coil",
+   "category": "deployables",
+   "hp": 250,
+   "icon": "https://wiki.rustclash.com/img/items180/electric.teslacoil.png",
+   "aliases": [
+    "tesla",
+    "bobina tesla"
+   ],
+   "source": "rustclash",
+   "url": "https://wiki.rustclash.com/item/tesla-coil",
+   "hard": {
+    "explosive556": 25,
+    "c4": 1,
+    "rocket": 1,
+    "satchel": 1,
+    "propane_bomb": 2,
+    "hv_rocket": 6,
+    "beancan": 4,
+    "f1": 5,
+    "incendiary_rocket": 1,
+    "molotov": 1,
+    "catapult_propane": 1,
+    "mortar": 3,
+    "mlrs": 1,
+    "he_grenade": 4,
+    "ram": 2,
+    "cannonball": 5
+   }
+  }
+ }
+}

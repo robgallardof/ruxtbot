@@ -1,0 +1,4227 @@
+{
+ "list": {
+  "version": "1",
+  "docs": "https://rustly.com/developers/api/",
+  "total": 27,
+  "source": "hand-transcribed tables, checked against the datamine where it can be",
+  "verifiedAt": null,
+  "gameVersion": null,
+  "changedAt": "2026-10-02"
+ },
+ "targets": [
+  {
+   "slug": "wooden-wall",
+   "name": "Wooden Wall",
+   "kind": "wall",
+   "hp": 250,
+   "hasSoftSide": true,
+   "url": "https://rustly.com/raid/wooden-wall/",
+   "api": "https://rustly.com/api/v1/raid/wooden-wall/",
+   "hard": {
+    "target": {
+     "slug": "wooden-wall",
+     "name": "Wooden Wall",
+     "kind": "wall",
+     "hp": 250,
+     "url": "https://rustly.com/raid/wooden-wall/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 1,
+      "sulfur": 300,
+      "charcoal": 450,
+      "metalFragments": 0,
+      "seconds": 8,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 49,
+      "sulfur": 1225,
+      "charcoal": 1470,
+      "metalFragments": 245,
+      "seconds": 15,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 3,
+      "sulfur": 1440,
+      "charcoal": 2160,
+      "metalFragments": 240,
+      "seconds": 24,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 9,
+      "sulfur": 1800,
+      "charcoal": 2700,
+      "metalFragments": 0,
+      "seconds": 108,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 2,
+      "sulfur": 1800,
+      "charcoal": 2700,
+      "metalFragments": 0,
+      "seconds": 12,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 18,
+      "sulfur": 2160,
+      "charcoal": 3240,
+      "metalFragments": 360,
+      "seconds": 108,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 189,
+      "sulfur": 11340,
+      "charcoal": 17010,
+      "metalFragments": 4725,
+      "seconds": 2646,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": [
+     {
+      "slug": "molotov",
+      "name": "Molotov Cocktail",
+      "amount": 4,
+      "materials": {
+       "cloth": 40,
+       "low-grade-fuel": 200
+      },
+      "seconds": 84
+     },
+     {
+      "slug": "fire_arrow",
+      "name": "Fire Arrow",
+      "amount": 125,
+      "materials": {
+       "wood": 1250,
+       "cloth": 125,
+       "low-grade-fuel": 625
+      },
+      "seconds": 175
+     }
+    ]
+   },
+   "soft": {
+    "target": {
+     "slug": "wooden-wall",
+     "name": "Wooden Wall",
+     "kind": "wall",
+     "hp": 250,
+     "url": "https://rustly.com/raid/wooden-wall/"
+    },
+    "qty": 1,
+    "side": "soft",
+    "explosives": [
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 1,
+      "sulfur": 300,
+      "charcoal": 450,
+      "metalFragments": 0,
+      "seconds": 8,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 49,
+      "sulfur": 1225,
+      "charcoal": 1470,
+      "metalFragments": 245,
+      "seconds": 15,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 3,
+      "sulfur": 1440,
+      "charcoal": 2160,
+      "metalFragments": 240,
+      "seconds": 24,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 9,
+      "sulfur": 1800,
+      "charcoal": 2700,
+      "metalFragments": 0,
+      "seconds": 108,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 2,
+      "sulfur": 1800,
+      "charcoal": 2700,
+      "metalFragments": 0,
+      "seconds": 12,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 18,
+      "sulfur": 2160,
+      "charcoal": 3240,
+      "metalFragments": 360,
+      "seconds": 108,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 189,
+      "sulfur": 11340,
+      "charcoal": 17010,
+      "metalFragments": 4725,
+      "seconds": 2646,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": [
+     {
+      "slug": "molotov",
+      "name": "Molotov Cocktail",
+      "amount": 4,
+      "materials": {
+       "cloth": 40,
+       "low-grade-fuel": 200
+      },
+      "seconds": 84
+     },
+     {
+      "slug": "fire_arrow",
+      "name": "Fire Arrow",
+      "amount": 125,
+      "materials": {
+       "wood": 1250,
+       "cloth": 125,
+       "low-grade-fuel": 625
+      },
+      "seconds": 175
+     }
+    ]
+   },
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": [
+    "https://wiki.rustclash.com/img/items180/wood.png"
+   ]
+  },
+  {
+   "slug": "stone-wall",
+   "name": "Stone Wall",
+   "kind": "wall",
+   "hp": 500,
+   "hasSoftSide": true,
+   "url": "https://rustly.com/raid/stone-wall/",
+   "api": "https://rustly.com/api/v1/raid/stone-wall/",
+   "hard": {
+    "target": {
+     "slug": "stone-wall",
+     "name": "Stone Wall",
+     "kind": "wall",
+     "hp": 500,
+     "url": "https://rustly.com/raid/stone-wall/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 2,
+      "sulfur": 4400,
+      "charcoal": 6000,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 185,
+      "sulfur": 4625,
+      "charcoal": 5550,
+      "metalFragments": 925,
+      "seconds": 56,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 10,
+      "sulfur": 4800,
+      "charcoal": 7200,
+      "metalFragments": 800,
+      "seconds": 80,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 4,
+      "sulfur": 5600,
+      "charcoal": 7800,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 7,
+      "sulfur": 6300,
+      "charcoal": 9450,
+      "metalFragments": 0,
+      "seconds": 42,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 32,
+      "sulfur": 6400,
+      "charcoal": 9600,
+      "metalFragments": 0,
+      "seconds": 384,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 64,
+      "sulfur": 7680,
+      "charcoal": 11520,
+      "metalFragments": 1280,
+      "seconds": 384,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 872,
+      "sulfur": 52320,
+      "charcoal": 78480,
+      "metalFragments": 21800,
+      "seconds": 12208,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": {
+    "target": {
+     "slug": "stone-wall",
+     "name": "Stone Wall",
+     "kind": "wall",
+     "hp": 500,
+     "url": "https://rustly.com/raid/stone-wall/"
+    },
+    "qty": 1,
+    "side": "soft",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 2,
+      "sulfur": 4400,
+      "charcoal": 6000,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 185,
+      "sulfur": 4625,
+      "charcoal": 5550,
+      "metalFragments": 925,
+      "seconds": 56,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 10,
+      "sulfur": 4800,
+      "charcoal": 7200,
+      "metalFragments": 800,
+      "seconds": 80,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 4,
+      "sulfur": 5600,
+      "charcoal": 7800,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 7,
+      "sulfur": 6300,
+      "charcoal": 9450,
+      "metalFragments": 0,
+      "seconds": 42,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 32,
+      "sulfur": 6400,
+      "charcoal": 9600,
+      "metalFragments": 0,
+      "seconds": 384,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 64,
+      "sulfur": 7680,
+      "charcoal": 11520,
+      "metalFragments": 1280,
+      "seconds": 384,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 872,
+      "sulfur": 52320,
+      "charcoal": 78480,
+      "metalFragments": 21800,
+      "seconds": 12208,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": [
+    "https://wiki.rustclash.com/img/items180/stones.png"
+   ]
+  },
+  {
+   "slug": "sheet-metal-wall",
+   "name": "Sheet Metal Wall",
+   "kind": "wall",
+   "hp": 1000,
+   "hasSoftSide": true,
+   "url": "https://rustly.com/raid/sheet-metal-wall/",
+   "api": "https://rustly.com/api/v1/raid/sheet-metal-wall/",
+   "hard": {
+    "target": {
+     "slug": "sheet-metal-wall",
+     "name": "Sheet Metal Wall",
+     "kind": "wall",
+     "hp": 1000,
+     "url": "https://rustly.com/raid/sheet-metal-wall/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 4,
+      "sulfur": 8800,
+      "charcoal": 12000,
+      "metalFragments": 800,
+      "seconds": 40,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 400,
+      "sulfur": 10000,
+      "charcoal": 12000,
+      "metalFragments": 2000,
+      "seconds": 120,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 23,
+      "sulfur": 11040,
+      "charcoal": 16560,
+      "metalFragments": 1840,
+      "seconds": 184,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 8,
+      "sulfur": 11200,
+      "charcoal": 15600,
+      "metalFragments": 800,
+      "seconds": 40,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 13,
+      "sulfur": 11700,
+      "charcoal": 17550,
+      "metalFragments": 0,
+      "seconds": 78,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 67,
+      "sulfur": 13400,
+      "charcoal": 20100,
+      "metalFragments": 0,
+      "seconds": 804,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 131,
+      "sulfur": 15720,
+      "charcoal": 23580,
+      "metalFragments": 2620,
+      "seconds": 786,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 9616,
+      "sulfur": 576960,
+      "charcoal": 865440,
+      "metalFragments": 240400,
+      "seconds": 134624,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": {
+    "target": {
+     "slug": "sheet-metal-wall",
+     "name": "Sheet Metal Wall",
+     "kind": "wall",
+     "hp": 1000,
+     "url": "https://rustly.com/raid/sheet-metal-wall/"
+    },
+    "qty": 1,
+    "side": "soft",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 4,
+      "sulfur": 8800,
+      "charcoal": 12000,
+      "metalFragments": 800,
+      "seconds": 40,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 400,
+      "sulfur": 10000,
+      "charcoal": 12000,
+      "metalFragments": 2000,
+      "seconds": 120,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 23,
+      "sulfur": 11040,
+      "charcoal": 16560,
+      "metalFragments": 1840,
+      "seconds": 184,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 8,
+      "sulfur": 11200,
+      "charcoal": 15600,
+      "metalFragments": 800,
+      "seconds": 40,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 13,
+      "sulfur": 11700,
+      "charcoal": 17550,
+      "metalFragments": 0,
+      "seconds": 78,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 67,
+      "sulfur": 13400,
+      "charcoal": 20100,
+      "metalFragments": 0,
+      "seconds": 804,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 131,
+      "sulfur": 15720,
+      "charcoal": 23580,
+      "metalFragments": 2620,
+      "seconds": 786,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 9616,
+      "sulfur": 576960,
+      "charcoal": 865440,
+      "metalFragments": 240400,
+      "seconds": 134624,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": [
+    "https://wiki.rustclash.com/img/items180/sheetmetal.png"
+   ]
+  },
+  {
+   "slug": "armored-wall",
+   "name": "Armored Wall",
+   "kind": "wall",
+   "hp": 2000,
+   "hasSoftSide": true,
+   "url": "https://rustly.com/raid/armored-wall/",
+   "api": "https://rustly.com/api/v1/raid/armored-wall/",
+   "hard": {
+    "target": {
+     "slug": "armored-wall",
+     "name": "Armored Wall",
+     "kind": "wall",
+     "hp": 2000,
+     "url": "https://rustly.com/raid/armored-wall/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 8,
+      "sulfur": 17600,
+      "charcoal": 24000,
+      "metalFragments": 1600,
+      "seconds": 80,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 799,
+      "sulfur": 19975,
+      "charcoal": 23970,
+      "metalFragments": 3995,
+      "seconds": 240,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 15,
+      "sulfur": 21000,
+      "charcoal": 29250,
+      "metalFragments": 1500,
+      "seconds": 75,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 46,
+      "sulfur": 22080,
+      "charcoal": 33120,
+      "metalFragments": 3680,
+      "seconds": 368,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 25,
+      "sulfur": 22500,
+      "charcoal": 33750,
+      "metalFragments": 0,
+      "seconds": 150,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 134,
+      "sulfur": 26800,
+      "charcoal": 40200,
+      "metalFragments": 0,
+      "seconds": 1608,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 262,
+      "sulfur": 31440,
+      "charcoal": 47160,
+      "metalFragments": 5240,
+      "seconds": 1572,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 20409,
+      "sulfur": 1224540,
+      "charcoal": 1836810,
+      "metalFragments": 510225,
+      "seconds": 285726,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": {
+    "target": {
+     "slug": "armored-wall",
+     "name": "Armored Wall",
+     "kind": "wall",
+     "hp": 2000,
+     "url": "https://rustly.com/raid/armored-wall/"
+    },
+    "qty": 1,
+    "side": "soft",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 8,
+      "sulfur": 17600,
+      "charcoal": 24000,
+      "metalFragments": 1600,
+      "seconds": 80,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 799,
+      "sulfur": 19975,
+      "charcoal": 23970,
+      "metalFragments": 3995,
+      "seconds": 240,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 15,
+      "sulfur": 21000,
+      "charcoal": 29250,
+      "metalFragments": 1500,
+      "seconds": 75,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 46,
+      "sulfur": 22080,
+      "charcoal": 33120,
+      "metalFragments": 3680,
+      "seconds": 368,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 25,
+      "sulfur": 22500,
+      "charcoal": 33750,
+      "metalFragments": 0,
+      "seconds": 150,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 134,
+      "sulfur": 26800,
+      "charcoal": 40200,
+      "metalFragments": 0,
+      "seconds": 1608,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 262,
+      "sulfur": 31440,
+      "charcoal": 47160,
+      "metalFragments": 5240,
+      "seconds": 1572,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 20409,
+      "sulfur": 1224540,
+      "charcoal": 1836810,
+      "metalFragments": 510225,
+      "seconds": 285726,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": [
+    "https://wiki.rustclash.com/img/items180/metal.refined.png"
+   ]
+  },
+  {
+   "slug": "wooden-door",
+   "name": "Wooden Door",
+   "kind": "door",
+   "hp": 200,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/wooden-door/",
+   "api": "https://rustly.com/api/v1/raid/wooden-door/",
+   "hard": {
+    "target": {
+     "slug": "wooden-door",
+     "name": "Wooden Door",
+     "kind": "door",
+     "hp": 200,
+     "url": "https://rustly.com/raid/wooden-door/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 1,
+      "sulfur": 300,
+      "charcoal": 450,
+      "metalFragments": 0,
+      "seconds": 8,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 19,
+      "sulfur": 475,
+      "charcoal": 570,
+      "metalFragments": 95,
+      "seconds": 6,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 4,
+      "sulfur": 800,
+      "charcoal": 1200,
+      "metalFragments": 0,
+      "seconds": 48,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 7,
+      "sulfur": 840,
+      "charcoal": 1260,
+      "metalFragments": 140,
+      "seconds": 42,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 1,
+      "sulfur": 900,
+      "charcoal": 1350,
+      "metalFragments": 0,
+      "seconds": 6,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 2,
+      "sulfur": 960,
+      "charcoal": 1440,
+      "metalFragments": 160,
+      "seconds": 16,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 1,
+      "sulfur": 1400,
+      "charcoal": 1950,
+      "metalFragments": 100,
+      "seconds": 5,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 85,
+      "sulfur": 5100,
+      "charcoal": 7650,
+      "metalFragments": 2125,
+      "seconds": 1190,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": [
+     {
+      "slug": "molotov",
+      "name": "Molotov Cocktail",
+      "amount": 2,
+      "materials": {
+       "cloth": 20,
+       "low-grade-fuel": 100
+      },
+      "seconds": 42
+     },
+     {
+      "slug": "fire_arrow",
+      "name": "Fire Arrow",
+      "amount": 50,
+      "materials": {
+       "wood": 500,
+       "cloth": 50,
+       "low-grade-fuel": 250
+      },
+      "seconds": 70
+     }
+    ]
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "sheet-metal-door",
+   "name": "Sheet Metal Door",
+   "kind": "door",
+   "hp": 250,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/sheet-metal-door/",
+   "api": "https://rustly.com/api/v1/raid/sheet-metal-door/",
+   "hard": {
+    "target": {
+     "slug": "sheet-metal-door",
+     "name": "Sheet Metal Door",
+     "kind": "door",
+     "hp": 250,
+     "url": "https://rustly.com/raid/sheet-metal-door/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 63,
+      "sulfur": 1575,
+      "charcoal": 1890,
+      "metalFragments": 315,
+      "seconds": 19,
+      "cheapest": true
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 2,
+      "sulfur": 1800,
+      "charcoal": 2700,
+      "metalFragments": 0,
+      "seconds": 12,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 4,
+      "sulfur": 1920,
+      "charcoal": 2880,
+      "metalFragments": 320,
+      "seconds": 32,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 11,
+      "sulfur": 2200,
+      "charcoal": 3300,
+      "metalFragments": 0,
+      "seconds": 132,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 21,
+      "sulfur": 2520,
+      "charcoal": 3780,
+      "metalFragments": 420,
+      "seconds": 126,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 500,
+      "sulfur": 30000,
+      "charcoal": 45000,
+      "metalFragments": 12500,
+      "seconds": 7000,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "garage-door",
+   "name": "Garage Door",
+   "kind": "door",
+   "hp": 600,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/garage-door/",
+   "api": "https://rustly.com/api/v1/raid/garage-door/",
+   "hard": {
+    "target": {
+     "slug": "garage-door",
+     "name": "Garage Door",
+     "kind": "door",
+     "hp": 600,
+     "url": "https://rustly.com/raid/garage-door/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 150,
+      "sulfur": 3750,
+      "charcoal": 4500,
+      "metalFragments": 750,
+      "seconds": 45,
+      "cheapest": true
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 3,
+      "sulfur": 4200,
+      "charcoal": 5850,
+      "metalFragments": 300,
+      "seconds": 15,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 9,
+      "sulfur": 4320,
+      "charcoal": 6480,
+      "metalFragments": 720,
+      "seconds": 72,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 2,
+      "sulfur": 4400,
+      "charcoal": 6000,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 5,
+      "sulfur": 4500,
+      "charcoal": 6750,
+      "metalFragments": 0,
+      "seconds": 30,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 26,
+      "sulfur": 5200,
+      "charcoal": 7800,
+      "metalFragments": 0,
+      "seconds": 312,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 49,
+      "sulfur": 5880,
+      "charcoal": 8820,
+      "metalFragments": 980,
+      "seconds": 294,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 1200,
+      "sulfur": 72000,
+      "charcoal": 108000,
+      "metalFragments": 30000,
+      "seconds": 16800,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "armored-door",
+   "name": "Armored Door",
+   "kind": "door",
+   "hp": 1000,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/armored-door/",
+   "api": "https://rustly.com/api/v1/raid/armored-door/",
+   "hard": {
+    "target": {
+     "slug": "armored-door",
+     "name": "Armored Door",
+     "kind": "door",
+     "hp": 1000,
+     "url": "https://rustly.com/raid/armored-door/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 250,
+      "sulfur": 6250,
+      "charcoal": 7500,
+      "metalFragments": 1250,
+      "seconds": 75,
+      "cheapest": true
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 3,
+      "sulfur": 6600,
+      "charcoal": 9000,
+      "metalFragments": 600,
+      "seconds": 30,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 5,
+      "sulfur": 7000,
+      "charcoal": 9750,
+      "metalFragments": 500,
+      "seconds": 25,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 15,
+      "sulfur": 7200,
+      "charcoal": 10800,
+      "metalFragments": 1200,
+      "seconds": 120,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 8,
+      "sulfur": 7200,
+      "charcoal": 10800,
+      "metalFragments": 0,
+      "seconds": 48,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 42,
+      "sulfur": 8400,
+      "charcoal": 12600,
+      "metalFragments": 0,
+      "seconds": 504,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 82,
+      "sulfur": 9840,
+      "charcoal": 14760,
+      "metalFragments": 1640,
+      "seconds": 492,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 2000,
+      "sulfur": 120000,
+      "charcoal": 180000,
+      "metalFragments": 50000,
+      "seconds": 28000,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "tool-cupboard",
+   "name": "Tool Cupboard",
+   "kind": "deployable",
+   "hp": 100,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/tool-cupboard/",
+   "api": "https://rustly.com/api/v1/raid/tool-cupboard/",
+   "hard": {
+    "target": {
+     "slug": "tool-cupboard",
+     "name": "Tool Cupboard",
+     "kind": "deployable",
+     "hp": 100,
+     "url": "https://rustly.com/raid/tool-cupboard/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 10,
+      "sulfur": 250,
+      "charcoal": 300,
+      "metalFragments": 50,
+      "seconds": 3,
+      "cheapest": true
+     },
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 1,
+      "sulfur": 300,
+      "charcoal": 450,
+      "metalFragments": 0,
+      "seconds": 8,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 2,
+      "sulfur": 400,
+      "charcoal": 600,
+      "metalFragments": 0,
+      "seconds": 24,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 1,
+      "sulfur": 480,
+      "charcoal": 720,
+      "metalFragments": 80,
+      "seconds": 8,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 4,
+      "sulfur": 480,
+      "charcoal": 720,
+      "metalFragments": 80,
+      "seconds": 24,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 1,
+      "sulfur": 900,
+      "charcoal": 1350,
+      "metalFragments": 0,
+      "seconds": 6,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 1,
+      "sulfur": 1400,
+      "charcoal": 1950,
+      "metalFragments": 100,
+      "seconds": 5,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 43,
+      "sulfur": 2580,
+      "charcoal": 3870,
+      "metalFragments": 1075,
+      "seconds": 602,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": [
+    "https://wiki.rustclash.com/img/items180/cupboard.tool.png"
+   ]
+  },
+  {
+   "slug": "auto-turret",
+   "name": "Auto Turret",
+   "kind": "deployable",
+   "hp": 1000,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/auto-turret/",
+   "api": "https://rustly.com/api/v1/raid/auto-turret/",
+   "hard": {
+    "target": {
+     "slug": "auto-turret",
+     "name": "Auto Turret",
+     "kind": "deployable",
+     "hp": 1000,
+     "url": "https://rustly.com/raid/auto-turret/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 1,
+      "sulfur": 300,
+      "charcoal": 450,
+      "metalFragments": 0,
+      "seconds": 8,
+      "cheapest": true
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 3,
+      "sulfur": 600,
+      "charcoal": 900,
+      "metalFragments": 0,
+      "seconds": 36,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 10,
+      "sulfur": 600,
+      "charcoal": 900,
+      "metalFragments": 250,
+      "seconds": 140,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 4,
+      "sulfur": 1920,
+      "charcoal": 2880,
+      "metalFragments": 320,
+      "seconds": 32,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 16,
+      "sulfur": 1920,
+      "charcoal": 2880,
+      "metalFragments": 320,
+      "seconds": 96,
+      "cheapest": false
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 112,
+      "sulfur": 2800,
+      "charcoal": 3360,
+      "metalFragments": 560,
+      "seconds": 34,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 2,
+      "sulfur": 4400,
+      "charcoal": 6000,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 6,
+      "sulfur": 5400,
+      "charcoal": 8100,
+      "metalFragments": 0,
+      "seconds": 36,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 4,
+      "sulfur": 5600,
+      "charcoal": 7800,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": [
+     {
+      "slug": "molotov",
+      "name": "Molotov Cocktail",
+      "amount": 7,
+      "materials": {
+       "cloth": 70,
+       "low-grade-fuel": 350
+      },
+      "seconds": 147
+     },
+     {
+      "slug": "fire_arrow",
+      "name": "Fire Arrow",
+      "amount": 58,
+      "materials": {
+       "wood": 580,
+       "cloth": 58,
+       "low-grade-fuel": 290
+      },
+      "seconds": 81
+     }
+    ]
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "wooden-floor",
+   "name": "Wooden Floor",
+   "kind": "wall",
+   "hp": 250,
+   "hasSoftSide": true,
+   "url": "https://rustly.com/raid/wooden-floor/",
+   "api": "https://rustly.com/api/v1/raid/wooden-floor/",
+   "hard": {
+    "target": {
+     "slug": "wooden-floor",
+     "name": "Wooden Floor",
+     "kind": "wall",
+     "hp": 250,
+     "url": "https://rustly.com/raid/wooden-floor/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 1,
+      "sulfur": 300,
+      "charcoal": 450,
+      "metalFragments": 0,
+      "seconds": 8,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 49,
+      "sulfur": 1225,
+      "charcoal": 1470,
+      "metalFragments": 245,
+      "seconds": 15,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 3,
+      "sulfur": 1440,
+      "charcoal": 2160,
+      "metalFragments": 240,
+      "seconds": 24,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 9,
+      "sulfur": 1800,
+      "charcoal": 2700,
+      "metalFragments": 0,
+      "seconds": 108,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 2,
+      "sulfur": 1800,
+      "charcoal": 2700,
+      "metalFragments": 0,
+      "seconds": 12,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 18,
+      "sulfur": 2160,
+      "charcoal": 3240,
+      "metalFragments": 360,
+      "seconds": 108,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 189,
+      "sulfur": 11340,
+      "charcoal": 17010,
+      "metalFragments": 4725,
+      "seconds": 2646,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": [
+     {
+      "slug": "molotov",
+      "name": "Molotov Cocktail",
+      "amount": 4,
+      "materials": {
+       "cloth": 40,
+       "low-grade-fuel": 200
+      },
+      "seconds": 84
+     },
+     {
+      "slug": "fire_arrow",
+      "name": "Fire Arrow",
+      "amount": 125,
+      "materials": {
+       "wood": 1250,
+       "cloth": 125,
+       "low-grade-fuel": 625
+      },
+      "seconds": 175
+     }
+    ]
+   },
+   "soft": {
+    "target": {
+     "slug": "wooden-floor",
+     "name": "Wooden Floor",
+     "kind": "wall",
+     "hp": 250,
+     "url": "https://rustly.com/raid/wooden-floor/"
+    },
+    "qty": 1,
+    "side": "soft",
+    "explosives": [
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 1,
+      "sulfur": 300,
+      "charcoal": 450,
+      "metalFragments": 0,
+      "seconds": 8,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 49,
+      "sulfur": 1225,
+      "charcoal": 1470,
+      "metalFragments": 245,
+      "seconds": 15,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 3,
+      "sulfur": 1440,
+      "charcoal": 2160,
+      "metalFragments": 240,
+      "seconds": 24,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 9,
+      "sulfur": 1800,
+      "charcoal": 2700,
+      "metalFragments": 0,
+      "seconds": 108,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 2,
+      "sulfur": 1800,
+      "charcoal": 2700,
+      "metalFragments": 0,
+      "seconds": 12,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 18,
+      "sulfur": 2160,
+      "charcoal": 3240,
+      "metalFragments": 360,
+      "seconds": 108,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 189,
+      "sulfur": 11340,
+      "charcoal": 17010,
+      "metalFragments": 4725,
+      "seconds": 2646,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": [
+     {
+      "slug": "molotov",
+      "name": "Molotov Cocktail",
+      "amount": 4,
+      "materials": {
+       "cloth": 40,
+       "low-grade-fuel": 200
+      },
+      "seconds": 84
+     },
+     {
+      "slug": "fire_arrow",
+      "name": "Fire Arrow",
+      "amount": 125,
+      "materials": {
+       "wood": 1250,
+       "cloth": 125,
+       "low-grade-fuel": 625
+      },
+      "seconds": 175
+     }
+    ]
+   },
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "stone-floor",
+   "name": "Stone Floor",
+   "kind": "wall",
+   "hp": 500,
+   "hasSoftSide": true,
+   "url": "https://rustly.com/raid/stone-floor/",
+   "api": "https://rustly.com/api/v1/raid/stone-floor/",
+   "hard": {
+    "target": {
+     "slug": "stone-floor",
+     "name": "Stone Floor",
+     "kind": "wall",
+     "hp": 500,
+     "url": "https://rustly.com/raid/stone-floor/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 2,
+      "sulfur": 4400,
+      "charcoal": 6000,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 185,
+      "sulfur": 4625,
+      "charcoal": 5550,
+      "metalFragments": 925,
+      "seconds": 56,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 10,
+      "sulfur": 4800,
+      "charcoal": 7200,
+      "metalFragments": 800,
+      "seconds": 80,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 4,
+      "sulfur": 5600,
+      "charcoal": 7800,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 7,
+      "sulfur": 6300,
+      "charcoal": 9450,
+      "metalFragments": 0,
+      "seconds": 42,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 32,
+      "sulfur": 6400,
+      "charcoal": 9600,
+      "metalFragments": 0,
+      "seconds": 384,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 64,
+      "sulfur": 7680,
+      "charcoal": 11520,
+      "metalFragments": 1280,
+      "seconds": 384,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 872,
+      "sulfur": 52320,
+      "charcoal": 78480,
+      "metalFragments": 21800,
+      "seconds": 12208,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": {
+    "target": {
+     "slug": "stone-floor",
+     "name": "Stone Floor",
+     "kind": "wall",
+     "hp": 500,
+     "url": "https://rustly.com/raid/stone-floor/"
+    },
+    "qty": 1,
+    "side": "soft",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 2,
+      "sulfur": 4400,
+      "charcoal": 6000,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 185,
+      "sulfur": 4625,
+      "charcoal": 5550,
+      "metalFragments": 925,
+      "seconds": 56,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 10,
+      "sulfur": 4800,
+      "charcoal": 7200,
+      "metalFragments": 800,
+      "seconds": 80,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 4,
+      "sulfur": 5600,
+      "charcoal": 7800,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 7,
+      "sulfur": 6300,
+      "charcoal": 9450,
+      "metalFragments": 0,
+      "seconds": 42,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 32,
+      "sulfur": 6400,
+      "charcoal": 9600,
+      "metalFragments": 0,
+      "seconds": 384,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 64,
+      "sulfur": 7680,
+      "charcoal": 11520,
+      "metalFragments": 1280,
+      "seconds": 384,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 872,
+      "sulfur": 52320,
+      "charcoal": 78480,
+      "metalFragments": 21800,
+      "seconds": 12208,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "sheet-metal-floor",
+   "name": "Sheet Metal Floor",
+   "kind": "wall",
+   "hp": 1000,
+   "hasSoftSide": true,
+   "url": "https://rustly.com/raid/sheet-metal-floor/",
+   "api": "https://rustly.com/api/v1/raid/sheet-metal-floor/",
+   "hard": {
+    "target": {
+     "slug": "sheet-metal-floor",
+     "name": "Sheet Metal Floor",
+     "kind": "wall",
+     "hp": 1000,
+     "url": "https://rustly.com/raid/sheet-metal-floor/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 4,
+      "sulfur": 8800,
+      "charcoal": 12000,
+      "metalFragments": 800,
+      "seconds": 40,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 400,
+      "sulfur": 10000,
+      "charcoal": 12000,
+      "metalFragments": 2000,
+      "seconds": 120,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 23,
+      "sulfur": 11040,
+      "charcoal": 16560,
+      "metalFragments": 1840,
+      "seconds": 184,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 8,
+      "sulfur": 11200,
+      "charcoal": 15600,
+      "metalFragments": 800,
+      "seconds": 40,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 13,
+      "sulfur": 11700,
+      "charcoal": 17550,
+      "metalFragments": 0,
+      "seconds": 78,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 67,
+      "sulfur": 13400,
+      "charcoal": 20100,
+      "metalFragments": 0,
+      "seconds": 804,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 131,
+      "sulfur": 15720,
+      "charcoal": 23580,
+      "metalFragments": 2620,
+      "seconds": 786,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 9616,
+      "sulfur": 576960,
+      "charcoal": 865440,
+      "metalFragments": 240400,
+      "seconds": 134624,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": {
+    "target": {
+     "slug": "sheet-metal-floor",
+     "name": "Sheet Metal Floor",
+     "kind": "wall",
+     "hp": 1000,
+     "url": "https://rustly.com/raid/sheet-metal-floor/"
+    },
+    "qty": 1,
+    "side": "soft",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 4,
+      "sulfur": 8800,
+      "charcoal": 12000,
+      "metalFragments": 800,
+      "seconds": 40,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 400,
+      "sulfur": 10000,
+      "charcoal": 12000,
+      "metalFragments": 2000,
+      "seconds": 120,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 23,
+      "sulfur": 11040,
+      "charcoal": 16560,
+      "metalFragments": 1840,
+      "seconds": 184,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 8,
+      "sulfur": 11200,
+      "charcoal": 15600,
+      "metalFragments": 800,
+      "seconds": 40,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 13,
+      "sulfur": 11700,
+      "charcoal": 17550,
+      "metalFragments": 0,
+      "seconds": 78,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 67,
+      "sulfur": 13400,
+      "charcoal": 20100,
+      "metalFragments": 0,
+      "seconds": 804,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 131,
+      "sulfur": 15720,
+      "charcoal": 23580,
+      "metalFragments": 2620,
+      "seconds": 786,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 9616,
+      "sulfur": 576960,
+      "charcoal": 865440,
+      "metalFragments": 240400,
+      "seconds": 134624,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "armored-floor",
+   "name": "Armored Floor",
+   "kind": "wall",
+   "hp": 2000,
+   "hasSoftSide": true,
+   "url": "https://rustly.com/raid/armored-floor/",
+   "api": "https://rustly.com/api/v1/raid/armored-floor/",
+   "hard": {
+    "target": {
+     "slug": "armored-floor",
+     "name": "Armored Floor",
+     "kind": "wall",
+     "hp": 2000,
+     "url": "https://rustly.com/raid/armored-floor/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 8,
+      "sulfur": 17600,
+      "charcoal": 24000,
+      "metalFragments": 1600,
+      "seconds": 80,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 799,
+      "sulfur": 19975,
+      "charcoal": 23970,
+      "metalFragments": 3995,
+      "seconds": 240,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 15,
+      "sulfur": 21000,
+      "charcoal": 29250,
+      "metalFragments": 1500,
+      "seconds": 75,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 46,
+      "sulfur": 22080,
+      "charcoal": 33120,
+      "metalFragments": 3680,
+      "seconds": 368,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 25,
+      "sulfur": 22500,
+      "charcoal": 33750,
+      "metalFragments": 0,
+      "seconds": 150,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 134,
+      "sulfur": 26800,
+      "charcoal": 40200,
+      "metalFragments": 0,
+      "seconds": 1608,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 262,
+      "sulfur": 31440,
+      "charcoal": 47160,
+      "metalFragments": 5240,
+      "seconds": 1572,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 20409,
+      "sulfur": 1224540,
+      "charcoal": 1836810,
+      "metalFragments": 510225,
+      "seconds": 285726,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": {
+    "target": {
+     "slug": "armored-floor",
+     "name": "Armored Floor",
+     "kind": "wall",
+     "hp": 2000,
+     "url": "https://rustly.com/raid/armored-floor/"
+    },
+    "qty": 1,
+    "side": "soft",
+    "explosives": [
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 8,
+      "sulfur": 17600,
+      "charcoal": 24000,
+      "metalFragments": 1600,
+      "seconds": 80,
+      "cheapest": true
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 799,
+      "sulfur": 19975,
+      "charcoal": 23970,
+      "metalFragments": 3995,
+      "seconds": 240,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 15,
+      "sulfur": 21000,
+      "charcoal": 29250,
+      "metalFragments": 1500,
+      "seconds": 75,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 46,
+      "sulfur": 22080,
+      "charcoal": 33120,
+      "metalFragments": 3680,
+      "seconds": 368,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 25,
+      "sulfur": 22500,
+      "charcoal": 33750,
+      "metalFragments": 0,
+      "seconds": 150,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 134,
+      "sulfur": 26800,
+      "charcoal": 40200,
+      "metalFragments": 0,
+      "seconds": 1608,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 262,
+      "sulfur": 31440,
+      "charcoal": 47160,
+      "metalFragments": 5240,
+      "seconds": 1572,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 20409,
+      "sulfur": 1224540,
+      "charcoal": 1836810,
+      "metalFragments": 510225,
+      "seconds": 285726,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "sheet-metal-double-door",
+   "name": "Sheet Metal Double Door",
+   "kind": "door",
+   "hp": 250,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/sheet-metal-double-door/",
+   "api": "https://rustly.com/api/v1/raid/sheet-metal-double-door/",
+   "hard": {
+    "target": {
+     "slug": "sheet-metal-double-door",
+     "name": "Sheet Metal Double Door",
+     "kind": "door",
+     "hp": 250,
+     "url": "https://rustly.com/raid/sheet-metal-double-door/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 63,
+      "sulfur": 1575,
+      "charcoal": 1890,
+      "metalFragments": 315,
+      "seconds": 19,
+      "cheapest": true
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 2,
+      "sulfur": 1800,
+      "charcoal": 2700,
+      "metalFragments": 0,
+      "seconds": 12,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 4,
+      "sulfur": 1920,
+      "charcoal": 2880,
+      "metalFragments": 320,
+      "seconds": 32,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 11,
+      "sulfur": 2200,
+      "charcoal": 3300,
+      "metalFragments": 0,
+      "seconds": 132,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 21,
+      "sulfur": 2520,
+      "charcoal": 3780,
+      "metalFragments": 420,
+      "seconds": 126,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 500,
+      "sulfur": 30000,
+      "charcoal": 45000,
+      "metalFragments": 12500,
+      "seconds": 7000,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "armored-double-door",
+   "name": "Armored Double Door",
+   "kind": "door",
+   "hp": 1000,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/armored-double-door/",
+   "api": "https://rustly.com/api/v1/raid/armored-double-door/",
+   "hard": {
+    "target": {
+     "slug": "armored-double-door",
+     "name": "Armored Double Door",
+     "kind": "door",
+     "hp": 1000,
+     "url": "https://rustly.com/raid/armored-double-door/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 250,
+      "sulfur": 6250,
+      "charcoal": 7500,
+      "metalFragments": 1250,
+      "seconds": 75,
+      "cheapest": true
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 3,
+      "sulfur": 6600,
+      "charcoal": 9000,
+      "metalFragments": 600,
+      "seconds": 30,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 5,
+      "sulfur": 7000,
+      "charcoal": 9750,
+      "metalFragments": 500,
+      "seconds": 25,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 15,
+      "sulfur": 7200,
+      "charcoal": 10800,
+      "metalFragments": 1200,
+      "seconds": 120,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 8,
+      "sulfur": 7200,
+      "charcoal": 10800,
+      "metalFragments": 0,
+      "seconds": 48,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 42,
+      "sulfur": 8400,
+      "charcoal": 12600,
+      "metalFragments": 0,
+      "seconds": 504,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 82,
+      "sulfur": 9840,
+      "charcoal": 14760,
+      "metalFragments": 1640,
+      "seconds": 492,
+      "cheapest": false
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 2000,
+      "sulfur": 120000,
+      "charcoal": 180000,
+      "metalFragments": 50000,
+      "seconds": 28000,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one.",
+     "C4, rocket, satchel, beancan, F1 and HV-rocket amounts were measured on our own server by setting off the game's explosives against this piece."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "bradley-apc",
+   "name": "Bradley APC",
+   "kind": "vehicle",
+   "hp": 1000,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/bradley-apc/",
+   "api": "https://rustly.com/api/v1/raid/bradley-apc/",
+   "hard": {
+    "target": {
+     "slug": "bradley-apc",
+     "name": "Bradley APC",
+     "kind": "vehicle",
+     "hp": 1000,
+     "url": "https://rustly.com/raid/bradley-apc/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 7,
+      "sulfur": 1400,
+      "charcoal": 2100,
+      "metalFragments": 0,
+      "seconds": 84,
+      "cheapest": true
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 40,
+      "sulfur": 2400,
+      "charcoal": 3600,
+      "metalFragments": 1000,
+      "seconds": 560,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 3,
+      "sulfur": 6600,
+      "charcoal": 9000,
+      "metalFragments": 600,
+      "seconds": 30,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 20,
+      "sulfur": 9600,
+      "charcoal": 14400,
+      "metalFragments": 1600,
+      "seconds": 160,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 11,
+      "sulfur": 15400,
+      "charcoal": 21450,
+      "metalFragments": 1100,
+      "seconds": 55,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "tugboat",
+   "name": "Tugboat",
+   "kind": "vehicle",
+   "hp": 3000,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/tugboat/",
+   "api": "https://rustly.com/api/v1/raid/tugboat/",
+   "hard": {
+    "target": {
+     "slug": "tugboat",
+     "name": "Tugboat",
+     "kind": "vehicle",
+     "hp": 3000,
+     "url": "https://rustly.com/raid/tugboat/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 11,
+      "sulfur": 2200,
+      "charcoal": 3300,
+      "metalFragments": 0,
+      "seconds": 132,
+      "cheapest": true
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 68,
+      "sulfur": 4080,
+      "charcoal": 6120,
+      "metalFragments": 1700,
+      "seconds": 952,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 4,
+      "sulfur": 8800,
+      "charcoal": 12000,
+      "metalFragments": 800,
+      "seconds": 40,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 27,
+      "sulfur": 12960,
+      "charcoal": 19440,
+      "metalFragments": 2160,
+      "seconds": 216,
+      "cheapest": false
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 769,
+      "sulfur": 19225,
+      "charcoal": 23070,
+      "metalFragments": 3845,
+      "seconds": 231,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 16,
+      "sulfur": 22400,
+      "charcoal": 31200,
+      "metalFragments": 1600,
+      "seconds": 80,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 27,
+      "sulfur": 24300,
+      "charcoal": 36450,
+      "metalFragments": 0,
+      "seconds": 162,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 261,
+      "sulfur": 31320,
+      "charcoal": 46980,
+      "metalFragments": 5220,
+      "seconds": 1566,
+      "cheapest": false
+     },
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 1200,
+      "sulfur": 360000,
+      "charcoal": 540000,
+      "metalFragments": 0,
+      "seconds": 9600,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "rhib",
+   "name": "RHIB",
+   "kind": "vehicle",
+   "hp": 500,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/rhib/",
+   "api": "https://rustly.com/api/v1/raid/rhib/",
+   "hard": {
+    "target": {
+     "slug": "rhib",
+     "name": "RHIB",
+     "kind": "vehicle",
+     "hp": 500,
+     "url": "https://rustly.com/raid/rhib/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 2,
+      "sulfur": 400,
+      "charcoal": 600,
+      "metalFragments": 0,
+      "seconds": 24,
+      "cheapest": true
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 8,
+      "sulfur": 480,
+      "charcoal": 720,
+      "metalFragments": 200,
+      "seconds": 112,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 5,
+      "sulfur": 2400,
+      "charcoal": 3600,
+      "metalFragments": 400,
+      "seconds": 40,
+      "cheapest": false
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 129,
+      "sulfur": 3225,
+      "charcoal": 3870,
+      "metalFragments": 645,
+      "seconds": 39,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 3,
+      "sulfur": 4200,
+      "charcoal": 5850,
+      "metalFragments": 300,
+      "seconds": 15,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 5,
+      "sulfur": 4500,
+      "charcoal": 6750,
+      "metalFragments": 0,
+      "seconds": 30,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 44,
+      "sulfur": 5280,
+      "charcoal": 7920,
+      "metalFragments": 880,
+      "seconds": 264,
+      "cheapest": false
+     },
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 200,
+      "sulfur": 60000,
+      "charcoal": 90000,
+      "metalFragments": 0,
+      "seconds": 1600,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "motor-rowboat",
+   "name": "Rowboat",
+   "kind": "vehicle",
+   "hp": 400,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/motor-rowboat/",
+   "api": "https://rustly.com/api/v1/raid/motor-rowboat/",
+   "hard": {
+    "target": {
+     "slug": "motor-rowboat",
+     "name": "Rowboat",
+     "kind": "vehicle",
+     "hp": 400,
+     "url": "https://rustly.com/raid/motor-rowboat/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 1,
+      "sulfur": 200,
+      "charcoal": 300,
+      "metalFragments": 0,
+      "seconds": 12,
+      "cheapest": true
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 4,
+      "sulfur": 240,
+      "charcoal": 360,
+      "metalFragments": 100,
+      "seconds": 56,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 1,
+      "sulfur": 480,
+      "charcoal": 720,
+      "metalFragments": 80,
+      "seconds": 8,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 7,
+      "sulfur": 840,
+      "charcoal": 1260,
+      "metalFragments": 140,
+      "seconds": 42,
+      "cheapest": false
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 45,
+      "sulfur": 1125,
+      "charcoal": 1350,
+      "metalFragments": 225,
+      "seconds": 14,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 3,
+      "sulfur": 2700,
+      "charcoal": 4050,
+      "metalFragments": 0,
+      "seconds": 18,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 16,
+      "sulfur": 4800,
+      "charcoal": 7200,
+      "metalFragments": 0,
+      "seconds": 128,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "pt-boat",
+   "name": "PT Boat",
+   "kind": "vehicle",
+   "hp": 1000,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/pt-boat/",
+   "api": "https://rustly.com/api/v1/raid/pt-boat/",
+   "hard": {
+    "target": {
+     "slug": "pt-boat",
+     "name": "PT Boat",
+     "kind": "vehicle",
+     "hp": 1000,
+     "url": "https://rustly.com/raid/pt-boat/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 3,
+      "sulfur": 600,
+      "charcoal": 900,
+      "metalFragments": 0,
+      "seconds": 36,
+      "cheapest": true
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 15,
+      "sulfur": 900,
+      "charcoal": 1350,
+      "metalFragments": 375,
+      "seconds": 210,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 9,
+      "sulfur": 4320,
+      "charcoal": 6480,
+      "metalFragments": 720,
+      "seconds": 72,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 2,
+      "sulfur": 4400,
+      "charcoal": 6000,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": false
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 257,
+      "sulfur": 6425,
+      "charcoal": 7710,
+      "metalFragments": 1285,
+      "seconds": 77,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 9,
+      "sulfur": 8100,
+      "charcoal": 12150,
+      "metalFragments": 0,
+      "seconds": 54,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 6,
+      "sulfur": 8400,
+      "charcoal": 11700,
+      "metalFragments": 600,
+      "seconds": 30,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 87,
+      "sulfur": 10440,
+      "charcoal": 15660,
+      "metalFragments": 1740,
+      "seconds": 522,
+      "cheapest": false
+     },
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 400,
+      "sulfur": 120000,
+      "charcoal": 180000,
+      "metalFragments": 0,
+      "seconds": 3200,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "solo-submarine",
+   "name": "Solo Submarine",
+   "kind": "vehicle",
+   "hp": 500,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/solo-submarine/",
+   "api": "https://rustly.com/api/v1/raid/solo-submarine/",
+   "hard": {
+    "target": {
+     "slug": "solo-submarine",
+     "name": "Solo Submarine",
+     "kind": "vehicle",
+     "hp": 500,
+     "url": "https://rustly.com/raid/solo-submarine/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 1,
+      "sulfur": 200,
+      "charcoal": 300,
+      "metalFragments": 0,
+      "seconds": 12,
+      "cheapest": true
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 5,
+      "sulfur": 300,
+      "charcoal": 450,
+      "metalFragments": 125,
+      "seconds": 70,
+      "cheapest": false
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 26,
+      "sulfur": 650,
+      "charcoal": 780,
+      "metalFragments": 130,
+      "seconds": 8,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 2,
+      "sulfur": 960,
+      "charcoal": 1440,
+      "metalFragments": 160,
+      "seconds": 16,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 19,
+      "sulfur": 2280,
+      "charcoal": 3420,
+      "metalFragments": 380,
+      "seconds": 114,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 3,
+      "sulfur": 2700,
+      "charcoal": 4050,
+      "metalFragments": 0,
+      "seconds": 18,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 200,
+      "sulfur": 60000,
+      "charcoal": 90000,
+      "metalFragments": 0,
+      "seconds": 1600,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "duo-submarine",
+   "name": "Duo Submarine",
+   "kind": "vehicle",
+   "hp": 700,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/duo-submarine/",
+   "api": "https://rustly.com/api/v1/raid/duo-submarine/",
+   "hard": {
+    "target": {
+     "slug": "duo-submarine",
+     "name": "Duo Submarine",
+     "kind": "vehicle",
+     "hp": 700,
+     "url": "https://rustly.com/raid/duo-submarine/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 2,
+      "sulfur": 400,
+      "charcoal": 600,
+      "metalFragments": 0,
+      "seconds": 24,
+      "cheapest": true
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 7,
+      "sulfur": 420,
+      "charcoal": 630,
+      "metalFragments": 175,
+      "seconds": 98,
+      "cheapest": false
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 36,
+      "sulfur": 900,
+      "charcoal": 1080,
+      "metalFragments": 180,
+      "seconds": 11,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 3,
+      "sulfur": 1440,
+      "charcoal": 2160,
+      "metalFragments": 240,
+      "seconds": 24,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 3,
+      "sulfur": 2700,
+      "charcoal": 4050,
+      "metalFragments": 0,
+      "seconds": 18,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 26,
+      "sulfur": 3120,
+      "charcoal": 4680,
+      "metalFragments": 520,
+      "seconds": 156,
+      "cheapest": false
+     },
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 280,
+      "sulfur": 84000,
+      "charcoal": 126000,
+      "metalFragments": 0,
+      "seconds": 2240,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "minicopter",
+   "name": "Minicopter",
+   "kind": "vehicle",
+   "hp": 750,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/minicopter/",
+   "api": "https://rustly.com/api/v1/raid/minicopter/",
+   "hard": {
+    "target": {
+     "slug": "minicopter",
+     "name": "Minicopter",
+     "kind": "vehicle",
+     "hp": 750,
+     "url": "https://rustly.com/raid/minicopter/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 3,
+      "sulfur": 600,
+      "charcoal": 900,
+      "metalFragments": 0,
+      "seconds": 36,
+      "cheapest": true
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 14,
+      "sulfur": 840,
+      "charcoal": 1260,
+      "metalFragments": 350,
+      "seconds": 196,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 3,
+      "sulfur": 1440,
+      "charcoal": 2160,
+      "metalFragments": 240,
+      "seconds": 24,
+      "cheapest": false
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 63,
+      "sulfur": 1575,
+      "charcoal": 1890,
+      "metalFragments": 315,
+      "seconds": 19,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 8,
+      "sulfur": 2400,
+      "charcoal": 3600,
+      "metalFragments": 0,
+      "seconds": 64,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 3,
+      "sulfur": 2700,
+      "charcoal": 4050,
+      "metalFragments": 0,
+      "seconds": 18,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 25,
+      "sulfur": 3000,
+      "charcoal": 4500,
+      "metalFragments": 500,
+      "seconds": 150,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "scrap-transport-helicopter",
+   "name": "Scrap Transport Helicopter",
+   "kind": "vehicle",
+   "hp": 1000,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/scrap-transport-helicopter/",
+   "api": "https://rustly.com/api/v1/raid/scrap-transport-helicopter/",
+   "hard": {
+    "target": {
+     "slug": "scrap-transport-helicopter",
+     "name": "Scrap Transport Helicopter",
+     "kind": "vehicle",
+     "hp": 1000,
+     "url": "https://rustly.com/raid/scrap-transport-helicopter/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 8,
+      "sulfur": 480,
+      "charcoal": 720,
+      "metalFragments": 200,
+      "seconds": 112,
+      "cheapest": true
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 2,
+      "sulfur": 960,
+      "charcoal": 1440,
+      "metalFragments": 160,
+      "seconds": 16,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 5,
+      "sulfur": 1000,
+      "charcoal": 1500,
+      "metalFragments": 0,
+      "seconds": 60,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 13,
+      "sulfur": 1560,
+      "charcoal": 2340,
+      "metalFragments": 260,
+      "seconds": 78,
+      "cheapest": false
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 84,
+      "sulfur": 2100,
+      "charcoal": 2520,
+      "metalFragments": 420,
+      "seconds": 25,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 3,
+      "sulfur": 2700,
+      "charcoal": 4050,
+      "metalFragments": 0,
+      "seconds": 18,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 10,
+      "sulfur": 3000,
+      "charcoal": 4500,
+      "metalFragments": 0,
+      "seconds": 80,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "attack-helicopter",
+   "name": "Attack Helicopter",
+   "kind": "vehicle",
+   "hp": 850,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/attack-helicopter/",
+   "api": "https://rustly.com/api/v1/raid/attack-helicopter/",
+   "hard": {
+    "target": {
+     "slug": "attack-helicopter",
+     "name": "Attack Helicopter",
+     "kind": "vehicle",
+     "hp": 850,
+     "url": "https://rustly.com/raid/attack-helicopter/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 3,
+      "sulfur": 600,
+      "charcoal": 900,
+      "metalFragments": 0,
+      "seconds": 36,
+      "cheapest": true
+     },
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 16,
+      "sulfur": 960,
+      "charcoal": 1440,
+      "metalFragments": 400,
+      "seconds": 224,
+      "cheapest": false
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 3,
+      "sulfur": 1440,
+      "charcoal": 2160,
+      "metalFragments": 240,
+      "seconds": 24,
+      "cheapest": false
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 71,
+      "sulfur": 1775,
+      "charcoal": 2130,
+      "metalFragments": 355,
+      "seconds": 21,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 1,
+      "sulfur": 2200,
+      "charcoal": 3000,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 9,
+      "sulfur": 2700,
+      "charcoal": 4050,
+      "metalFragments": 0,
+      "seconds": 72,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 3,
+      "sulfur": 2700,
+      "charcoal": 4050,
+      "metalFragments": 0,
+      "seconds": 18,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 2,
+      "sulfur": 2800,
+      "charcoal": 3900,
+      "metalFragments": 200,
+      "seconds": 10,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 29,
+      "sulfur": 3480,
+      "charcoal": 5220,
+      "metalFragments": 580,
+      "seconds": 174,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one."
+    ]
+   },
+   "images": []
+  },
+  {
+   "slug": "hot-air-balloon",
+   "name": "Hot Air Balloon",
+   "kind": "vehicle",
+   "hp": 1500,
+   "hasSoftSide": false,
+   "url": "https://rustly.com/raid/hot-air-balloon/",
+   "api": "https://rustly.com/api/v1/raid/hot-air-balloon/",
+   "hard": {
+    "target": {
+     "slug": "hot-air-balloon",
+     "name": "Hot Air Balloon",
+     "kind": "vehicle",
+     "hp": 1500,
+     "url": "https://rustly.com/raid/hot-air-balloon/"
+    },
+    "qty": 1,
+    "side": "hard",
+    "explosives": [
+     {
+      "slug": "f1",
+      "name": "F1 Grenade",
+      "amount": 19,
+      "sulfur": 1140,
+      "charcoal": 1710,
+      "metalFragments": 475,
+      "seconds": 266,
+      "cheapest": true
+     },
+     {
+      "slug": "satchel",
+      "name": "Satchel Charge",
+      "amount": 3,
+      "sulfur": 1440,
+      "charcoal": 2160,
+      "metalFragments": 240,
+      "seconds": 24,
+      "cheapest": false
+     },
+     {
+      "slug": "hv_rocket",
+      "name": "High Velocity Rocket",
+      "amount": 8,
+      "sulfur": 1600,
+      "charcoal": 2400,
+      "metalFragments": 0,
+      "seconds": 96,
+      "cheapest": false
+     },
+     {
+      "slug": "beancan",
+      "name": "Beancan Grenade",
+      "amount": 24,
+      "sulfur": 2880,
+      "charcoal": 4320,
+      "metalFragments": 480,
+      "seconds": 144,
+      "cheapest": false
+     },
+     {
+      "slug": "explosive556",
+      "name": "Explosive 5.56 Ammo",
+      "amount": 167,
+      "sulfur": 4175,
+      "charcoal": 5010,
+      "metalFragments": 835,
+      "seconds": 50,
+      "cheapest": false
+     },
+     {
+      "slug": "c4",
+      "name": "Timed Explosive Charge",
+      "amount": 2,
+      "sulfur": 4400,
+      "charcoal": 6000,
+      "metalFragments": 400,
+      "seconds": 20,
+      "cheapest": false
+     },
+     {
+      "slug": "rocket",
+      "name": "Rocket",
+      "amount": 5,
+      "sulfur": 7000,
+      "charcoal": 9750,
+      "metalFragments": 500,
+      "seconds": 25,
+      "cheapest": false
+     },
+     {
+      "slug": "propane_bomb",
+      "name": "Propane Explosive Bomb",
+      "amount": 8,
+      "sulfur": 7200,
+      "charcoal": 10800,
+      "metalFragments": 0,
+      "seconds": 48,
+      "cheapest": false
+     },
+     {
+      "slug": "incendiary_rocket",
+      "name": "Incendiary Rocket",
+      "amount": 60,
+      "sulfur": 18000,
+      "charcoal": 27000,
+      "metalFragments": 0,
+      "seconds": 480,
+      "cheapest": false
+     }
+    ],
+    "fireAndMelee": []
+   },
+   "soft": null,
+   "hardMeta": {
+    "version": "1",
+    "docs": "https://rustly.com/developers/api/",
+    "source": "datamine (build-raid-damage.mjs)",
+    "verifiedAt": "2026-09-29",
+    "gameVersion": "2633.288.1",
+    "changedAt": "2026-08-04",
+    "notes": [
+     "sulfur, charcoal and metalFragments are raw materials to craft the whole amount.",
+     "seconds is a rough deploy time, not a measured one."
+    ]
+   },
+   "images": []
+  }
+ ],
+ "explosiveSlugs": [
+  "incendiary_rocket",
+  "explosive556",
+  "satchel",
+  "hv_rocket",
+  "propane_bomb",
+  "beancan",
+  "c4",
+  "rocket",
+  "f1",
+  "molotov",
+  "fire_arrow"
+ ]
+}

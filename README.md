@@ -1,48 +1,68 @@
 # RuxtBot
 
-RuxtBot es un bot profesional de Discord para cálculos de raid/crafting, datos de servidores y seguimiento autorizado mediante BattleMetrics. El catálogo se mantiene separado de la lógica: tras cada wipe o parche, revisa `data/rust_catalog.yml`, ajusta su versión, fecha, fuente y confianza, y ejecuta las pruebas.
+Discord bot for Rust: raid planning with pictures, crafting, live servers, player lookups and BattleMetrics presence alerts.
 
-## Instalación en Fedora
+Replies follow each user's Discord language: **English** by default, **Spanish** for Spanish clients (es-ES / es-419). Slash command descriptions are localized too. Background alerts use the language chosen with `/settings`.
 
-1. Instala Docker Engine y el complemento Compose siguiendo la documentación de Fedora/Docker; habilita el servicio Docker y añade tu usuario al grupo `docker` si procede.
-2. Copia `.env.example` a `.env` y define `DISCORD_TOKEN`. Añade `BATTLEMETRICS_TOKEN` para `/server`, `/player` y `/track`.
-3. Ejecuta `docker compose up -d --build` desde esta carpeta. El volumen `rustbot-data` conserva vigilancias y estado entre actualizaciones.
-4. Tras editar datos o código: `docker compose up -d --build`. La imagen corre como usuario sin privilegios, se reinicia automáticamente y contiene un healthcheck.
+## Commands
 
-## Conectar Discord
-
-1. Crea una aplicación y un bot en el [Discord Developer Portal](https://discord.com/developers/applications), y copia su token en `DISCORD_TOKEN` dentro de `.env`.
-2. En **OAuth2 → URL Generator**, selecciona los scopes `bot` y `applications.commands`; concede al bot permisos de enviar mensajes, usar comandos de aplicación y adjuntar enlaces.
-3. Abre la URL generada, añade el bot a tu servidor y arranca el contenedor. Los comandos globales pueden tardar unos minutos en aparecer.
-
-Para alojarlo en el panel de Cybrancee, sigue [CYBRANCEE.md](CYBRANCEE.md); ese proveedor ejecuta el proyecto directamente con Python y no requiere Docker.
-
-## Comandos
-
-Todos los comandos tienen autocompletado y descripciones en Discord. `/help` abre un menú por secciones con botones que lanzan directamente el planificador y la calculadora.
-
-| Sección | Comandos |
+| Area | Commands |
 | --- | --- |
-| 💥 Raid | `/raid`, `/raidcalc`, `/raidbudget`, `/raidcompare`, `/raidtools`, `/raidplan` |
-| 🛠️ Crafteo | `/craft`, `/item`, `/sources` |
-| 🖥️ Servidores | `/server`, `/servers`, `/wipe` |
-| 🕵️ Jugadores | `/who`, `/player` |
+| 💥 Raid | `/raid`, `/raidcalc`, `/raidbudget`, `/raidcompare`, `/raidtools` |
+| 🛠️ Crafting | `/craft`, `/item`, `/sources` |
+| 🖥️ Servers | `/server`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe` |
+| 🕵️ Players | `/who`, `/player` |
 | ⚙️ Admin | `/track`, `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers`, `/ping` |
 
-`/track` está limitado a administradores; usa ➕ Añadir, ➖ Quitar o 📋 Listar. La primera lectura crea una base silenciosa y solo se avisa ante transiciones posteriores. `/who` es una consulta bajo demanda, efímera y limitada a una por usuario cada 10 segundos.
+`/help` opens an interactive menu with buttons that launch the raid planner and the base calculator.
 
-### Experiencia de uso
+### Raid
 
-- Los paneles interactivos (raid, calculadora, servidores, ayuda) **solo los puede usar quien los abrió**; otros reciben un aviso para abrir el suyo.
-- Al caducar, los botones se desactivan en lugar de quedar «muertos».
-- Los errores se muestran como embeds rojos con una pista de **cómo seguir**; un manejador global atrapa cualquier fallo inesperado.
-- Las alertas de conexión incluyen hora relativa y un botón al servidor en BattleMetrics.
+- **57 targets** in six categories: doors, walls & high externals, floors & hatches, windows/bars/barricades, deployables (TC, turrets, SAM site, traps…) and vehicles. Walls and floors include the **soft side**.
+- `/raid`: picture-based planner built with Discord **Components V2**. Every category shows a gallery of its targets; the simulator shows the target and explosive pictures, HP bar, sulfur/charcoal/frag cost, the 🏆 cheapest option, and buttons to apply, undo, complete, reset, switch side and compare.
+- `/raidcalc`: base calculator. Add several targets (2 armored doors + 3 stone walls…), pick one method or "cheapest per target", and get explosives, totals and a picture per explosive. 📤 shares a read-only copy in the channel.
+- `/raidbudget sulfur:20000`: how many of each explosive you can craft and how many targets of each kind you can destroy.
+- "Cheapest" only considers common explosives; siege (catapult, mortar, ballista, ram, MLRS, 40mm HE, cannon) and fire are tagged in comparisons but never recommended by default. Unverified craft costs are shown as such, never as free.
 
-## Datos y límites
+### Players — `/who`
 
-Cada respuesta expone la versión del catálogo. Los valores de daño incluidos tienen confianza mixta y deben comprobarse tras un parche; objetivos no incluidos se declaran **pendientes de verificar**, nunca se inventan. BattleMetrics puede limitar o rechazar peticiones: el cliente usa reintentos con backoff y no expone detalles internos al usuario.
+`/who player:<SteamID64 or link> battlemetrics:<optional link>` accepts SteamID64, `STEAM_0:X:Y`, `[U:1:N]`, a custom URL, or Steam, steamid.io, SteamDB, RustWho and BattleMetrics links. It shows:
 
-## Desarrollo
+- 📝 **Name history first**: merged from Steam, RustWho and BattleMetrics with date and source, plus how many older names are locked on RustWho.
+- 👤 Steam status, every SteamID format (like steamid.io), creation date, level, games, badges, limited account.
+- 🛡️ VAC, game, community, trade and server bans.
+- 🦀 Rust stats from RustWho; 📊 BattleMetrics hours, servers and most played servers.
+- Without a BattleMetrics link, same-name candidates are listed **with the other names they used**, clearly marked as unverified (the public API cannot map a SteamID to a BattleMetrics player).
+- Buttons to Steam, SteamID I/O, SteamDB (MXN calculator), RustWho and BattleMetrics. `STEAM_API_KEY` (optional) adds Rust hours.
+
+### Servers
+
+- `/server`: live players, queue, map, rank, country, wipes, header image and `client.connect`.
+- `/serversearch query:`: search any Rust server on BattleMetrics, most players first.
+- `/forcewipe`: next Facepunch forced wipe (first Thursday of the month, 2 PM US Eastern) with countdowns in each user's time zone.
+
+### Alerts
+
+`/track action:Add profile:<BattleMetrics link> server:<name>` pings the single `wipe` role on connect/disconnect. The first reading is silent, unknown data never counts as a disconnect, and player names are escaped so they cannot mention anyone. Admin only.
+
+## UX rules
+
+- Interactive panels can only be used by whoever opened them; they disable themselves when they expire.
+- Errors are red embeds with a hint on how to continue; a global handler catches anything unexpected.
+
+## Data
+
+- `data/raid.json` is generated by `python scripts/build_raid_data.py` from the snapshots in `data/sources/` ([Rustly](https://rustly.com/raid/) API v1 and [RustClash](https://wiki.rustclash.com/) durability tables). Both sites block non-browser clients, so the snapshots were captured with a browser; refresh them and re-run the script after a wipe/patch. See [SOURCES.md](SOURCES.md).
+- `data/rust_catalog.yml` holds crafting recipes for `/craft` and `/item`.
+- Item pictures come from `https://wiki.rustclash.com/img/items180/<shortName>.png`.
+
+## Setup
+
+1. Copy `.env.example` to `.env` and set `DISCORD_TOKEN`. Add `BATTLEMETRICS_TOKEN` for `/server`, `/serversearch`, `/player`, `/track` and BattleMetrics data in `/who`; `STEAM_API_KEY` is optional.
+2. Docker: `docker compose up -d --build` (the `rustbot-data` volume keeps watches and settings). Cybrancee: see [CYBRANCEE.md](CYBRANCEE.md).
+3. Invite the bot with the `bot` and `applications.commands` scopes and permission to send messages and embed links. Global commands can take a few minutes to appear.
+
+## Development
 
 ```bash
 python -m venv .venv
@@ -50,49 +70,4 @@ python -m venv .venv
 PYTHONPATH=. pytest
 ```
 
-El avatar original está en `assets/rustbot-mascot.png`. No contiene logos ni assets de Rust.
-
-## Nuevo flujo de raideo y tracking
-
-- `/raid`: elige categoría, objetivo y método (empieza con el 🏆 más barato). La barra representa **vida restante**. 💥 Aplicar 1, ↩️ Deshacer, ⏭️ Completar, 🔄 Reiniciar y 📊 Comparar permiten explorar el resultado. El embed muestra azufre total y el método más barato.
-- `/raidcalc`: calculadora de base. Añade varios objetivos (2 puertas HQ + 3 muros de piedra…), elige un método o «🏆 más barato en cada objetivo» y obtén explosivos, azufre y materiales totales. 📤 Compartir publica el plan en el canal.
-- `/raidbudget azufre:20000`: cuántos explosivos puedes fabricar y cuántos objetivos de cada tipo puedes destruir.
-- «Más barato» solo considera explosivos comunes; asedio (catapulta, mortero, ballesta, cañón, ariete, MLRS) y fuego aparecen etiquetados en `/raidcompare` pero no se recomiendan por defecto.
-- `/server server:`: escribe parte del nombre y selecciona una sugerencia; no necesitas IDs.
-- `/player profile:<URL de BattleMetrics> server:<nombre>`: consulta presencia explícita o estado desconocido.
-- `/track action:add profile:<URL de BattleMetrics> server:<nombre>`: avisa de conexión y desconexión al rol **wipe**. Sin servidor, vigila los servidores conocidos del jugador que están en el directorio importado. `remove` admite el mismo flujo. `list` muestra las vigilancias del Discord actual.
-- Debe existir exactamente un rol `wipe`, y ser mencionable o el bot debe poder mencionarlo en el canal. El comando es solo para administradores. No se permite mencionar otros roles ni `@everyone` desde datos del jugador.
-- `/who jugador:<SteamID64 o enlace> battlemetrics:<URL opcional>`: ficha completa del jugador (reemplaza a `/rustwho`). Acepta SteamID64, `STEAM_0:X:Y`, `[U:1:N]`, URL personalizada o enlaces de Steam, steamid.io, SteamDB, RustWho y BattleMetrics. Muestra:
-  - 👤 **Steam**: estado, país, todos los formatos de SteamID (como steamid.io), fecha de creación, nivel, juegos, insignias y cuenta limitada.
-  - 🛡️ **Baneos**: VAC, game bans, comunidad, tradeo y bans en servidores (RustWho).
-  - 📝 **Nombres usados**: historial fusionado de Steam, RustWho y BattleMetrics con fecha y fuente.
-  - 🦀 **Rust** (RustWho): PvP, disparos, construcción, recolección y mundo.
-  - 📊 **BattleMetrics**: horas totales, servidores, primer registro y los más jugados. Sin el enlace `battlemetrics:` solo sugiere perfiles con el mismo nombre (sin verificar), porque la API pública no permite convertir SteamID en jugador BattleMetrics.
-  - Botones a Steam, SteamID I/O, SteamDB (calculadora en MXN), RustWho y BattleMetrics. SteamDB bloquea bots, por eso el valor de la cuenta se abre allí.
-  - `STEAM_API_KEY` (opcional) añade horas jugadas en Rust y conteo exacto de juegos.
-- `/settings interval_seconds:10` guarda el intervalo por Discord. Nuevas instalaciones usan 10 segundos; configuraciones anteriores conservan su valor hasta cambiarlas.
-
-Consulta [SOURCES.md](SOURCES.md) para fuentes, correcciones de recetas, 75 servidores importados y límites de las observaciones. No se han enviado mensajes de prueba a Discord ni desplegado esta versión automáticamente.
-
-## Comandos adicionales
-
-| Comando | Uso |
-| --- | --- |
-| `/servers query:moose page:1` | Directorio por nombre, 10 resultados por página |
-| `/syncservers profile:<enlace>` | Importa y actualiza nombres desde BattleMetrics; persiste en SQLite |
-| `/status` | Estado del tracker, intervalo y últimas lecturas del Discord actual |
-| `/ping` | Latencia de la conexión con Discord |
-| `/wipe server:<nombre>` | Último/próximo wipe publicado, en la zona horaria de Discord |
-| `/pausealerts` | Silencia avisos sin borrar vigilancias |
-| `/resumealerts` | Reactiva avisos para cambios futuros |
-| `/raidtools target:<objetivo>` | Métodos, daño por unidad y unidades necesarias |
-| `/raidcompare target:<objetivo>` | Todos los métodos ordenados por azufre, 🏆 el más barato |
-| `/raidplan target:<objetivo> method:<método> quantity:2` | Materiales para varios objetivos iguales, sin asumir splash compartido |
-| `/raidcalc objetivo:<opcional> cantidad:<n> metodo:<opcional>` | Calculadora de base con varios objetivos |
-| `/raidbudget azufre:<n>` | Qué fabricar y destruir con ese azufre |
-
-`/syncservers`, `/status`, `/pausealerts` y `/resumealerts` son solo para administradores. Las importaciones amplían el directorio compartido del bot, pero no crean vigilancias automáticamente. Los comandos de raideo ofrecen autocompletado de objetivos y métodos.
-
-### Validación de esta versión
-
-64 pruebas automatizadas: recetas y lotes, invariantes de daño, límites de componentes Discord, presencia explícita/frescura, backoff, transiciones y mención del rol, fallo de envío, almacenamiento y registro de los 22 comandos, calculadora de base, presupuesto, método más barato, paneles con dueño y ayuda. Se consultó el perfil real y los tres servidores solicitados por API de solo lectura. Falta la comprobación en el Discord de destino tras desplegar/reiniciar el bot; no se ha iniciado una segunda instancia local.
+The test suite checks the raid math, every panel against Discord's limits (40 components, 4000 characters) in both languages, that every translation key exists in English and Spanish with matching placeholders, that every command description has a Spanish version, presence/alert safety rules and the `/who` parsers.

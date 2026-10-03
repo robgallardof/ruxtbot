@@ -1,0 +1,6135 @@
+{
+ "high-external-stone-wall": {
+  "name": "High External Stone Wall",
+  "hp": 500,
+  "img": "https://wiki.rustclash.com/img/items180/wall.external.high.stone.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "137.65",
+     "×4",
+     "18 sec",
+     "×80",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "275",
+     "2",
+     "11 sec",
+     "×120",
+     "-",
+     "×4,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "2.755",
+     "×182",
+     "49 sec",
+     "-",
+     "-",
+     "×4,550"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "51.5",
+     "10",
+     "22 sec",
+     "-",
+     "-",
+     "×4,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "30.15",
+     "17",
+     "42 sec",
+     "-",
+     "-",
+     "×5,100"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "11",
+     "46",
+     "2 min 55 sec",
+     "-",
+     "-",
+     "×5,520"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "137.65",
+     "4",
+     "18 sec",
+     "×120",
+     "-",
+     "×5,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "80.15",
+     "7",
+     "6 sec",
+     "×140",
+     "-",
+     "×6,300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "15.75",
+     "32",
+     "3 min 11 sec",
+     "-",
+     "-",
+     "×6,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.7",
+     "715",
+     "35 min 42 sec",
+     "-",
+     "-",
+     "×10,725"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "2.75",
+     "182",
+     "7 min 36 sec",
+     "-",
+     "-",
+     "×10,920"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "175.15",
+     "3",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "50.1",
+     "10",
+     "45 sec",
+     "-",
+     "×62",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "17.61",
+     "29",
+     "33 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "high-external-wooden-wall": {
+  "name": "High External Wooden Wall",
+  "hp": 500,
+  "img": "https://wiki.rustclash.com/img/items180/wall.external.high.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Incendiary Rocket",
+     "~ 856.515",
+     "~ 1",
+     "41 sec",
+     "×75",
+     "-",
+     "×300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "5.259",
+     "×96",
+     "25 sec",
+     "-",
+     "-",
+     "×2,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "247.65",
+     "×3",
+     "12 sec",
+     "×60",
+     "-",
+     "×2,700"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "91.5",
+     "6",
+     "16 sec",
+     "-",
+     "-",
+     "×2,880"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "54.15",
+     "10",
+     "24 sec",
+     "-",
+     "-",
+     "×3,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "19.5",
+     "26",
+     "1 min 40 sec",
+     "-",
+     "-",
+     "×3,120"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "144.15",
+     "4",
+     "6 sec",
+     "×80",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "29.25",
+     "18",
+     "1 min 44 sec",
+     "-",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "247.65",
+     "3",
+     "12 sec",
+     "×90",
+     "-",
+     "×4,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "495",
+     "2",
+     "11 sec",
+     "×120",
+     "-",
+     "×4,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "1.7",
+     "295",
+     "14 min 42 sec",
+     "-",
+     "-",
+     "×4,425"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "4.25",
+     "118",
+     "4 min 56 sec",
+     "-",
+     "-",
+     "×7,080"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "315.15",
+     "2",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "90.1",
+     "6",
+     "27 sec",
+     "-",
+     "×38",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "31.61",
+     "16",
+     "17 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Molotov Cocktail",
+     "~ 73.5",
+     "~ 7",
+     "24 sec",
+     "×350",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "high-external-stone-gate": {
+  "name": "High External Stone Gate",
+  "hp": 500,
+  "img": "https://wiki.rustclash.com/img/items180/gates.external.high.stone.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "137.65",
+     "×4",
+     "18 sec",
+     "×80",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "275",
+     "2",
+     "11 sec",
+     "×120",
+     "-",
+     "×4,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "2.755",
+     "×182",
+     "49 sec",
+     "-",
+     "-",
+     "×4,550"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "51.5",
+     "10",
+     "22 sec",
+     "-",
+     "-",
+     "×4,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "30.15",
+     "17",
+     "42 sec",
+     "-",
+     "-",
+     "×5,100"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "11",
+     "46",
+     "2 min 55 sec",
+     "-",
+     "-",
+     "×5,520"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "137.65",
+     "4",
+     "18 sec",
+     "×120",
+     "-",
+     "×5,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "80.15",
+     "7",
+     "6 sec",
+     "×140",
+     "-",
+     "×6,300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "15.75",
+     "32",
+     "3 min 11 sec",
+     "-",
+     "-",
+     "×6,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.7",
+     "715",
+     "35 min 42 sec",
+     "-",
+     "-",
+     "×10,725"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "2.75",
+     "182",
+     "7 min 36 sec",
+     "-",
+     "-",
+     "×10,920"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "175.15",
+     "3",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "12.5",
+     "×40",
+     "2 min 36 sec",
+     "-",
+     "×200",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "50.1",
+     "10",
+     "45 sec",
+     "-",
+     "×62",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "17.61",
+     "29",
+     "33 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "high-external-wooden-gate": {
+  "name": "High External Wooden Gate",
+  "hp": 500,
+  "img": "https://wiki.rustclash.com/img/items180/gates.external.high.wood.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Incendiary Rocket",
+     "~ 856.515",
+     "~ 1",
+     "41 sec",
+     "×75",
+     "-",
+     "×300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "5.259",
+     "×96",
+     "25 sec",
+     "-",
+     "-",
+     "×2,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "247.65",
+     "×3",
+     "12 sec",
+     "×60",
+     "-",
+     "×2,700"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "91.5",
+     "6",
+     "16 sec",
+     "-",
+     "-",
+     "×2,880"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "54.15",
+     "10",
+     "24 sec",
+     "-",
+     "-",
+     "×3,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "19.5",
+     "26",
+     "1 min 40 sec",
+     "-",
+     "-",
+     "×3,120"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "144.15",
+     "4",
+     "6 sec",
+     "×80",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "29.25",
+     "18",
+     "1 min 44 sec",
+     "-",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "247.65",
+     "3",
+     "12 sec",
+     "×90",
+     "-",
+     "×4,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "495",
+     "2",
+     "11 sec",
+     "×120",
+     "-",
+     "×4,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "1.7",
+     "295",
+     "14 min 42 sec",
+     "-",
+     "-",
+     "×4,425"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "4.25",
+     "118",
+     "4 min 56 sec",
+     "-",
+     "-",
+     "×7,080"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "315.15",
+     "2",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "22.5",
+     "×23",
+     "1 min 28 sec",
+     "-",
+     "×115",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "90.1",
+     "6",
+     "27 sec",
+     "-",
+     "×38",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "31.61",
+     "16",
+     "17 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Molotov Cocktail",
+     "~ 73.5",
+     "~ 7",
+     "24 sec",
+     "×350",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "ladder-hatch": {
+  "name": "Ladder Hatch",
+  "hp": 250,
+  "img": "https://wiki.rustclash.com/img/items180/floor.ladder.hatch.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "4.008",
+     "×63",
+     "16 sec",
+     "-",
+     "-",
+     "×1,575"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "128.375",
+     "2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "220.375",
+     "×2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "48.375",
+     "6",
+     "13 sec",
+     "-",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "70",
+     "4",
+     "13 sec",
+     "-",
+     "-",
+     "×1,920"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "14.5",
+     "18",
+     "1 min 10 sec",
+     "-",
+     "-",
+     "×2,160"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "24",
+     "11",
+     "1 min 1 sec",
+     "-",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "440",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "220.375",
+     "2",
+     "6 sec",
+     "×60",
+     "-",
+     "×2,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "5",
+     "50",
+     "2 min 6 sec",
+     "-",
+     "-",
+     "×3,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.5",
+     "500",
+     "24 min 57 sec",
+     "-",
+     "-",
+     "×7,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "280.375",
+     "1",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "20",
+     "×13",
+     "48 sec",
+     "-",
+     "×65",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "80.25",
+     "4",
+     "18 sec",
+     "-",
+     "×25",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "28.275",
+     "9",
+     "8 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "armored-ladder-hatch": {
+  "name": "Armored Ladder Hatch",
+  "hp": 1000,
+  "img": "https://wiki.rustclash.com/img/items180/floor.ladder.hatch.toptier.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "220.375",
+     "×5",
+     "24 sec",
+     "×100",
+     "-",
+     "×4,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "4.008",
+     "×250",
+     "1 min 7 sec",
+     "-",
+     "-",
+     "×6,250"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "48.375",
+     "21",
+     "53 sec",
+     "-",
+     "-",
+     "×6,300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "440",
+     "3",
+     "13 sec",
+     "×180",
+     "-",
+     "×6,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "220.375",
+     "5",
+     "24 sec",
+     "×150",
+     "-",
+     "×7,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "128.375",
+     "8",
+     "6 sec",
+     "×160",
+     "-",
+     "×7,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "70",
+     "15",
+     "30 sec",
+     "-",
+     "-",
+     "×7,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "14.5",
+     "69",
+     "4 min 21 sec",
+     "-",
+     "-",
+     "×8,280"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "24",
+     "42",
+     "4 min 12 sec",
+     "-",
+     "-",
+     "×8,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "5",
+     "200",
+     "8 min 21 sec",
+     "-",
+     "-",
+     "×12,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.5",
+     "2,000",
+     "1 hour 39 min 57 sec",
+     "-",
+     "-",
+     "×30,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "280.375",
+     "4",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "20",
+     "×50",
+     "3 min 16 sec",
+     "-",
+     "×250",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "80.25",
+     "13",
+     "58 sec",
+     "-",
+     "×81",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "28.275",
+     "36",
+     "42 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "30.75",
+     "33",
+     "40 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "triangle-ladder-hatch": {
+  "name": "Triangle Ladder Hatch",
+  "hp": 250,
+  "img": "https://wiki.rustclash.com/img/items180/floor.triangle.ladder.hatch.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "4.008",
+     "×63",
+     "16 sec",
+     "-",
+     "-",
+     "×1,575"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "128.375",
+     "2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "220.375",
+     "×2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "48.375",
+     "6",
+     "13 sec",
+     "-",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "70",
+     "4",
+     "13 sec",
+     "-",
+     "-",
+     "×1,920"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "14.5",
+     "18",
+     "1 min 10 sec",
+     "-",
+     "-",
+     "×2,160"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "24",
+     "11",
+     "1 min 1 sec",
+     "-",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "440",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "220.375",
+     "2",
+     "6 sec",
+     "×60",
+     "-",
+     "×2,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "5",
+     "50",
+     "2 min 6 sec",
+     "-",
+     "-",
+     "×3,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.5",
+     "500",
+     "24 min 57 sec",
+     "-",
+     "-",
+     "×7,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "280.375",
+     "1",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "20",
+     "×13",
+     "48 sec",
+     "-",
+     "×65",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "80.25",
+     "4",
+     "18 sec",
+     "-",
+     "×25",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "28.275",
+     "9",
+     "8 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "armored-triangle-ladder-hatch": {
+  "name": "Armored Triangle Ladder Hatch",
+  "hp": 1000,
+  "img": "https://wiki.rustclash.com/img/items180/floor.triangle.ladder.hatch.toptier.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "220.375",
+     "×5",
+     "24 sec",
+     "×100",
+     "-",
+     "×4,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "4.008",
+     "×250",
+     "1 min 7 sec",
+     "-",
+     "-",
+     "×6,250"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "48.375",
+     "21",
+     "53 sec",
+     "-",
+     "-",
+     "×6,300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "440",
+     "3",
+     "13 sec",
+     "×180",
+     "-",
+     "×6,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "220.375",
+     "5",
+     "24 sec",
+     "×150",
+     "-",
+     "×7,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "128.375",
+     "8",
+     "6 sec",
+     "×160",
+     "-",
+     "×7,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "70",
+     "15",
+     "30 sec",
+     "-",
+     "-",
+     "×7,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "14.5",
+     "69",
+     "4 min 21 sec",
+     "-",
+     "-",
+     "×8,280"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "24",
+     "42",
+     "4 min 12 sec",
+     "-",
+     "-",
+     "×8,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "5",
+     "200",
+     "8 min 21 sec",
+     "-",
+     "-",
+     "×12,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.5",
+     "2,000",
+     "1 hour 39 min 57 sec",
+     "-",
+     "-",
+     "×30,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "280.375",
+     "4",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "20",
+     "×50",
+     "3 min 16 sec",
+     "-",
+     "×250",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "80.25",
+     "13",
+     "58 sec",
+     "-",
+     "×81",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "28.275",
+     "36",
+     "42 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "30.75",
+     "33",
+     "40 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "shotgun-trap": {
+  "name": "Shotgun Trap",
+  "hp": 300,
+  "img": "https://wiki.rustclash.com/img/items180/guntrap.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "120",
+     "3",
+     "6 sec",
+     "-",
+     "-",
+     "×45"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "345",
+     "1",
+     "1 sec",
+     "-",
+     "-",
+     "×200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 Grenade",
+     "67.5",
+     "5",
+     "8 sec",
+     "-",
+     "-",
+     "×300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "390",
+     "1",
+     "9 sec",
+     "-",
+     "-",
+     "×480"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "167.5",
+     "2",
+     "2 sec",
+     "-",
+     "-",
+     "×600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "10.01",
+     "×30",
+     "3 sec",
+     "-",
+     "-",
+     "×750"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan Grenade",
+     "45",
+     "7",
+     "12 sec",
+     "-",
+     "-",
+     "×840"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "167.5",
+     "2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "282.5",
+     "×2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "1100",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "282.5",
+     "2",
+     "6 sec",
+     "×60",
+     "-",
+     "×2,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "432.5",
+     "1",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "20",
+     "×15",
+     "56 sec",
+     "-",
+     "×75",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "105",
+     "3",
+     "13 sec",
+     "-",
+     "×19",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "40.5",
+     "8",
+     "8 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "flame-turret": {
+  "name": "Flame Turret",
+  "hp": 300,
+  "img": "https://wiki.rustclash.com/img/items180/flameturret.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "120",
+     "3",
+     "6 sec",
+     "-",
+     "-",
+     "×45"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "345",
+     "1",
+     "1 sec",
+     "-",
+     "-",
+     "×200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 Grenade",
+     "67.5",
+     "5",
+     "8 sec",
+     "-",
+     "-",
+     "×300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "390",
+     "1",
+     "9 sec",
+     "-",
+     "-",
+     "×480"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "167.5",
+     "2",
+     "2 sec",
+     "-",
+     "-",
+     "×600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "10.01",
+     "×30",
+     "3 sec",
+     "-",
+     "-",
+     "×750"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan Grenade",
+     "45",
+     "7",
+     "12 sec",
+     "-",
+     "-",
+     "×840"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "167.5",
+     "2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "282.5",
+     "×2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "1100",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "282.5",
+     "2",
+     "6 sec",
+     "×60",
+     "-",
+     "×2,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "432.5",
+     "1",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "20",
+     "×15",
+     "56 sec",
+     "-",
+     "×75",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "105",
+     "3",
+     "13 sec",
+     "-",
+     "×19",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "40.5",
+     "8",
+     "8 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "sam-site": {
+  "name": "SAM Site",
+  "hp": 1000,
+  "img": "https://wiki.rustclash.com/img/items180/samsite.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Incendiary Rocket",
+     "5995.605",
+     "1",
+     "11 sec",
+     "×75",
+     "-",
+     "×300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "50",
+     "20",
+     "57 sec",
+     "-",
+     "-",
+     "×300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "550",
+     "2",
+     "10 sec",
+     "-",
+     "-",
+     "×960"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 Grenade",
+     "50",
+     "20",
+     "26 sec",
+     "-",
+     "-",
+     "×1,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan Grenade",
+     "65",
+     "16",
+     "22 sec",
+     "-",
+     "-",
+     "×1,920"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "1100",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "97.5",
+     "11",
+     "26 sec",
+     "-",
+     "-",
+     "×3,300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "312.5",
+     "×4",
+     "18 sec",
+     "×80",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "5.01",
+     "×200",
+     "52 sec",
+     "-",
+     "-",
+     "×5,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "197.5",
+     "6",
+     "6 sec",
+     "×120",
+     "-",
+     "×5,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "312.5",
+     "4",
+     "18 sec",
+     "×120",
+     "-",
+     "×5,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "30",
+     "34",
+     "3 min 23 sec",
+     "-",
+     "-",
+     "×6,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "387.5",
+     "3",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "125",
+     "8",
+     "36 sec",
+     "-",
+     "×50",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "62.5",
+     "16",
+     "17 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Molotov Cocktail",
+     "~ 514.5",
+     "~ 2",
+     "19 sec",
+     "×100",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "metal-shop-front": {
+  "name": "Metal Shop Front",
+  "hp": 750,
+  "img": "https://wiki.rustclash.com/img/items180/wall.frame.shopfront.metal.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "137.575",
+     "×6",
+     "30 sec",
+     "×120",
+     "-",
+     "×5,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "275",
+     "3",
+     "13 sec",
+     "×180",
+     "-",
+     "×6,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "30.075",
+     "25",
+     "1 min 4 sec",
+     "-",
+     "-",
+     "×7,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "2.5075",
+     "×300",
+     "1 min 18 sec",
+     "-",
+     "-",
+     "×7,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "137.575",
+     "6",
+     "30 sec",
+     "×180",
+     "-",
+     "×8,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "43.5",
+     "18",
+     "34 sec",
+     "-",
+     "-",
+     "×8,640"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "80.075",
+     "10",
+     "6 sec",
+     "×200",
+     "-",
+     "×9,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "15.0075",
+     "50",
+     "5 min 1 sec",
+     "-",
+     "-",
+     "×10,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan Grenade",
+     "7.65",
+     "99",
+     "2 min 2 sec",
+     "-",
+     "-",
+     "×11,880"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.105",
+     "7,143",
+     "5 hours 57 min 6 sec",
+     "-",
+     "-",
+     "×107,145"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 Grenade",
+     "0.10375",
+     "7,229",
+     "2 hours 24 min 37 sec",
+     "-",
+     "-",
+     "×433,740"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "175.075",
+     "5",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "50.05",
+     "15",
+     "1 min 7 sec",
+     "-",
+     "×94",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "17.555",
+     "43",
+     "56 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "reinforced-glass-window": {
+  "name": "Reinforced Glass Window",
+  "hp": 500,
+  "img": "https://wiki.rustclash.com/img/items180/wall.window.bars.toptier.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "137.575",
+     "×4",
+     "18 sec",
+     "×80",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "275",
+     "2",
+     "11 sec",
+     "×120",
+     "-",
+     "×4,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "2.5075",
+     "×200",
+     "52 sec",
+     "-",
+     "-",
+     "×5,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "30.075",
+     "17",
+     "42 sec",
+     "-",
+     "-",
+     "×5,100"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "137.575",
+     "4",
+     "18 sec",
+     "×120",
+     "-",
+     "×5,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "43.5",
+     "12",
+     "25 sec",
+     "-",
+     "-",
+     "×5,760"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "80.075",
+     "7",
+     "6 sec",
+     "×140",
+     "-",
+     "×6,300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "9",
+     "56",
+     "3 min 32 sec",
+     "-",
+     "-",
+     "×6,720"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "15.0075",
+     "34",
+     "3 min 23 sec",
+     "-",
+     "-",
+     "×6,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "1.0075",
+     "497",
+     "20 min 44 sec",
+     "-",
+     "-",
+     "×29,820"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.105",
+     "4,762",
+     "3 hours 58 min 3 sec",
+     "-",
+     "-",
+     "×71,430"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "175.075",
+     "3",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "50.05",
+     "10",
+     "45 sec",
+     "-",
+     "×62",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "17.555",
+     "29",
+     "33 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "strengthened-glass-window": {
+  "name": "Strengthened Glass Window",
+  "hp": 350,
+  "img": "https://wiki.rustclash.com/img/items180/wall.window.glass.reinforced.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "137.575",
+     "×3",
+     "12 sec",
+     "×60",
+     "-",
+     "×2,700"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "2.5075",
+     "×140",
+     "35 sec",
+     "-",
+     "-",
+     "×3,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "30.075",
+     "12",
+     "29 sec",
+     "-",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "137.575",
+     "3",
+     "12 sec",
+     "×90",
+     "-",
+     "×4,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "43.5",
+     "9",
+     "21 sec",
+     "-",
+     "-",
+     "×4,320"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "275",
+     "2",
+     "11 sec",
+     "×120",
+     "-",
+     "×4,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "80.075",
+     "5",
+     "6 sec",
+     "×100",
+     "-",
+     "×4,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "9",
+     "39",
+     "2 min 28 sec",
+     "-",
+     "-",
+     "×4,680"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "15.0075",
+     "24",
+     "2 min 21 sec",
+     "-",
+     "-",
+     "×4,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "1.0075",
+     "348",
+     "14 min 31 sec",
+     "-",
+     "-",
+     "×20,880"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.105",
+     "3,334",
+     "2 hours 46 min 39 sec",
+     "-",
+     "-",
+     "×50,010"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "175.075",
+     "2",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "50.05",
+     "7",
+     "31 sec",
+     "-",
+     "×44",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "17.555",
+     "20",
+     "24 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "metal-horizontal-embrasure": {
+  "name": "Metal horizontal embrasure",
+  "hp": 500,
+  "img": "https://wiki.rustclash.com/img/items180/shutter.metal.embrasure.a.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Incendiary Rocket",
+     "~ 428.2575",
+     "~ 2",
+     "1 min 28 sec",
+     "×150",
+     "-",
+     "×600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "138.25",
+     "×4",
+     "18 sec",
+     "×80",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "2",
+     "250",
+     "12 min 27 sec",
+     "-",
+     "-",
+     "×3,750"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "3.005",
+     "×167",
+     "43 sec",
+     "-",
+     "-",
+     "×4,175"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "275",
+     "2",
+     "11 sec",
+     "×120",
+     "-",
+     "×4,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "30.75",
+     "17",
+     "42 sec",
+     "-",
+     "-",
+     "×5,100"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "138.25",
+     "4",
+     "18 sec",
+     "×120",
+     "-",
+     "×5,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "16.5",
+     "31",
+     "3 min 4 sec",
+     "-",
+     "-",
+     "×6,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "41.5",
+     "13",
+     "27 sec",
+     "-",
+     "-",
+     "×6,240"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "80.75",
+     "7",
+     "6 sec",
+     "×140",
+     "-",
+     "×6,300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "8.5",
+     "59",
+     "3 min 43 sec",
+     "-",
+     "-",
+     "×7,080"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "1.75",
+     "286",
+     "11 min 56 sec",
+     "-",
+     "-",
+     "×17,160"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "175.75",
+     "3",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "50.5",
+     "10",
+     "45 sec",
+     "-",
+     "×62",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "18.05",
+     "28",
+     "33 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Molotov Cocktail",
+     "~ 36.75",
+     "~ 14",
+     "31 sec",
+     "×700",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "metal-vertical-embrasure": {
+  "name": "Metal Vertical embrasure",
+  "hp": 500,
+  "img": "https://wiki.rustclash.com/img/items180/shutter.metal.embrasure.b.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Incendiary Rocket",
+     "~ 428.2575",
+     "~ 2",
+     "1 min 28 sec",
+     "×150",
+     "-",
+     "×600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "138.25",
+     "×4",
+     "18 sec",
+     "×80",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "2",
+     "250",
+     "12 min 27 sec",
+     "-",
+     "-",
+     "×3,750"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "3.005",
+     "×167",
+     "43 sec",
+     "-",
+     "-",
+     "×4,175"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "275",
+     "2",
+     "11 sec",
+     "×120",
+     "-",
+     "×4,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "30.75",
+     "17",
+     "42 sec",
+     "-",
+     "-",
+     "×5,100"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "138.25",
+     "4",
+     "18 sec",
+     "×120",
+     "-",
+     "×5,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "16.5",
+     "31",
+     "3 min 4 sec",
+     "-",
+     "-",
+     "×6,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "41.5",
+     "13",
+     "27 sec",
+     "-",
+     "-",
+     "×6,240"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "80.75",
+     "7",
+     "6 sec",
+     "×140",
+     "-",
+     "×6,300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "8.5",
+     "59",
+     "3 min 43 sec",
+     "-",
+     "-",
+     "×7,080"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "1.75",
+     "286",
+     "11 min 56 sec",
+     "-",
+     "-",
+     "×17,160"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "175.75",
+     "3",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "50.5",
+     "10",
+     "45 sec",
+     "-",
+     "×62",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "18.05",
+     "28",
+     "33 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Molotov Cocktail",
+     "~ 36.75",
+     "~ 14",
+     "31 sec",
+     "×700",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "metal-window-bars": {
+  "name": "Metal Window Bars",
+  "hp": 500,
+  "img": "https://wiki.rustclash.com/img/items180/wall.window.bars.metal.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "137.575",
+     "×4",
+     "18 sec",
+     "×80",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "275",
+     "2",
+     "11 sec",
+     "×120",
+     "-",
+     "×4,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "2.5075",
+     "×200",
+     "52 sec",
+     "-",
+     "-",
+     "×5,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "30.075",
+     "17",
+     "42 sec",
+     "-",
+     "-",
+     "×5,100"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "137.575",
+     "4",
+     "18 sec",
+     "×120",
+     "-",
+     "×5,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "43.5",
+     "12",
+     "25 sec",
+     "-",
+     "-",
+     "×5,760"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "80.075",
+     "7",
+     "6 sec",
+     "×140",
+     "-",
+     "×6,300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "9",
+     "56",
+     "3 min 32 sec",
+     "-",
+     "-",
+     "×6,720"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "15.0075",
+     "34",
+     "3 min 23 sec",
+     "-",
+     "-",
+     "×6,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "1.0075",
+     "497",
+     "20 min 44 sec",
+     "-",
+     "-",
+     "×29,820"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.105",
+     "4,762",
+     "3 hours 58 min 3 sec",
+     "-",
+     "-",
+     "×71,430"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "175.075",
+     "3",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "50.05",
+     "10",
+     "45 sec",
+     "-",
+     "×62",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "17.555",
+     "29",
+     "33 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "prison-cell-gate": {
+  "name": "Prison Cell Gate",
+  "hp": 300,
+  "img": "https://wiki.rustclash.com/img/items180/wall.frame.cell.gate.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "220.375",
+     "×2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "4.008",
+     "×75",
+     "18 sec",
+     "-",
+     "-",
+     "×1,875"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "48.375",
+     "7",
+     "16 sec",
+     "-",
+     "-",
+     "×2,100"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "440",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "70",
+     "5",
+     "15 sec",
+     "-",
+     "-",
+     "×2,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "14.5",
+     "21",
+     "1 min 21 sec",
+     "-",
+     "-",
+     "×2,520"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "24",
+     "13",
+     "1 min 13 sec",
+     "-",
+     "-",
+     "×2,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "128.375",
+     "3",
+     "6 sec",
+     "×60",
+     "-",
+     "×2,700"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "220.375",
+     "2",
+     "6 sec",
+     "×60",
+     "-",
+     "×2,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "5",
+     "60",
+     "2 min 31 sec",
+     "-",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.5",
+     "600",
+     "29 min 57 sec",
+     "-",
+     "-",
+     "×9,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "280.375",
+     "2",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "20",
+     "×15",
+     "56 sec",
+     "-",
+     "×75",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "80.25",
+     "4",
+     "18 sec",
+     "-",
+     "×25",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "28.275",
+     "11",
+     "9 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "prison-cell-wall": {
+  "name": "Prison Cell Wall",
+  "hp": 300,
+  "img": "https://wiki.rustclash.com/img/items180/wall.frame.cell.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "220.375",
+     "×2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "4.008",
+     "×75",
+     "18 sec",
+     "-",
+     "-",
+     "×1,875"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "48.375",
+     "7",
+     "16 sec",
+     "-",
+     "-",
+     "×2,100"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "440",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "70",
+     "5",
+     "15 sec",
+     "-",
+     "-",
+     "×2,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "14.5",
+     "21",
+     "1 min 21 sec",
+     "-",
+     "-",
+     "×2,520"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "24",
+     "13",
+     "1 min 13 sec",
+     "-",
+     "-",
+     "×2,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "128.375",
+     "3",
+     "6 sec",
+     "×60",
+     "-",
+     "×2,700"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "220.375",
+     "2",
+     "6 sec",
+     "×60",
+     "-",
+     "×2,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "5",
+     "60",
+     "2 min 31 sec",
+     "-",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.5",
+     "600",
+     "29 min 57 sec",
+     "-",
+     "-",
+     "×9,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "280.375",
+     "2",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "80.25",
+     "4",
+     "18 sec",
+     "-",
+     "×25",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "28.275",
+     "11",
+     "9 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "chainlink-fence-gate": {
+  "name": "Chainlink Fence Gate",
+  "hp": 75,
+  "img": "https://wiki.rustclash.com/img/items180/wall.frame.fence.gate.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "5.01",
+     "×15",
+     "1 sec",
+     "-",
+     "-",
+     "×375"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "85",
+     "1",
+     "9 sec",
+     "-",
+     "-",
+     "×480"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "30",
+     "3",
+     "12 sec",
+     "-",
+     "-",
+     "×600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "60.375",
+     "2",
+     "2 sec",
+     "-",
+     "-",
+     "×600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "17.5",
+     "5",
+     "21 sec",
+     "-",
+     "-",
+     "×600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "160.375",
+     "1",
+     "6 sec",
+     "×20",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "275.375",
+     "×1",
+     "1 sec",
+     "×20",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "5",
+     "15",
+     "39 sec",
+     "-",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "275.375",
+     "1",
+     "1 sec",
+     "×30",
+     "-",
+     "×1,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "550",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.5",
+     "150",
+     "7 min 27 sec",
+     "-",
+     "-",
+     "×2,250"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "350.375",
+     "1",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "25",
+     "×3",
+     "8 sec",
+     "-",
+     "×15",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "100.25",
+     "1",
+     "4 sec",
+     "-",
+     "×6",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "35.275",
+     "3",
+     "1 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "chainlink-fence": {
+  "name": "Chainlink Fence",
+  "hp": 100,
+  "img": "https://wiki.rustclash.com/img/items180/wall.frame.fence.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "5.01",
+     "×20",
+     "2 sec",
+     "-",
+     "-",
+     "×500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "60.375",
+     "2",
+     "2 sec",
+     "-",
+     "-",
+     "×600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "17.5",
+     "6",
+     "25 sec",
+     "-",
+     "-",
+     "×720"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "30",
+     "4",
+     "18 sec",
+     "-",
+     "-",
+     "×800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "160.375",
+     "1",
+     "6 sec",
+     "×20",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "275.375",
+     "×1",
+     "1 sec",
+     "×20",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "85",
+     "2",
+     "10 sec",
+     "-",
+     "-",
+     "×960"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "5",
+     "20",
+     "51 sec",
+     "-",
+     "-",
+     "×1,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "275.375",
+     "1",
+     "1 sec",
+     "×30",
+     "-",
+     "×1,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "550",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.5",
+     "200",
+     "9 min 57 sec",
+     "-",
+     "-",
+     "×3,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "350.375",
+     "1",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "100.25",
+     "1",
+     "4 sec",
+     "-",
+     "×6",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "35.275",
+     "3",
+     "1 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "wood-double-door": {
+  "name": "Wood Double Door",
+  "hp": 200,
+  "img": "https://wiki.rustclash.com/img/items180/door.double.hinged.wood.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Incendiary Rocket",
+     "1713.03",
+     "1",
+     "8 sec",
+     "×75",
+     "-",
+     "×300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "11.27",
+     "×18",
+     "2 sec",
+     "-",
+     "-",
+     "×450"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "120.375",
+     "2",
+     "2 sec",
+     "-",
+     "-",
+     "×600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "35",
+     "6",
+     "25 sec",
+     "-",
+     "-",
+     "×720"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "63.75",
+     "4",
+     "18 sec",
+     "-",
+     "-",
+     "×800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "320.375",
+     "1",
+     "6 sec",
+     "×20",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "550.375",
+     "×1",
+     "1 sec",
+     "×20",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "170",
+     "2",
+     "10 sec",
+     "-",
+     "-",
+     "×960"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "3",
+     "67",
+     "3 min 18 sec",
+     "-",
+     "-",
+     "×1,005"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "8.75",
+     "23",
+     "59 sec",
+     "-",
+     "-",
+     "×1,380"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "550.375",
+     "1",
+     "1 sec",
+     "×30",
+     "-",
+     "×1,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "1100",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "700.375",
+     "1",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "50",
+     "×4",
+     "12 sec",
+     "-",
+     "×20",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "200.25",
+     "1",
+     "4 sec",
+     "-",
+     "×6",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "70.275",
+     "3",
+     "1 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Molotov Cocktail",
+     "~ 147",
+     "~ 2",
+     "19 sec",
+     "×100",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "industrial-door": {
+  "status": 404,
+  "rows": []
+ },
+ "metal-barricade": {
+  "name": "Metal Barricade",
+  "hp": 600,
+  "img": "https://wiki.rustclash.com/img/items180/barricade.metal.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "158",
+     "4",
+     "13 sec",
+     "-",
+     "-",
+     "×1,920"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "1100",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "275.75",
+     "×3",
+     "12 sec",
+     "×60",
+     "-",
+     "×2,700"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "5.51",
+     "×109",
+     "27 sec",
+     "-",
+     "-",
+     "×2,725"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "60.75",
+     "10",
+     "24 sec",
+     "-",
+     "-",
+     "×3,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "160.75",
+     "4",
+     "6 sec",
+     "×80",
+     "-",
+     "×3,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "31.5",
+     "20",
+     "1 min 57 sec",
+     "-",
+     "-",
+     "×4,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "275.75",
+     "3",
+     "12 sec",
+     "×90",
+     "-",
+     "×4,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "2",
+     "300",
+     "14 min 57 sec",
+     "-",
+     "-",
+     "×4,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan Grenade",
+     "16",
+     "38",
+     "49 sec",
+     "-",
+     "-",
+     "×4,560"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 Grenade",
+     "1.75",
+     "343",
+     "6 min 54 sec",
+     "-",
+     "-",
+     "×20,580"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "350.75",
+     "2",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "100.5",
+     "6",
+     "27 sec",
+     "-",
+     "×38",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "35.55",
+     "17",
+     "17 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "concrete-barricade": {
+  "name": "Concrete Barricade",
+  "hp": 500,
+  "img": "https://wiki.rustclash.com/img/items180/barricade.concrete.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "35",
+     "15",
+     "42 sec",
+     "-",
+     "-",
+     "×225"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 Grenade",
+     "33.75",
+     "15",
+     "20 sec",
+     "-",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "465",
+     "2",
+     "10 sec",
+     "-",
+     "-",
+     "×960"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan Grenade",
+     "52.5",
+     "10",
+     "15 sec",
+     "-",
+     "-",
+     "×1,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "10.015",
+     "×50",
+     "10 sec",
+     "-",
+     "-",
+     "×1,250"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "112.5",
+     "5",
+     "10 sec",
+     "-",
+     "-",
+     "×1,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "262.5",
+     "2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "435",
+     "×2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "52.5",
+     "10",
+     "55 sec",
+     "-",
+     "-",
+     "×2,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "1650",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "435",
+     "2",
+     "6 sec",
+     "×60",
+     "-",
+     "×2,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "547.5",
+     "1",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "165",
+     "4",
+     "18 sec",
+     "-",
+     "×25",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "69",
+     "8",
+     "8 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "large-wood-box": {
+  "name": "Large Wood Box",
+  "hp": 300,
+  "img": "https://wiki.rustclash.com/img/items180/box.wooden.large.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "85",
+     "4",
+     "9 sec",
+     "-",
+     "-",
+     "×60"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 Grenade",
+     "82.5",
+     "4",
+     "7 sec",
+     "-",
+     "-",
+     "×240"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Incendiary Rocket",
+     "4282.575",
+     "1",
+     "4 sec",
+     "×75",
+     "-",
+     "×300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "195",
+     "2",
+     "6 sec",
+     "-",
+     "-",
+     "×400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "550",
+     "1",
+     "9 sec",
+     "-",
+     "-",
+     "×480"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan Grenade",
+     "65",
+     "5",
+     "9 sec",
+     "-",
+     "-",
+     "×600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "10.01",
+     "×30",
+     "3 sec",
+     "-",
+     "-",
+     "×750"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "312.5",
+     "×1",
+     "1 sec",
+     "×20",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "147.5",
+     "3",
+     "5 sec",
+     "-",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "312.5",
+     "1",
+     "1 sec",
+     "×30",
+     "-",
+     "×1,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "197.5",
+     "2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "1100",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "425",
+     "1",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "7.5",
+     "×40",
+     "2 min 36 sec",
+     "-",
+     "×200",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "125",
+     "3",
+     "13 sec",
+     "-",
+     "×19",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "62.5",
+     "5",
+     "1 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Molotov Cocktail",
+     "~ 367.5",
+     "~ 1",
+     "18 sec",
+     "×50",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "vending-machine": {
+  "name": "Vending Machine",
+  "hp": 1250,
+  "img": "https://wiki.rustclash.com/img/items180/vending.machine.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "138.25",
+     "×10",
+     "54 sec",
+     "×200",
+     "-",
+     "×9,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "275",
+     "5",
+     "16 sec",
+     "×300",
+     "-",
+     "×11,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "30.75",
+     "41",
+     "1 min 46 sec",
+     "-",
+     "-",
+     "×12,300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "2.51",
+     "×499",
+     "2 min 14 sec",
+     "-",
+     "-",
+     "×12,475"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "43.5",
+     "29",
+     "51 sec",
+     "-",
+     "-",
+     "×13,920"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "138.25",
+     "10",
+     "55 sec",
+     "×300",
+     "-",
+     "×14,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "80.75",
+     "16",
+     "6 sec",
+     "×320",
+     "-",
+     "×14,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan Grenade",
+     "9",
+     "139",
+     "2 min 50 sec",
+     "-",
+     "-",
+     "×16,680"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "15.015",
+     "84",
+     "8 min 31 sec",
+     "-",
+     "-",
+     "×16,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "1.01",
+     "1,238",
+     "1 hour 1 min 51 sec",
+     "-",
+     "-",
+     "×18,570"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 Grenade",
+     "1.0075",
+     "1,241",
+     "24 min 51 sec",
+     "-",
+     "-",
+     "×74,460"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "175.75",
+     "8",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "50.5",
+     "25",
+     "1 min 52 sec",
+     "-",
+     "×156",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "18.05",
+     "70",
+     "1 min 29 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "large-furnace": {
+  "name": "Large Furnace",
+  "hp": 1500,
+  "img": "https://wiki.rustclash.com/img/items180/furnace.large.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "85",
+     "18",
+     "51 sec",
+     "-",
+     "-",
+     "×270"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Incendiary Rocket",
+     "~ 4282.575",
+     "~ 1",
+     "24 sec",
+     "×75",
+     "-",
+     "×300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 Grenade",
+     "82.5",
+     "19",
+     "25 sec",
+     "-",
+     "-",
+     "×1,140"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "550",
+     "3",
+     "12 sec",
+     "-",
+     "-",
+     "×1,440"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "195",
+     "8",
+     "43 sec",
+     "-",
+     "-",
+     "×1,600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan Grenade",
+     "65",
+     "24",
+     "32 sec",
+     "-",
+     "-",
+     "×2,880"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "147.5",
+     "11",
+     "26 sec",
+     "-",
+     "-",
+     "×3,300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "10.01",
+     "×150",
+     "36 sec",
+     "-",
+     "-",
+     "×3,750"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "1100",
+     "2",
+     "11 sec",
+     "×120",
+     "-",
+     "×4,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "312.5",
+     "×5",
+     "24 sec",
+     "×100",
+     "-",
+     "×4,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "312.5",
+     "5",
+     "24 sec",
+     "×150",
+     "-",
+     "×7,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "197.5",
+     "8",
+     "6 sec",
+     "×160",
+     "-",
+     "×7,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "425",
+     "4",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "BallistaHammerhead Bolt",
+     "7.5",
+     "×200",
+     "13 min 16 sec",
+     "-",
+     "×1,000",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "125",
+     "12",
+     "54 sec",
+     "-",
+     "×75",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "62.5",
+     "24",
+     "26 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Molotov Cocktail",
+     "~ 367.5",
+     "~ 5",
+     "22 sec",
+     "×250",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "workbench-level-3": {
+  "name": "Workbench Level 3",
+  "hp": 750,
+  "img": "https://wiki.rustclash.com/img/items180/workbench3.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Incendiary Rocket",
+     "~ 428.2575",
+     "~ 2",
+     "2 min 9 sec",
+     "×150",
+     "-",
+     "×600"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "550",
+     "2",
+     "11 sec",
+     "×120",
+     "-",
+     "×4,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "83",
+     "10",
+     "22 sec",
+     "-",
+     "-",
+     "×4,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "138.25",
+     "×6",
+     "30 sec",
+     "×120",
+     "-",
+     "×5,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "2",
+     "375",
+     "18 min 42 sec",
+     "-",
+     "-",
+     "×5,625"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "3.005",
+     "×250",
+     "1 min 7 sec",
+     "-",
+     "-",
+     "×6,250"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "30.75",
+     "25",
+     "1 min 4 sec",
+     "-",
+     "-",
+     "×7,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "138.25",
+     "6",
+     "30 sec",
+     "×180",
+     "-",
+     "×8,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "80.75",
+     "10",
+     "6 sec",
+     "×200",
+     "-",
+     "×9,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "16.5",
+     "46",
+     "4 min 37 sec",
+     "-",
+     "-",
+     "×9,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan Grenade",
+     "8.5",
+     "89",
+     "1 min 50 sec",
+     "-",
+     "-",
+     "×10,680"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 Grenade",
+     "1.75",
+     "429",
+     "8 min 37 sec",
+     "-",
+     "-",
+     "×25,740"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "175.75",
+     "5",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "50.5",
+     "15",
+     "1 min 7 sec",
+     "-",
+     "×94",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "18.05",
+     "42",
+     "50 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Molotov Cocktail",
+     "~ 36.75",
+     "~ 21",
+     "38 sec",
+     "×1,050",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "industrial-auto-turret": {
+  "status": 404,
+  "rows": []
+ },
+ "floor-grill": {
+  "name": "Floor grill",
+  "hp": 250,
+  "img": "https://wiki.rustclash.com/img/items180/floor.grill.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "4.008",
+     "×63",
+     "16 sec",
+     "-",
+     "-",
+     "×1,575"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "128.375",
+     "2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "220.375",
+     "×2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "48.375",
+     "6",
+     "13 sec",
+     "-",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "70",
+     "4",
+     "13 sec",
+     "-",
+     "-",
+     "×1,920"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan GrenadeStuck (right click)",
+     "14.5",
+     "18",
+     "1 min 10 sec",
+     "-",
+     "-",
+     "×2,160"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "24",
+     "11",
+     "1 min 1 sec",
+     "-",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "440",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "220.375",
+     "2",
+     "6 sec",
+     "×60",
+     "-",
+     "×2,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 GrenadeStuck (right click)",
+     "5",
+     "50",
+     "2 min 6 sec",
+     "-",
+     "-",
+     "×3,000"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "0.5",
+     "500",
+     "24 min 57 sec",
+     "-",
+     "-",
+     "×7,500"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "280.375",
+     "1",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "80.25",
+     "4",
+     "18 sec",
+     "-",
+     "×25",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "28.275",
+     "9",
+     "8 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ },
+ "tesla-coil": {
+  "name": "Tesla Coil",
+  "hp": 250,
+  "img": "https://wiki.rustclash.com/img/items180/electric.teslacoil.png",
+  "rows": [
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Cannonball",
+     "60",
+     "5",
+     "12 sec",
+     "-",
+     "-",
+     "×75"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Incendiary Rocket",
+     "4282.575",
+     "1",
+     "4 sec",
+     "×75",
+     "-",
+     "×300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "F1 Grenade",
+     "57.5",
+     "5",
+     "8 sec",
+     "-",
+     "-",
+     "×300"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Beancan Grenade",
+     "65",
+     "4",
+     "8 sec",
+     "-",
+     "-",
+     "×480"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Satchel Charge",
+     "550",
+     "1",
+     "9 sec",
+     "-",
+     "-",
+     "×480"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Assault RifleExplosive 5.56 Rifle Ammo",
+     "10.01",
+     "×25",
+     "3 sec",
+     "-",
+     "-",
+     "×625"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "CatapultPropane Explosive Bomb",
+     "312.5",
+     "×1",
+     "1 sec",
+     "×20",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Mortar Shell",
+     "97.5",
+     "3",
+     "5 sec",
+     "-",
+     "-",
+     "×900"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "High Velocity Rocket",
+     "45",
+     "6",
+     "30 sec",
+     "-",
+     "-",
+     "×1,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Rocket",
+     "312.5",
+     "1",
+     "1 sec",
+     "×30",
+     "-",
+     "×1,400"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Propane Explosive BombPlanting",
+     "197.5",
+     "2",
+     "6 sec",
+     "×40",
+     "-",
+     "×1,800"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Timed Explosive Charge",
+     "1100",
+     "1",
+     "10 sec",
+     "×60",
+     "-",
+     "×2,200"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "MLRS Rocket",
+     "387.5",
+     "1",
+     "0 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Battering Ram",
+     "125",
+     "2",
+     "9 sec",
+     "-",
+     "×12",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "40mm HE Grenade",
+     "62.5",
+     "4",
+     "1 sec",
+     "-",
+     "-",
+     "-"
+    ]
+   },
+   {
+    "t": 0,
+    "cells": [
+     "",
+     "Molotov Cocktail",
+     "~ 367.5",
+     "~ 1",
+     "18 sec",
+     "×50",
+     "-",
+     "-"
+    ]
+   }
+  ]
+ }
+}

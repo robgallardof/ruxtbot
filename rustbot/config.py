@@ -1,4 +1,4 @@
-"""Configuración leída de variables de entorno (o de un archivo .env en desarrollo)."""
+"""Settings read from environment variables (or a .env file during development)."""
 from dataclasses import dataclass
 import os
 from dotenv import load_dotenv
@@ -7,7 +7,7 @@ load_dotenv()
 
 @dataclass(frozen=True)
 class Settings:
-    """Ajustes del proceso. Solo DISCORD_TOKEN es obligatorio; lo demás tiene valores por defecto."""
+    """Process settings. Only DISCORD_TOKEN is required; everything else has a default."""
     discord_token: str
     battlemetrics_token: str | None
     state_path: str
@@ -21,6 +21,6 @@ class Settings:
         token = os.environ.get("DISCORD_TOKEN", "")
         if not token:
             raise RuntimeError("DISCORD_TOKEN is required")
-        # Nunca por debajo de 10 s para no saturar BattleMetrics.
+        # Never below 10 s so BattleMetrics is not flooded.
         interval = max(10, int(os.environ.get("RUST_POLL_INTERVAL_SECONDS", "10")))
         return cls(token, os.environ.get("BATTLEMETRICS_TOKEN"), os.environ.get("RUST_TRACKER_STATE_PATH", "/data/rustbot.sqlite3"), interval, os.environ.get("RUST_LOG_LEVEL", "INFO"), os.environ.get("RUST_DATA_PATH", "data/rust_catalog.yml"), os.environ.get("STEAM_API_KEY") or None)

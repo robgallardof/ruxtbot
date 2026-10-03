@@ -1,4 +1,4 @@
-"""Persistencia en SQLite: vigilancias, ajustes por Discord y servidores importados."""
+"""SQLite persistence: watches, per-guild settings and imported servers."""
 from __future__ import annotations
 import sqlite3
 from dataclasses import dataclass
@@ -11,7 +11,7 @@ def valid_steamid64(value: str) -> bool:
 
 
 def transition(previous: bool | None, current: bool | None) -> str | None:
-    """Evento a avisar entre dos lecturas. Sin base previa o sin dato actual no hay evento."""
+    """Event to announce between two readings. No baseline or no current data means no event."""
     if current is None or previous is None or previous == current:
         return None
     return "connected" if current else "disconnected"
@@ -19,11 +19,11 @@ def transition(previous: bool | None, current: bool | None) -> str | None:
 
 @dataclass
 class Watch:
-    steamid: str             # "bm:<id>" para perfiles BattleMetrics (los SteamID antiguos quedan sin datos)
+    steamid: str             # "bm:<id>" for BattleMetrics profiles (legacy SteamID watches stay "no data")
     server_id: str
     channel_id: int
-    label: str | None        # nombre que se muestra en el aviso
-    was_online: bool | None  # última lectura conocida; None = aún sin base
+    label: str | None        # name shown in the alert
+    was_online: bool | None  # last known reading; None = no baseline yet
 
 
 class Store:
@@ -33,9 +33,9 @@ class Store:
         self.conn.execute("CREATE TABLE IF NOT EXISTS settings(guild_id INTEGER PRIMARY KEY,channel_id INTEGER,language TEXT,alerts INTEGER,poll_interval INTEGER)")
         self.conn.commit()
 
-    # ── Vigilancias ──
+    # ── Watches ──
     def add(self, steamid, server_id, channel_id, label=None):
-        # Volver a añadir solo cambia la etiqueta: se conserva la última lectura para no generar avisos falsos.
+        # Re-adding only updates the label: the last reading is kept so no false alert is sent.
         self.conn.execute("INSERT INTO watches VALUES(?,?,?,?,NULL) ON CONFLICT(steamid,server_id,channel_id) DO UPDATE SET label=excluded.label", (steamid, server_id, channel_id, label))
         self.conn.commit()
 
@@ -50,16 +50,16 @@ class Store:
         self.conn.execute("UPDATE watches SET was_online=? WHERE steamid=? AND server_id=? AND channel_id=?", (int(online), w.steamid, w.server_id, w.channel_id))
         self.conn.commit()
 
-    # ── Ajustes por Discord ──
+    # ── Per-guild settings ──
     def set_settings(self, guild_id, channel_id, language, alerts, poll_interval):
         self.conn.execute("INSERT OR REPLACE INTO settings VALUES(?,?,?,?,?)", (guild_id, channel_id, language, int(alerts), poll_interval))
         self.conn.commit()
 
     def settings(self, guild_id):
-        """(canal, idioma, alertas, intervalo) o None si el Discord nunca usó /settings."""
+        """(channel, language, alerts, interval) or None if the guild never used /settings."""
         return self.conn.execute("SELECT channel_id,language,alerts,poll_interval FROM settings WHERE guild_id=?", (guild_id,)).fetchone()
 
-    # ── Servidores importados con /syncservers ──
+    # ── Servers imported with /syncservers ──
     def save_servers(self, rows):
         self.conn.execute("CREATE TABLE IF NOT EXISTS server_directory(id TEXT PRIMARY KEY,name TEXT NOT NULL)")
         self.conn.executemany("INSERT INTO server_directory VALUES(?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name", [(r['id'], r['name']) for r in rows])

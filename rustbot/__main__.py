@@ -1,10 +1,10 @@
-"""Punto de entrada de RuxtBot: el bot, el tracker de presencia y los comandos básicos.
+"""RuxtBot entry point: the bot, the presence tracker and the core commands.
 
-Los grupos grandes de comandos viven en sus propios módulos:
-    raid.py              → /raid, /raidcalc, /raidbudget, /raidcompare, /raidtools, /raidplan
-    who.py               → /who
-    utility_commands.py  → /ping, /status, /servers, /syncservers, /wipe, alertas
-    help.py              → menú de /help
+Larger command groups live in their own modules:
+    raid.py              /raid, /raidcalc, /raidbudget, /raidcompare, /raidtools
+    who.py               /who
+    utility_commands.py  /ping, /status, /servers, /serversearch, /syncservers, /wipe, /forcewipe, alerts
+    help.py              /help menu
 """
 from __future__ import annotations
 import logging
@@ -16,32 +16,43 @@ from discord.ext import commands, tasks
 from .battlemetrics import BattleMetrics
 from .catalog import Catalog
 from .config import Settings
-from .help import HelpView, home_embed
-from .raid import (CompareMethodsButton, DetonateButton, RaidBackButton, RaidProgressView, RaidStartView,  # noqa: F401  (reexportados)
-                   comparison, item_name, raid_embed, raidable, register_raid_commands)
+from .help import help_layout
+from .i18n import CommandTranslator, lang_for, t
+from .raid import register_raid_commands
+from .raid_data import RaidData
 from .servers import ServerDirectory, profile_id
 from .tracking import Store, transition
 from .ui import GREEN, GREY, RED, brand_embed, error_embed, reply, success_embed
 from .utility_commands import iso_to_ts, register_utilities
 from .who import WhoService, register_who
 
+# Crafting catalog item -> raid explosive key in data/raid.json (for "raid uses" on /item).
+CATALOG_TO_RAID = {
+    'rocket': 'rocket', 'c4': 'c4', 'satchel': 'satchel', 'explosive-ammo': 'explosive556', 'beancan': 'beancan', 'f1': 'f1',
+    'hv-rocket': 'hv_rocket', 'molotov': 'molotov', 'mlrs': 'mlrs', 'hammerhead': 'hammerhead', 'ram': 'ram',
+    'propane': 'propane_bomb', 'catapult-propane': 'catapult_propane', 'he-grenade': 'he_grenade', 'cannonball': 'cannonball',
+    'mortar': 'mortar', 'incendiary-rocket': 'incendiary_rocket',
+}
+
 
 class RustBot(commands.Bot):
-    """Bot con estado compartido: base de datos, clientes HTTP y directorio de servidores."""
+    """Bot with shared state: database, HTTP clients, raid data and server directory."""
 
-    def __init__(self, settings, catalog):
+    def __init__(self, settings, catalog, raid_data=None):
         super().__init__(command_prefix='!', intents=discord.Intents.default())
         self.settings, self.catalog = settings, catalog
+        self.raid_data = raid_data or RaidData.load(Path(settings.data_path).with_name('raid.json'))
         self.store = Store(settings.state_path)
         self.bm = BattleMetrics(settings.battlemetrics_token)
         self.who = WhoService(self.bm, settings.steam_api_key)
-        # Directorio base (servers.json) + servidores importados con /syncservers.
+        # Base directory (servers.json) + servers imported with /syncservers.
         self.directory = ServerDirectory(Path(settings.data_path).with_name('servers.json'))
         self.directory.merge(self.store.servers())
-        self.last_poll = {}  # (steamid, servidor, canal) → última consulta, para respetar el intervalo
+        self.last_poll = {}  # (steamid, server, channel) -> last check, to honour the interval
         self.poll.change_interval(seconds=10)
 
     async def setup_hook(self):
+        await self.tree.set_translator(CommandTranslator())
         await self.tree.sync()
         self.poll.start()
 
@@ -58,12 +69,12 @@ class RustBot(commands.Bot):
 
     @tasks.loop(seconds=10)
     async def poll(self):
-        """Revisa cada vigilancia y avisa al rol @wipe solo cuando cambia el estado.
+        """Check every watch and ping the @wipe role only when the state changes.
 
-        Reglas de seguridad:
-        - Datos desconocidos (None) nunca cuentan como desconexión.
-        - La primera lectura es silenciosa (solo fija la base).
-        - Si Discord falla al enviar, no se guarda el estado para reintentar en la siguiente vuelta.
+        Safety rules:
+        - Unknown data (None) never counts as a disconnect.
+        - The first reading is silent (it only sets the baseline).
+        - If Discord fails to deliver, the state is not saved, so the alert is retried next loop.
         """
         for w in self.store.watches():
             try:
@@ -89,12 +100,13 @@ class RustBot(commands.Bot):
                     if not role.mentionable and not ch.permissions_for(ch.guild.me).mention_everyone:
                         logging.warning('Tracking alert waiting: wipe role is not mentionable in guild %s', ch.guild.id)
                         continue
-                    # El nombre viene de datos del jugador: se escapa para que no pueda mencionar a nadie.
+                    lang = saved[1] if saved and saved[1] in ('en', 'es') else 'en'
+                    # The label comes from player data: escape it so it can never mention anyone.
                     label = discord.utils.escape_markdown(discord.utils.escape_mentions(w.label or w.steamid))
                     name = discord.utils.escape_markdown(self.directory.name(w.server_id))
-                    verb = 'se conectó a' if online else 'se desconectó de'
+                    verb = t(lang, 'alert.connected' if online else 'alert.disconnected')
                     link = discord.ui.View()
-                    link.add_item(discord.ui.Button(label='Ver servidor', emoji='📊', url=f'https://www.battlemetrics.com/servers/rust/{w.server_id}'))
+                    link.add_item(discord.ui.Button(label=t(lang, 'alert.button'), emoji='📊', url=f'https://www.battlemetrics.com/servers/rust/{w.server_id}'))
                     await ch.send(f"{role.mention} {'🟢' if online else '🔴'} **{label}** {verb} **{name}** · <t:{int(time.time())}:R>",
                                   view=link, allowed_mentions=discord.AllowedMentions(roles=[role], users=False, everyone=False))
                 self.store.set_state(w, online)
@@ -106,15 +118,11 @@ class RustBot(commands.Bot):
         await self.wait_until_ready()
 
 
-def embed(title, description):
-    """Atajo histórico: embed amarillo de la marca."""
-    return brand_embed(title, description)
-
-
 async def require_admin(interaction) -> bool:
-    """Corta la interacción con un aviso si quien la usa no es administrador del Discord."""
+    """Stop the interaction with a notice unless the user is a server administrator."""
     if not interaction.guild or not interaction.user.guild_permissions.administrator:
-        await interaction.response.send_message(embed=error_embed('Solo administradores pueden usar este comando.', 'Pídeselo a un admin del Discord.'), ephemeral=True)
+        lang = lang_for(interaction)
+        await interaction.response.send_message(embed=error_embed(t(lang, 'err.admin'), t(lang, 'err.admin.hint'), lang), ephemeral=True)
         return False
     return True
 
@@ -124,180 +132,205 @@ def main():
     logging.basicConfig(level=s.log_level)
     cat = Catalog.load(s.data_path)
     bot = RustBot(s, cat)
+    raid = bot.raid_data
 
     @bot.tree.error
     async def on_app_command_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
-        """Último recurso: cualquier error no controlado se muestra de forma amable y se registra."""
+        """Last resort: any unhandled error is shown politely and logged."""
+        lang = lang_for(interaction)
         if isinstance(error, app_commands.CommandOnCooldown):
-            msg = error_embed(f'Espera {error.retry_after:.0f} s antes de repetirlo.')
+            msg = error_embed(t(lang, 'err.cooldown', s=f'{error.retry_after:.0f}'), lang=lang)
         elif isinstance(error, app_commands.CheckFailure):
-            msg = error_embed('No tienes permiso para usar este comando aquí.')
+            msg = error_embed(t(lang, 'err.forbidden'), lang=lang)
         else:
             logging.exception('Unhandled command error', exc_info=error)
-            msg = error_embed('Algo salió mal al ejecutar el comando.', 'Inténtalo de nuevo en un momento. Si se repite, avisa a un admin.')
+            msg = error_embed(t(lang, 'err.generic'), t(lang, 'err.generic.hint'), lang)
         try:
             await reply(interaction, embed=msg)
         except discord.HTTPException:
             pass
 
-    # ── Ayuda ──
-    @bot.tree.command(description='📚 Menú principal: todas las herramientas de RuxtBot')
+    # ── Help ──
+    @bot.tree.command(description='📚 Main menu: every RuxtBot tool')
     async def help(interaction: discord.Interaction):
-        await interaction.response.send_message(embed=home_embed(cat), view=HelpView(cat, interaction.user.id), ephemeral=True)
+        layout = help_layout(raid, lang_for(interaction), interaction.user.id)
+        await interaction.response.send_message(view=layout, ephemeral=True)
+        layout.message = await interaction.original_response()
 
-    # ── Ítems y crafteo ──
+    # ── Items and crafting ──
     async def item_choices(interaction, current: str):
         return [app_commands.Choice(name=i['name'][:100], value=i['id']) for i in cat.matches(current)][:25]
 
     async def craftable_choices(interaction, current: str):
         return [app_commands.Choice(name=i['name'][:100], value=i['id']) for i in cat.matches(current) if i.get('recipe')][:25]
 
-    @bot.tree.command(description='🔎 Ficha de un ítem: receta, alias y usos en raid')
-    @app_commands.describe(query='Nombre o alias del ítem (también en español)')
+    def item_name(key: str) -> str:
+        return cat.raw['items'].get(key, {}).get('name', key)
+
+    @bot.tree.command(description='🔎 Item card: picture, recipe, aliases and raid uses')
+    @app_commands.describe(query='Item name or alias')
     @app_commands.autocomplete(query=item_choices)
     async def item(interaction: discord.Interaction, query: str):
+        lang = lang_for(interaction)
         found = cat.item(query) or cat.raw['items'].get(query)
         if not found:
             options = cat.matches(query)
-            hint = ('¿Quisiste decir: ' + ', '.join(f"`{x['id']}`" for x in options[:10]) + '?') if options else 'Escribe y elige una sugerencia.'
-            await interaction.response.send_message(embed=error_embed('Ítem ambiguo o desconocido.', hint), ephemeral=True)
+            hint = t(lang, 'item.suggest', list=', '.join(f"`{x['id']}`" for x in options[:10])) if options else t(lang, 'item.pick')
+            await interaction.response.send_message(embed=error_embed(t(lang, 'item.unknown'), hint, lang), ephemeral=True)
             return
         e = brand_embed(f"🔎 {found['name']}", f"`{found['id']}`")
+        if icon := cat.icon(found['id']):
+            e.set_thumbnail(url=icon)
         if found.get('aliases'):
-            e.add_field(name='🏷️ Alias', value=', '.join(found['aliases'])[:1024], inline=False)
+            e.add_field(name=t(lang, 'item.aliases'), value=', '.join(found['aliases'])[:1024], inline=False)
         if found.get('recipe'):
             batch = found.get('yield', 1)
-            recipe = '\n'.join(f'• {n:,} {item_name(cat, k)}' for k, n in found['recipe'].items())
-            e.add_field(name='🛠️ Receta' + (f' (fabrica {batch})' if batch > 1 else ''), value=recipe, inline=True)
+            recipe = '\n'.join(f'• {n:,} {item_name(k)}' for k, n in found['recipe'].items())
+            e.add_field(name=t(lang, 'item.recipe.batch', n=batch) if batch > 1 else t(lang, 'item.recipe'), value=recipe, inline=True)
             base = cat.materials(found['id'], batch)
-            e.add_field(name='⛏️ Recursos base', value='\n'.join(f'• {n:,} {item_name(cat, k)}' for k, n in base.items()), inline=True)
+            e.add_field(name=t(lang, 'item.base'), value='\n'.join(f'• {n:,} {item_name(k)}' for k, n in base.items()), inline=True)
         used_in = [i['name'] for i in cat.raw['items'].values() if found['id'] in i.get('recipe', {})]
         if used_in:
-            e.add_field(name='🔗 Se usa para fabricar', value=', '.join(used_in)[:1024], inline=False)
-        raids = [f"{t['name']} ({t['methods'][found['id']]['count']:,})" for t in raidable(cat).values() if found['id'] in t['methods']]
-        if raids:
-            e.add_field(name='💥 Sirve para raidear (unidades)', value=' · '.join(raids)[:1024], inline=False)
+            e.add_field(name=t(lang, 'item.used_in'), value=', '.join(used_in)[:1024], inline=False)
+        if method := CATALOG_TO_RAID.get(found['id']):
+            uses = [(raid.targets[k]['name'], raid.amount(k, method)) for k in raid.targets if raid.amount(k, method)]
+            if uses:
+                e.add_field(name=t(lang, 'item.raids'), value=' · '.join(f'{n} ×{a:,}' for n, a in uses[:14])[:1024], inline=False)
         if found.get('source'):
             e.url = found['source']
-        e.set_footer(text=f'Datos: {cat.version}')
+        e.set_footer(text=f"{t(lang, 'common.data')}: {cat.version}")
         await interaction.response.send_message(embed=e, ephemeral=True)
 
-    @bot.tree.command(description='🛠️ Calculadora de fabricación: recursos base e intermedios')
-    @app_commands.describe(item='Ítem a fabricar', quantity='Cantidad')
+    @bot.tree.command(description='🛠️ Crafting calculator: raw resources and intermediates')
+    @app_commands.describe(item='Item to craft', quantity='Amount')
     @app_commands.autocomplete(item=craftable_choices)
     async def craft(interaction: discord.Interaction, item: str, quantity: app_commands.Range[int, 1, 100000]):
+        lang = lang_for(interaction)
         found = cat.item(item) or cat.raw['items'].get(item)
         if not found or not found.get('recipe'):
-            await interaction.response.send_message(embed=error_embed('Ítem desconocido o no fabricable.', 'Elige uno de las sugerencias.'), ephemeral=True)
+            await interaction.response.send_message(embed=error_embed(t(lang, 'craft.unknown'), t(lang, 'craft.pick'), lang), ephemeral=True)
             return
         mats = cat.materials(found['id'], quantity)
         inter = cat.intermediates(found['id'], quantity)
         e = brand_embed(f"🛠️ {quantity:,} × {found['name']}")
+        if icon := cat.icon(found['id']):
+            e.set_thumbnail(url=icon)
         if 'sulfur' in mats:
-            e.description = f"🧪 **{mats['sulfur']:,}** azufre en total"
-        e.add_field(name='⚙️ Intermedios', value='\n'.join(f'• {n:,} {item_name(cat, k)}' for k, n in inter.items()) or '—', inline=True)
-        e.add_field(name='⛏️ Recursos y componentes', value='\n'.join(f'• {n:,} {item_name(cat, k)}' for k, n in mats.items()), inline=True)
-        e.set_footer(text=f'Datos: {cat.version} · Lotes completos de fabricación')
+            e.description = t(lang, 'craft.sulfur', n=mats['sulfur'])
+        e.add_field(name=t(lang, 'craft.inter'), value='\n'.join(f'• {n:,} {item_name(k)}' for k, n in inter.items()) or '—', inline=True)
+        e.add_field(name=t(lang, 'craft.base'), value='\n'.join(f'• {n:,} {item_name(k)}' for k, n in mats.items()), inline=True)
+        e.set_footer(text=t(lang, 'craft.footer', version=cat.version))
         await interaction.response.send_message(embed=e, ephemeral=True)
 
-    # ── Ajustes ──
-    @bot.tree.command(description='⚙️ Canal de alertas, idioma, alertas e intervalo (solo admins)')
-    @app_commands.describe(language='Idioma', alerts='Enviar avisos', interval_seconds='Cada cuántos segundos revisar', channel='Canal para los avisos')
-    @app_commands.choices(language=[app_commands.Choice(name='Español', value='es'), app_commands.Choice(name='English', value='en')])
-    async def settings(interaction: discord.Interaction, language: str = 'es', alerts: bool = True,
+    # ── Settings ──
+    @bot.tree.command(description='⚙️ Alert channel, language, alerts and interval (admins)')
+    @app_commands.describe(language='Language for alerts', alerts='Send alerts', interval_seconds='Seconds between checks', channel='Channel for alerts')
+    @app_commands.choices(language=[app_commands.Choice(name='English', value='en'), app_commands.Choice(name='Spanish', value='es')])
+    async def settings(interaction: discord.Interaction, language: str = 'en', alerts: bool = True,
                        interval_seconds: app_commands.Range[int, 10, 3600] = 10, channel: discord.TextChannel | None = None):
         if not await require_admin(interaction):
             return
-        if language not in ('es', 'en'):
-            await interaction.response.send_message(embed=error_embed('El idioma debe ser `es` o `en`.'), ephemeral=True)
-            return
+        lang = lang_for(interaction)
+        language = language if language in ('en', 'es') else 'en'
         target_channel = channel or interaction.channel
         bot.store.set_settings(interaction.guild_id, target_channel.id, language, alerts, interval_seconds)
-        e = success_embed('Ajustes guardados.')
-        e.add_field(name='📢 Canal', value=f'<#{target_channel.id}>')
-        e.add_field(name='🌐 Idioma', value=language)
-        e.add_field(name='🔔 Alertas', value='Activas' if alerts else 'Pausadas')
-        e.add_field(name='⏱️ Intervalo', value=f'{interval_seconds} s')
+        e = success_embed(t(lang, 'settings.saved'))
+        e.add_field(name=t(lang, 'settings.channel'), value=f'<#{target_channel.id}>')
+        e.add_field(name=t(lang, 'settings.language'), value={'en': 'English', 'es': 'Español'}[language])
+        e.add_field(name=t(lang, 'settings.alerts'), value=t(lang, 'settings.on' if alerts else 'settings.off'))
+        e.add_field(name=t(lang, 'settings.interval'), value=f'{interval_seconds} s')
         await interaction.response.send_message(embed=e, ephemeral=True)
 
-    # ── Servidores y presencia ──
+    # ── Servers and presence ──
     async def server_choices(interaction, current: str):
         return [app_commands.Choice(name=row['name'][:100], value=row['id']) for row in bot.directory.search(current)]
 
-    @bot.tree.command(description='🖥️ Estado del servidor: jugadores, cola, mapa y wipe')
-    @app_commands.describe(server='Escribe parte del nombre y elige una sugerencia')
+    @bot.tree.command(description='🖥️ Live server status: players, queue, map and wipe')
+    @app_commands.describe(server='Type part of the name and pick a suggestion')
     @app_commands.autocomplete(server=server_choices)
     async def server(interaction: discord.Interaction, server: str):
+        lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=True)
         try:
             sid = bot.directory.resolve(server)
+        except ValueError:
+            await interaction.followup.send(embed=error_embed(t(lang, 'server.pick'), lang=lang), ephemeral=True)
+            return
+        try:
             a = (await bot.bm.server(sid))['attributes']
-            d = a.get('details') or {}
-            online = a.get('status') == 'online'
-            players, cap = a.get('players') or 0, a.get('maxPlayers') or 0
-            pct = round(100 * players / cap) if cap else 0
-            e = brand_embed(f"🖥️ {a.get('name', 'Servidor')}", color=GREEN if online else RED)
-            e.url = f'https://www.battlemetrics.com/servers/rust/{sid}'
-            e.description = f"{'🟢 En línea' if online else '🔴 ' + str(a.get('status', 'desconocido')).capitalize()} · 👥 **{players}/{cap}** ({pct}%)"
-            if d.get('rust_queued_players'):
-                e.description += f" · ⏳ cola **{d['rust_queued_players']}**"
-            if d.get('map'):
-                size = d.get('rust_world_size')
-                e.add_field(name='🗺️ Mapa', value=str(d['map']) + (f' · {size:,} m' if isinstance(size, int) else ''))
-            if a.get('rank'):
-                e.add_field(name='🏆 Ranking', value=f"#{a['rank']:,}")
-            if a.get('country'):
-                e.add_field(name='🌎 País', value=a['country'])
-            if stamp := iso_to_ts(d.get('rust_last_wipe')):
-                e.add_field(name='🧹 Último wipe', value=f'<t:{stamp}:R>')
-            if stamp := iso_to_ts(d.get('rust_next_wipe')):
-                e.add_field(name='⏭️ Próximo wipe', value=f'<t:{stamp}:R>')
-            if a.get('ip') and a.get('port'):
-                e.add_field(name='🔌 Conectar (F1)', value=f"`client.connect {a['ip']}:{a['port']}`", inline=False)
-            e.set_footer(text='BattleMetrics')
-            await interaction.followup.send(embed=e, ephemeral=True)
-        except ValueError as exc:
-            await interaction.followup.send(embed=error_embed(str(exc)), ephemeral=True)
         except Exception:
-            await interaction.followup.send(embed=error_embed('No se pudo consultar el servidor.', 'Selecciona su nombre en las sugerencias y revisa BattleMetrics.'), ephemeral=True)
+            await interaction.followup.send(embed=error_embed(t(lang, 'server.fail'), t(lang, 'server.fail.hint'), lang), ephemeral=True)
+            return
+        d = a.get('details') or {}
+        online = a.get('status') == 'online'
+        players, cap = a.get('players') or 0, a.get('maxPlayers') or 0
+        pct = round(100 * players / cap) if cap else 0
+        e = brand_embed(f"🖥️ {a.get('name', 'Server')}", color=GREEN if online else RED)
+        e.url = f'https://www.battlemetrics.com/servers/rust/{sid}'
+        parts = [t(lang, 'server.online') if online else '🔴 ' + str(a.get('status', '?')).capitalize(), t(lang, 'server.players', p=players, m=cap, pct=pct)]
+        if d.get('rust_queued_players'):
+            parts.append(t(lang, 'server.queue', n=d['rust_queued_players']))
+        e.description = ' · '.join(parts) + f"\n`{'█' * round(pct / 10)}{'░' * (10 - round(pct / 10))}`"
+        if d.get('map'):
+            size = d.get('rust_world_size')
+            e.add_field(name=t(lang, 'server.map'), value=str(d['map']) + (f' · {size:,} m' if isinstance(size, int) else ''))
+        if a.get('rank'):
+            e.add_field(name=t(lang, 'server.rank'), value=f"#{a['rank']:,}")
+        if a.get('country'):
+            e.add_field(name=t(lang, 'server.country'), value=a['country'])
+        if stamp := iso_to_ts(d.get('rust_last_wipe')):
+            e.add_field(name=t(lang, 'server.last_wipe'), value=f'<t:{stamp}:R>')
+        if stamp := iso_to_ts(d.get('rust_next_wipe')):
+            e.add_field(name=t(lang, 'server.next_wipe'), value=f'<t:{stamp}:R>')
+        if a.get('ip') and a.get('port'):
+            e.add_field(name=t(lang, 'server.connect'), value=f"`client.connect {a['ip']}:{a['port']}`", inline=False)
+        if d.get('rust_headerimage'):
+            e.set_image(url=d['rust_headerimage'])
+        e.set_footer(text='BattleMetrics')
+        await interaction.followup.send(embed=e, ephemeral=True)
 
-    @bot.tree.command(description='🟢 ¿Está conectado? Perfil BattleMetrics + servidor')
-    @app_commands.describe(profile='Enlace del perfil de BattleMetrics', server='Servidor (elige de la lista)')
+    @bot.tree.command(description='🟢 Is a BattleMetrics profile online on a server?')
+    @app_commands.describe(profile='BattleMetrics profile link', server='Server (pick from the list)')
     @app_commands.autocomplete(server=server_choices)
     async def player(interaction: discord.Interaction, profile: str, server: str):
+        lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=True)
         try:
             sid = bot.directory.resolve(server)
-            online = await bot.bm.player_online(sid, 'bm:' + profile_id(profile))
-            text, color = {True: ('🟢 **Conectado**', GREEN), False: ('🔴 **Desconectado**', RED),
-                           None: ('⚪ **Estado desconocido**: BattleMetrics no tiene una observación reciente.', GREY)}[online]
-            e = brand_embed(description=f'{text}\n🖥️ {discord.utils.escape_markdown(bot.directory.name(sid))}', color=color)
-            e.set_footer(text='Usa /track para recibir avisos automáticos.')
-            await interaction.followup.send(embed=e, ephemeral=True)
-        except ValueError as exc:
-            await interaction.followup.send(embed=error_embed(str(exc)), ephemeral=True)
+            pid = profile_id(profile)
+        except ValueError:
+            await interaction.followup.send(embed=error_embed(t(lang, 'bm.profile_link'), t(lang, 'server.pick'), lang), ephemeral=True)
+            return
+        try:
+            online = await bot.bm.player_online(sid, 'bm:' + pid)
         except Exception:
-            await interaction.followup.send(embed=error_embed('No se pudo consultar BattleMetrics.'), ephemeral=True)
+            await interaction.followup.send(embed=error_embed(t(lang, 'bm.fail'), lang=lang), ephemeral=True)
+            return
+        key, color = {True: ('player.online', GREEN), False: ('player.offline', RED), None: ('player.unknown', GREY)}[online]
+        e = brand_embed(description=f"{t(lang, key)}\n🖥️ {discord.utils.escape_markdown(bot.directory.name(sid))}", color=color)
+        e.set_footer(text=t(lang, 'player.footer'))
+        await interaction.followup.send(embed=e, ephemeral=True)
 
-    # ── Vigilancias ──
-    @bot.tree.command(description='👀 Gestiona vigilancias de conexión (solo admins)')
-    @app_commands.describe(action='Qué hacer', profile='Enlace del perfil BattleMetrics', server='Servidor (vacío = todos los conocidos)', label='Nombre a mostrar en los avisos')
-    @app_commands.choices(action=[app_commands.Choice(name='➕ Añadir', value='add'), app_commands.Choice(name='➖ Quitar', value='remove'),
-                                  app_commands.Choice(name='📋 Listar', value='list')])
+    # ── Watches ──
+    @bot.tree.command(description='👀 Manage connection alerts (admins)')
+    @app_commands.describe(action='What to do', profile='BattleMetrics profile link', server='Server (empty = all known)', label='Name shown in alerts')
+    @app_commands.choices(action=[app_commands.Choice(name='Add', value='add'), app_commands.Choice(name='Remove', value='remove'),
+                                  app_commands.Choice(name='List', value='list')])
     @app_commands.autocomplete(server=server_choices)
     async def track(interaction: discord.Interaction, action: str, profile: str | None = None, server: str | None = None, label: str | None = None):
         if not await require_admin(interaction):
             return
+        lang = lang_for(interaction)
         if action == 'list':
             mine = [w for w in bot.store.watches() if (ch := bot.get_channel(w.channel_id)) and ch.guild.id == interaction.guild_id]
             dot = {1: '🟢', 0: '🔴'}
             rows = [f"{dot.get(w.was_online, '⚪')} **{discord.utils.escape_markdown(w.label or w.steamid)}** · "
                     f"{discord.utils.escape_markdown(bot.directory.name(w.server_id))} → <#{w.channel_id}>" for w in mine]
-            e = brand_embed(f'👀 Vigilancias · {len(rows)}', '\n'.join(rows)[:4000] or 'No hay vigilancias. Añade una con `/track action:➕ Añadir`.')
+            e = brand_embed(t(lang, 'track.title', n=len(rows)), '\n'.join(rows)[:4000] or t(lang, 'track.none'))
             await interaction.response.send_message(embed=e, ephemeral=True)
             return
         if not profile:
-            await interaction.response.send_message(embed=error_embed('Falta el perfil.', 'Pega el enlace del perfil de BattleMetrics. Elige el servidor por nombre o déjalo vacío para sus servidores conocidos.'), ephemeral=True)
+            await interaction.response.send_message(embed=error_embed(t(lang, 'track.need_profile'), t(lang, 'track.need_profile.hint'), lang), ephemeral=True)
             return
         await interaction.response.defer(ephemeral=True)
         try:
@@ -305,7 +338,8 @@ def main():
             saved = bot.store.settings(interaction.guild_id)
             channel_id = saved[0] if saved else interaction.channel_id
             data = await bot.bm.profile(pid) if action == 'add' else None
-            # Servidores: el elegido; si no, los del perfil presentes en el directorio (add) o los ya vigilados (remove).
+            # Servers: the chosen one; otherwise the profile's servers that are in the directory (add)
+            # or the ones already watched (remove).
             if server:
                 ids = [bot.directory.resolve(server)]
             elif data:
@@ -314,39 +348,40 @@ def main():
             else:
                 ids = [w.server_id for w in bot.store.watches() if w.steamid == 'bm:' + pid and w.channel_id == channel_id]
             if not ids:
-                raise ValueError('No hay servidores compartidos con el directorio importado.')
+                await interaction.followup.send(embed=error_embed(t(lang, 'track.no_servers'), lang=lang), ephemeral=True)
+                return
             if action == 'add':
-                roles = [r for r in interaction.guild.roles if r.name.casefold() == 'wipe']
-                if len(roles) != 1:
-                    raise ValueError('Debe existir exactamente un rol llamado wipe para las alertas.')
+                if len([r for r in interaction.guild.roles if r.name.casefold() == 'wipe']) != 1:
+                    await interaction.followup.send(embed=error_embed(t(lang, 'track.need_role'), lang=lang), ephemeral=True)
+                    return
                 name = label or data['data']['attributes'].get('name', pid)
                 for sid in ids:
                     bot.store.add('bm:' + pid, sid, channel_id, name)
-                e = success_embed(f'Vigilancia activada en **{len(ids)}** servidor(es). Avisaré a @wipe cuando se conecte o desconecte.')
-                e.set_footer(text='La primera lectura es silenciosa; datos no disponibles no generan falsas desconexiones.')
+                e = success_embed(t(lang, 'track.added', n=len(ids)))
+                e.set_footer(text=t(lang, 'track.added.footer'))
             else:
                 for sid in ids:
                     bot.store.remove('bm:' + pid, sid, channel_id)
-                e = success_embed(f'Vigilancias eliminadas: **{len(ids)}**.')
+                e = success_embed(t(lang, 'track.removed', n=len(ids)))
             await interaction.followup.send(embed=e, ephemeral=True, allowed_mentions=discord.AllowedMentions.none())
-        except ValueError as exc:
-            await interaction.followup.send(embed=error_embed(str(exc)), ephemeral=True)
+        except ValueError:
+            await interaction.followup.send(embed=error_embed(t(lang, 'bm.profile_link'), t(lang, 'server.pick'), lang), ephemeral=True)
         except Exception:
-            await interaction.followup.send(embed=error_embed('No se pudo consultar BattleMetrics. No se han confirmado cambios.'), ephemeral=True)
+            await interaction.followup.send(embed=error_embed(t(lang, 'track.fail'), lang=lang), ephemeral=True)
 
-    # ── Fuentes ──
-    @bot.tree.command(description='📚 Versión del catálogo, fuentes y confianza de los datos')
+    # ── Sources ──
+    @bot.tree.command(description='📚 Data sources and catalog version')
     async def sources(interaction: discord.Interaction):
-        meta = cat.raw['meta']
-        e = brand_embed('📚 Fuentes de datos')
-        e.add_field(name='🏷️ Versión', value=meta['version'])
-        e.add_field(name='📅 Actualizado', value=str(meta['updated']))
-        e.add_field(name='🎯 Objetivos con datos', value=f"{len(raidable(cat))}/{len(cat.raw['targets'])}")
-        e.add_field(name='🔗 Fuente', value=meta['source'], inline=False)
-        e.add_field(name='⚖️ Confianza', value=meta['confidence'], inline=False)
+        lang = lang_for(interaction)
+        meta = raid.raw['meta']
+        e = brand_embed(t(lang, 'sources.title'))
+        e.add_field(name=t(lang, 'sources.raid'), value=t(lang, 'sources.raid.value', rustly=meta['rustly']['url'], game=meta['rustly']['gameVersion'],
+                                                         rustclash=meta['rustclash']['url'], n=len(raid.targets)), inline=False)
+        e.add_field(name=t(lang, 'sources.catalog'), value=f"{cat.raw['meta']['version']} · {cat.raw['meta']['source']}", inline=False)
+        e.add_field(name=t(lang, 'sources.icons'), value=meta['icons'], inline=False)
         await interaction.response.send_message(embed=e, ephemeral=True)
 
-    register_raid_commands(bot, cat)
+    register_raid_commands(bot, raid)
     register_utilities(bot, cat, require_admin)
     register_who(bot, bot.who)
     bot.run(s.discord_token)

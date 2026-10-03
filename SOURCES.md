@@ -1,32 +1,42 @@
-# Fuentes y alcance del catálogo
+# Data sources and scope
 
-Consulta: 2026-10-02. PC vanilla; los multiplicadores de servidores modificados no están incluidos.
+Snapshot: 2026-10-02, vanilla PC servers (modded multipliers are not included).
 
-- [Puerta blindada](https://wiki.rustclash.com/item/armored-door): 1000 HP, 440 por C4, 3 cargas. Sustituye el dato antiguo de 800 HP.
-- [Puerta de madera](https://wiki.rustclash.com/item/wooden-door), [metal](https://wiki.rustclash.com/item/sheet-metal-door), [garaje](https://wiki.rustclash.com/item/garage-door).
-- Muros: [madera](https://wiki.rustclash.com/building/wooden-wall), [piedra](https://wiki.rustclash.com/building/stone-wall), [metal](https://wiki.rustclash.com/building/metal-wall), [blindado](https://wiki.rustclash.com/building/armored-wall). Se usa lado duro; no extrapolar automáticamente a pisos o techos.
-- Recetas oficiales: [explosivos](https://wiki.facepunch.com/rust/item/explosives), [satchel](https://wiki.facepunch.com/rust/item/explosive.satchel), [beancan](https://wiki.facepunch.com/rust/item/grenade.beancan), [F1](https://wiki.facepunch.com/rust/item/grenade.f1), [munición explosiva](https://wiki.facepunch.com/rust/item/ammo.rifle.explosive), [molotov](https://wiki.facepunch.com/rust/item/grenade.molotov).
-- Recetas adicionales: [rocket](https://wiki.rustclash.com/item/rocket), [HV](https://wiki.rustclash.com/item/high-velocity-rocket), [incendiario](https://wiki.rustclash.com/item/incendiary-rocket), [propano](https://wiki.rustclash.com/item/propane-explosive-bomb), [mortero](https://wiki.rustclash.com/item/mortar-shell), [cañón](https://wiki.rustclash.com/item/cannonball), [ballesta](https://wiki.rustclash.com/item/hammerhead-bolt).
+## Raid targets — `data/raid.json`
 
-Las tablas de durabilidad son comunitarias, no pruebas ejecutadas en el juego. Cada objetivo lleva su URL. Cantidad = techo(HP / daño), con pruebas que impiden declarar destrucción antes de tiempo. La munición explosiva usa Assault Rifle; las granadas se fijan al objetivo. Propano plantado y lanzado son métodos distintos. Molotov e incendiario son estimaciones variables por fuego. Un golpe del ariete no equivale a fabricar un ariete nuevo.
+Built by `scripts/build_raid_data.py` from:
 
-Costos de munición: lotes enteros, sin inventario previo, componentes adquiridos (tubos, combustible, cuerda, tanque) no descompuestos en sus propias recetas. No incluyen fabricar, reparar ni operar el lanzador/arma. MLRS, HE, ariete y handmade shell conservan costo no verificado; no se presentan como gratis. Pisos, techos y desplegables que no se verificaron siguen marcados como pendientes.
+- **Rustly API v1** (`data/sources/rustly_raid.json`) — 27 targets: walls and floors (hard and soft side), doors, double doors, tool cupboard, auto turret and vehicles. Datamined from game build 2633.288.1; C4, rocket, satchel, beancan, F1 and HV amounts are measured in game by Rustly. Free to use with a link to [rustly.com](https://rustly.com/raid/), shown in `/sources` and in every raid footer.
+- **RustClash durability tables** (`data/sources/rustclash_durability.json`, trimmed to the explosive rows) — 30 more targets: high external walls and gates, hatches, floor grill, windows, embrasures, bars, shop front, prison cell, fences, barricades, shotgun trap, flame turret, SAM site, tesla coil, large box, vending machine, large furnace, workbench 3. Hard side only.
+- Siege amounts (catapult, mortar, MLRS, 40mm HE, ballista, ram, cannon) for the original eight doors and walls come from the previous RustClash-based catalog.
 
-## Servidores
+Rules:
+- Amount = units needed with direct hits; no splash stacking between targets.
+- Costs are raw materials to craft the full amount (sulfur, charcoal, metal fragments). Recipes without a verified cost (MLRS, ram, 40mm HE) are shown as "cost not verified", never as free.
+- "Cheapest" only picks common explosives; siege and fire are shown and tagged but not recommended.
+- Rustly and RustClash are behind bot checks, so the raw snapshots are captured with a real browser and committed. Refresh them after a patch and re-run the build script.
 
-`data/servers.json` contiene 75 nombres/IDs recuperados mediante la API autenticada del perfil solicitado, más los tres enlaces explícitos (ya presentes). No contiene tokens, direcciones IP ni historial de sesiones. Los nombres pueden cambiar con cada wipe.
+## Crafting — `data/rust_catalog.yml`
 
-El tracker utiliza `GET /players/{id}?include=server`, `included[type=server].meta.online`. Solo acepta valores booleanos con servidor online, consulta válida y actualización de menos de cinco minutos. Los datos ausentes, privados, antiguos, errores y límites de API conservan la última observación: no equivalen a desconexión. La revisión cada 10 segundos no garantiza que BattleMetrics publique cambios cada 10 segundos.
+Official Facepunch Wiki recipes (explosives, satchel, beancan, F1, explosive ammo, molotov) plus RustClash recipes (rocket, HV, incendiary, propane, mortar, cannonball, hammerhead). Batches round up; launchers and weapons are not included.
 
-Las vigilancias antiguas de SteamID deben reemplazarse con `/track add profile:<enlace BattleMetrics>`; no es seguro convertir SteamID en ID BattleMetrics por coincidencias de texto. La primera observación es silenciosa. El envío se reintenta si Discord falla antes de guardar estado; una caída entre envío y guardado puede duplicar una alerta. No se promete entrega exactamente una vez.
+## Pictures
+
+Item icons: `https://wiki.rustclash.com/img/items180/<shortName>.png` (shortNames from the Rustly item API). Vehicles have no item icon, so the UI shows the icon of their cheapest explosive.
+
+## Servers
+
+`data/servers.json` holds 75 server names/IDs from the authenticated BattleMetrics profile, plus anything imported with `/syncservers`. `/serversearch` queries BattleMetrics live. `/forcewipe` computes the first Thursday of each month at 2 PM US Eastern (DST-aware, no external data).
+
+The tracker uses `GET /players/{id}?include=server` and only trusts a boolean `meta.online` from an online server with a valid query updated less than five minutes ago. Missing, private or stale data keeps the last reading and never counts as a disconnect. The first reading is silent. Delivery is retried if Discord fails before the state is saved; exactly-once delivery is not promised.
 
 ## /who
 
-Fuentes públicas consultadas en paralelo; si una falla, el resto se muestra y el pie indica cuál no respondió:
+Sources queried in parallel; a failing one is listed in the footer:
 
-- Steam Community: `/profiles/{id}?xml=1` (estado, baneo VAC, tradeo, cuenta limitada, ubicación), la página del perfil (nivel, juegos, insignias), `/ajaxaliases` (nombres anteriores) y `/id/{vanity}?xml=1` para URLs personalizadas.
-- Formatos SteamID calculados localmente con la misma fórmula que steamid.io.
-- RustWho: `fetch-v1.rustwho.com/stats/public/{id}` (baneos, bans en servidores, historial de nombres, estadísticas de Rust). Son estadísticas de Steam: orientativas, no prueba de trampas.
-- BattleMetrics: `GET /players/{id}?include=server,identifier` cuando se pasa el enlace del perfil. Sin enlace, `filter[search]` por nombre exacto solo muestra candidatos sin verificar.
-- Steam Web API (`IPlayerService/GetOwnedGames`) solo con `STEAM_API_KEY`.
-- SteamDB devuelve 403 a clientes automatizados; se enlaza su calculadora (`?cc=mx`) en lugar de extraer datos.
+- Steam Community: `/profiles/{id}?xml=1`, the profile page (level, games, badges), `/ajaxaliases` (Steam name history) and `/id/{vanity}?xml=1`.
+- SteamID formats computed locally with the steamid.io formula.
+- RustWho: `fetch-v1.rustwho.com/stats/public/{id}` (bans, server bans, name history, Rust stats — informational, not proof of cheating).
+- BattleMetrics: `GET /players/{id}?include=server,identifier` with a profile link. Without one, an exact-name search lists up to three unverified candidates with the other names they used.
+- Steam Web API (`IPlayerService/GetOwnedGames`) only with `STEAM_API_KEY`.
+- SteamDB returns 403 to bots, so its calculator (`?cc=mx`) is linked instead of scraped.

@@ -63,21 +63,23 @@ def test_embeds_show_every_section():
     embeds = build_embeds(report_fixture())
     steam, rust, bm = embeds
     assert steam.title == '👤 King' and steam.color.value == 0xC0392B  # VAC => rojo
-    assert '🎮 Jugando **Rust**' in steam.description
+    assert '🎮 Playing **Rust**' in steam.description
+    assert '🎮 Jugando **Rust**' in build_embeds(report_fixture(), lang='es')[0].description
     fields = {f.name: f.value for f in steam.fields}
-    assert 'STEAM_0:0:444176606' in fields['🆔 Identificadores']
-    assert '⛔ VAC: **1**' in fields['🛡️ Baneos'] and 'hace **30** días' in fields['🛡️ Baneos']
-    assert '⭐ Nivel: **27**' in fields['📋 Cuenta']
+    assert 'STEAM_0:0:444176606' in fields['🆔 Identifiers']
+    assert '⛔ VAC: **1**' in fields['🛡️ Bans'] and '**30** days ago' in fields['🛡️ Bans']
+    assert '⭐ Level: **27**' in fields['📋 Account']
     assert '🔥 K/D **2**' in rust.description and '12.5%' in rust.description
-    assert '🟢 **En línea ahora**' in bm.description
-    assert {f.name: f.value for f in bm.fields}['⏱️ Tiempo jugado'] == '**2 h**'
+    assert '🟢 **Online now**' in bm.description
+    assert {f.name: f.value for f in bm.fields}['⏱️ Time played'] == '**2 h**'
     assert 'Steam API' in bm.footer.text
     assert sum(len(e) for e in embeds) <= 6000
 
 
 def test_private_stats_and_bm_only_input():
     report = report_fixture() | {'rustwho': {'rustStats': {'noData': True}}}
-    assert 'privadas' in build_embeds(report)[1].description
+    assert 'private' in build_embeds(report)[1].description
+    assert 'privadas' in build_embeds(report, lang='es')[1].description
     only_bm = {'steamid': None, 'bm_id': '42', 'errors': [], 'bm': report_fixture()['bm']}
     embeds = build_embeds(only_bm)
     assert embeds[0].title.startswith('📊') and 'SteamID64' in embeds[-1].description
