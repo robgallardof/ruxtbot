@@ -157,6 +157,7 @@ class WhoService:
         details = await asyncio.gather(*(self.bm_detail(p['id']) for p in top), return_exceptions=True)
         for p, d in zip(top, details):
             if isinstance(d, dict):
+                p['detail'], p['steamid'] = d, steamid_from(d)
                 p['names'] = [i['attributes']['identifier'] for i in d.get('included', [])
                               if i.get('type') == 'identifier' and i['attributes'].get('type') == 'name'
                               and i['attributes'].get('identifier', '').casefold() != name.casefold()][:5]
@@ -172,6 +173,8 @@ class WhoService:
             try:
                 prefetched = await self.bm_detail(bm_id)
                 steamid = steamid_from(prefetched)
+                if steamid:
+                    self.bm.verified(steamid, bm_id)
             except Exception as exc:
                 logging.info('who: bm prefetch failed: %r', exc)
                 prefetch_failed = True
@@ -204,6 +207,11 @@ class WhoService:
                 report['bm_candidates'] = await self.bm_candidates(name)
             except Exception as exc:
                 logging.info('who: bm search failed: %r', exc)
+            # Plan B: a same-name profile that lists this exact SteamID is the player; load it as if quick-match found it.
+            verified = [p for p in report.get('bm_candidates') or [] if p.get('steamid') == steamid]
+            if len(verified) == 1:
+                match = verified[0]
+                report.update(bm_id=self.bm.verified(steamid, str(match['id'])), bm=match['detail'], resolution_error=None, bm_candidates=[])
         return report
 
 

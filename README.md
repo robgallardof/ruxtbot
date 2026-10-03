@@ -31,6 +31,7 @@ Every player option takes a **SteamID64** (`7656119…`), `STEAM_0:X:Y`, `[U:1:N
 
 After the first lookup the player goes into the guild's **player book** and every player option **autocompletes by name** (`KingGallardo · 7656119…`). The book is per Discord server (per user in DMs), keeps the 500 most recent players and never shares names between servers.
 
+- **A SteamID is enough**: the bot finds the BattleMetrics ID by itself and loads Steam, RustWho and BattleMetrics together. Order: verified cache (30 days, no API call) → `quick-match` → if that is denied, BattleMetrics profiles with the same Steam name, accepted **only** when the profile lists that exact SteamID. Nothing is ever assumed from a name alone.
 - **Type the name and press Enter**: a name typed without picking a suggestion is looked up in the book (exact name first, otherwise a single partial match).
 - **Errors always offer a way out**: an unknown name shows a **🔎 Search «name»** button that runs the BattleMetrics name search in one click.
 - `/who` with no options opens a panel: recent players, search by name, or enter a SteamID / BattleMetrics ID. `/help` has a **Find player** button that opens it.

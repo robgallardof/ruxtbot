@@ -23,6 +23,7 @@ class BattleMetrics:
         self.client = httpx.AsyncClient(timeout=15)
         self.blocked_until = 0.0
         self.cache = {}
+        self.identities = None  # Store with identity()/save_identity(): skips quick-match for known SteamIDs
 
     async def request(self, path: str, *, body: dict | None = None) -> dict:
         """Authenticated GET (or POST with `body`). Retries 5xx with exponential backoff; a 429 blocks the following calls."""
@@ -110,6 +111,8 @@ class BattleMetrics:
         target = parse_target(value)
         if not target.steamid:
             raise ValueError('identity.input')
+        if self.identities and (known := self.identities.identity(target.steamid)):
+            return known
         payload = {'data': [{'type': 'identifier', 'attributes': {'type': 'steamID', 'identifier': target.steamid}}]}
         try:
             result = await self.request('players/quick-match', body=payload)
@@ -127,7 +130,29 @@ class BattleMetrics:
             raise ValueError('identity.missing')
         if len(ids) != 1 or (result.get('links') or {}).get('next'):
             raise ValueError('identity.ambiguous')
-        return ids.pop()
+        return self.verified(target.steamid, ids.pop())
+
+    def verified(self, steamid: str, bm_id: str) -> str:
+        """Remember an exact SteamID -> BattleMetrics match and return the ID."""
+        if self.identities:
+            self.identities.save_identity(steamid, bm_id)
+        return bm_id
+
+    async def verify_by_name(self, steamid: str, name: str | None) -> str | None:
+        """Plan B when quick-match is denied: among players with exactly this name, the one whose profile lists this SteamID.
+
+        A same-name profile is only accepted when BattleMetrics shows the SteamID on it; otherwise None.
+        """
+        if not name:
+            return None
+        rows = await self.search_players(name)
+        exact = sorted((p for p in rows if (p.get('attributes') or {}).get('name', '').casefold() == name.casefold()),
+                       key=lambda p: (p.get('attributes') or {}).get('updatedAt') or '', reverse=True)[:3]
+        for row in exact:
+            detail = await self.request(f"players/{row['id']}?include=identifier")
+            if steamid_from(detail) == steamid:
+                return self.verified(steamid, str(row['id']))
+        return None
 
     async def server_players(self, server_id: str) -> tuple[dict, list[dict]]:
         """(server attributes, online players) with the start of each current session when BattleMetrics shares it."""

@@ -625,3 +625,55 @@ def test_track_panel_quick_watch_and_help_players_button(bot):
         opened = await click(find(h.sent()['view'], label='Find player'))
         assert opened.sent()['embed'].title == '🕵️ Look up a player'
     run(go())
+
+
+def test_steamid_loads_everything_even_without_quick_match(bot):
+    """SteamID -> BattleMetrics: cached after the first match; when quick-match is denied, a same-name profile
+    that lists the exact SteamID is used, and one that does not is never assumed."""
+    calls = []
+
+    def denied(request):
+        calls.append(request.url.path)
+        if request.url.path == '/players/quick-match':
+            return httpx.Response(403, json={})
+        return fake_http(request)
+
+    async def go():
+        transport = httpx.MockTransport(denied)
+        bot.bm.client = httpx.AsyncClient(transport=transport)
+        bot.who.client = httpx.AsyncClient(transport=transport, follow_redirects=True)
+        i = FakeInteraction()
+        await cmd(bot, 'presence')(i, STEAMID)
+        assert 'Rusty Moose' in i.sent()['embed'].description
+        assert bot.store.identity(STEAMID) == '1128280744'
+        calls.clear()
+        again = FakeInteraction()
+        await cmd(bot, 'player')(again, STEAMID, '5931597')
+        assert 'Online' in again.sent()['embed'].description and '/players/quick-match' not in calls
+        # /who with a SteamID loads Steam + RustWho + BattleMetrics together.
+        bot.store.conn.execute('DELETE FROM identities')
+        w = FakeInteraction()
+        await cmd(bot, 'who')(w, STEAMID)
+        titles = [e.title or '' for e in w.sent()['embeds']]
+        assert titles[0] == '👤 KingGallardo' and any(x.startswith('📊 BattleMetrics · KingGallardo') for x in titles)
+    run(go())
+
+
+def test_same_name_without_the_steamid_is_never_assumed(bot):
+    def handler(request):
+        if request.url.path == '/players/quick-match':
+            return httpx.Response(403, json={})
+        if request.url.path.startswith('/players/'):
+            data = bm_player('1128280744')
+            data['included'] = [r for r in data['included'] if (r.get('attributes') or {}).get('type') != 'steamID']
+            return httpx.Response(200, json=data)
+        return fake_http(request)
+
+    async def go():
+        transport = httpx.MockTransport(handler)
+        bot.bm.client = httpx.AsyncClient(transport=transport)
+        bot.who.client = httpx.AsyncClient(transport=transport, follow_redirects=True)
+        i = FakeInteraction()
+        await cmd(bot, 'track')(i, 'add', STEAMID)
+        assert 'denied' in i.sent()['embed'].description and not bot.store.watches() and bot.store.identity(STEAMID) is None
+    run(go())

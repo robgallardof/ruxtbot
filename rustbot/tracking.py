@@ -34,6 +34,7 @@ class Store:
         self.conn = sqlite3.connect(path)
         self.conn.execute("CREATE TABLE IF NOT EXISTS watches(steamid TEXT,server_id TEXT,channel_id INTEGER,label TEXT,was_online INTEGER,PRIMARY KEY(steamid,server_id,channel_id))")
         self.conn.execute("CREATE TABLE IF NOT EXISTS settings(guild_id INTEGER PRIMARY KEY,channel_id INTEGER,language TEXT,alerts INTEGER,poll_interval INTEGER)")
+        self.conn.execute("CREATE TABLE IF NOT EXISTS identities(steamid TEXT PRIMARY KEY,bm_id TEXT NOT NULL,verified_at REAL NOT NULL)")
         self.conn.execute("CREATE TABLE IF NOT EXISTS players(scope INTEGER,ref TEXT,name TEXT,steamid TEXT,bm_id TEXT,used_at REAL,PRIMARY KEY(scope,ref))")
         columns = {r[1] for r in self.conn.execute('PRAGMA table_info(watches)')}
         if 'owner_id' not in columns:
@@ -83,6 +84,17 @@ class Store:
     def servers(self):
         self.conn.execute("CREATE TABLE IF NOT EXISTS server_directory(id TEXT PRIMARY KEY,name TEXT NOT NULL)")
         return [{'id': r[0], 'name': r[1]} for r in self.conn.execute("SELECT id,name FROM server_directory")]
+
+    # ── Verified SteamID -> BattleMetrics ID matches (global: a fact, not a lookup history) ──
+    def save_identity(self, steamid: str, bm_id: str):
+        self.conn.execute('INSERT INTO identities VALUES(?,?,?) ON CONFLICT(steamid) DO UPDATE SET bm_id=excluded.bm_id,verified_at=excluded.verified_at',
+                          (steamid, bm_id, time.time()))
+        self.conn.commit()
+
+    def identity(self, steamid: str, max_age_days: int = 30) -> str | None:
+        """BattleMetrics ID verified for this SteamID in the last `max_age_days`, or None."""
+        row = self.conn.execute('SELECT bm_id FROM identities WHERE steamid=? AND verified_at>?', (steamid, time.time() - max_age_days * 86400)).fetchone()
+        return row[0] if row else None
 
     # ── Player book: players looked up in each guild, for name autocomplete ──
     def remember_player(self, scope: int, name: str | None, steamid: str | None = None, bm_id: str | None = None):

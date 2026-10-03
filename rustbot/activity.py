@@ -8,7 +8,7 @@ import logging
 import discord
 from discord import app_commands
 from .i18n import lang_for, t
-from .players import expand, player_autocomplete, player_error, remember, scope_of, steam_of
+from .players import expand, player_autocomplete, player_error, remember, resolve_player, scope_of, steam_of
 from .ui import GREEN, OwnedView, brand_embed, error_embed
 from .utility_commands import iso_to_ts
 
@@ -121,7 +121,7 @@ def register_activity(bot):
         await interaction.response.defer(ephemeral=not share)
         player = expand(bot, interaction, player)
         try:
-            pid = await bot.bm.resolve_player(player)
+            pid = await resolve_player(bot, interaction, player)
             data = await bot.bm.profile(pid)
             lines = await presence_lines(bot, pid, data)
         except Exception as exc:
@@ -149,7 +149,7 @@ def register_activity(bot):
             await fail(interaction, lang, 'server.pick', share)
             return
         try:
-            pid = await bot.bm.resolve_player(player)
+            pid = await resolve_player(bot, interaction, player)
             data = await bot.bm.sessions(pid, sid)
         except Exception as exc:
             await player_error(bot, interaction, lang, exc, player, share)
@@ -236,7 +236,7 @@ def register_activity(bot):
         ids = []
         for raw in (first, second):
             try:
-                ids.append(await bot.bm.resolve_player(raw))
+                ids.append(await resolve_player(bot, interaction, raw))
             except Exception as exc:
                 await player_error(bot, interaction, lang, exc, raw, share)
                 return

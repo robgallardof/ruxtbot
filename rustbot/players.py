@@ -62,6 +62,25 @@ def steam_of(value: str) -> str | None:
         return None
 
 
+async def resolve_player(bot, interaction, value: str | None) -> str:
+    """BattleMetrics ID for what the user typed: a name from the book, a SteamID (cached, quick-match,
+    then same-name profiles that list that SteamID) or a BattleMetrics ID."""
+    value = expand(bot, interaction, value) or ''
+    try:
+        return await bot.bm.resolve_player(value)
+    except ValueError as exc:
+        steamid = steam_of(value)
+        if str(exc) not in ('identity.permission', 'identity.missing') or not steamid:
+            raise
+        try:
+            name = (await bot.who.steam_profile(steamid)).get('name')
+            if found := await bot.bm.verify_by_name(steamid, name):
+                return found
+        except Exception as fallback:
+            logging.info('player plan B failed for %s: %r', steamid, fallback)
+        raise
+
+
 def looks_like_id(value: str | None) -> bool:
     return bool(ID_LIKE.match(value or ''))
 

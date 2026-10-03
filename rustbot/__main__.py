@@ -24,7 +24,7 @@ from .info_commands import register_info
 from .activity import register_activity, presence_lines
 from .raid import register_raid_commands
 from .raid_data import RaidData
-from .players import choice_label, expand, player_autocomplete, player_error, remember, scope_of, steam_of
+from .players import choice_label, expand, player_autocomplete, player_error, remember, resolve_player, scope_of, steam_of
 from .servers import ServerDirectory, server_autocomplete
 from .tracking import Store, transition
 from .track_ui import TrackingPanel
@@ -50,6 +50,7 @@ class RustBot(commands.Bot):
         self.raid_data = raid_data or RaidData.load(Path(settings.data_path).with_name('raid.json'))
         self.store = Store(settings.state_path)
         self.bm = BattleMetrics(settings.battlemetrics_token)
+        self.bm.identities = self.store
         self.who = WhoService(self.bm, settings.steam_api_key)
         # Base directory (servers.json) + servers imported with /syncservers.
         self.directory = ServerDirectory(Path(settings.data_path).with_name('servers.json'))
@@ -324,7 +325,7 @@ def main():
             await interaction.followup.send(embed=error_embed(t(lang, 'server.pick'), lang=lang), ephemeral=not share)
             return
         try:
-            pid = await bot.bm.resolve_player(player)
+            pid = await resolve_player(bot, interaction, player)
         except Exception as exc:
             await player_error(bot, interaction, lang, exc, player, share)
             return
@@ -369,7 +370,7 @@ def main():
         await interaction.response.defer(ephemeral=not share)
         player = expand(bot, interaction, player)
         try:
-            pid = await bot.bm.resolve_player(player)
+            pid = await resolve_player(bot, interaction, player)
         except Exception as exc:
             await player_error(bot, interaction, lang, exc, player, share)
             return
