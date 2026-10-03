@@ -187,7 +187,7 @@ def target_layout(data: RaidData, lang: str, key: str, side: str = 'hard', metho
                                     description=(('🏆 ' if best and r.method == best[0] else '') +
                                                  t(lang, 'raid.method.option', amount=r.amount, cost=short_cost(data, lang, r.method, r.amount)))[:100],
                                     default=r.method == method)
-               for r in data.rows(key, side)]
+               for r in data.ordered_rows(key, side)]
     box.add_item(ui.ActionRow(select(t(lang, 'raid.method.placeholder'), options, pick_method)))
 
     # Row 2: simulation controls.
@@ -364,7 +364,7 @@ def register_raid_commands(bot, data: RaidData):
         key = data.find(getattr(interaction.namespace, 'target', None) or '')
         out = []
         if key:
-            for r in data.rows(key):
+            for r in data.ordered_rows(key):
                 label = f"{explosive_name(data, r.method)} · ×{r.amount:,} · {short_cost(data, lang, r.method, r.amount)}"
                 if current.casefold() in label.casefold():
                     out.append(app_commands.Choice(name=label[:100], value=r.method))

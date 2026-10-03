@@ -102,6 +102,12 @@ class RaidData:
             out.append(MethodRow(method, amount, self.cost(method, amount), self.explosives[method]['group']))
         return sorted(out, key=lambda r: (r.cost is None, r.sulfur == 0, r.sulfur or 0, r.amount))
 
+    def ordered_rows(self, key: str, side: str = 'hard') -> list[MethodRow]:
+        """rows() with the recommended method moved to the top (for pickers and autocomplete)."""
+        rows = self.rows(key, side)
+        best = self.best(key, side)
+        return sorted(rows, key=lambda r: not (best and r.method == best[0]))
+
     def best(self, key: str, side: str = 'hard', practical: bool = True) -> tuple[str, int] | None:
         """Cheapest method by sulfur (> 0). `practical` skips siege and fire unless nothing else works."""
         rows = [r for r in self.rows(key, side) if r.sulfur and (not practical or r.group == 'explosive')]

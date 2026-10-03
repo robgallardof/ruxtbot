@@ -12,6 +12,7 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 | 🛠️ Crafting | `/craft`, `/item`, `/sources` |
 | 🖥️ Servers | `/server`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe` |
 | 🕵️ Players | `/who`, `/player` |
+| ℹ️ Info | `/help`, `/examples`, `/author` |
 | ⚙️ Admin | `/track`, `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers`, `/ping` |
 
 `/help` opens an interactive menu with buttons that launch the raid planner and the base calculator.

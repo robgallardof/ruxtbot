@@ -132,7 +132,35 @@ STRINGS: dict[str, tuple[str, str]] = {
                      '### 🕵️ Jugadores\n`/who` Steam, baneos, **nombres anteriores**, estadísticas de Rust y BattleMetrics · `/player` ¿está conectado?'),
     'help.admin': ('### ⚙️ Admin\n`/track` connection alerts · `/settings` · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers` · `/ping`',
                    '### ⚙️ Admin\n`/track` avisos de conexión · `/settings` · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers` · `/ping`'),
-    'help.footer': ('Replies follow your Discord language (English/Spanish).', 'Las respuestas siguen el idioma de tu Discord (inglés/español).'),
+    'help.footer': ('`/examples` shows ready-to-copy examples · `/author` · replies follow your Discord language (English/Spanish).', '`/examples` muestra ejemplos listos para copiar · `/author` · las respuestas siguen el idioma de tu Discord (inglés/español).'),
+
+    # ── Author & examples ──
+    'author.title': ('👑 Author', '👑 Autor'),
+    'author.body': ('RuxtBot was made by **{author}**.', 'RuxtBot fue creado por **{author}**.'),
+    'examples.title': ('📖 Examples', '📖 Ejemplos'),
+    'examples.intro': ('Copy any command below into the chat. Options autocomplete as you type.',
+                       'Copia cualquier comando de abajo en el chat. Las opciones se autocompletan al escribir.'),
+    'examples.raid': ('### 💥 Raid\n`/raid` → pick a category, see pictures, simulate\n`/raid target:armored door` → HP bar, sulfur and cheapest method\n'
+                      '`/raid target:stone wall side:Soft side` → soft side costs\n`/raidcalc target:armored door quantity:2` → base calculator\n'
+                      '`/raidbudget sulfur:20000` → what that sulfur crafts and destroys\n`/raidcompare target:garage door` → every method side by side',
+                      '### 💥 Raid\n`/raid` → elige categoría, mira imágenes y simula\n`/raid target:puerta hq` → barra de vida, azufre y método más barato\n'
+                      '`/raid target:muro piedra side:Lado blando` → costos del lado blando\n`/raidcalc target:puerta hq quantity:2` → calculadora de base\n'
+                      '`/raidbudget sulfur:20000` → qué fabricas y destruyes con ese azufre\n`/raidcompare target:garaje` → todos los métodos lado a lado'),
+    'examples.craft': ('### 🛠️ Crafting\n`/craft item:rocket quantity:10` → sulfur, charcoal, pipes…\n`/item query:c4` → recipe, picture and raid uses',
+                       '### 🛠️ Crafteo\n`/craft item:cohete quantity:10` → azufre, carbón, tubos…\n`/item query:c4` → receta, imagen y usos en raid'),
+    'examples.servers': ('### 🖥️ Servers\n`/serversearch query:rustoria` → live servers by players\n`/server server:Rusty Moose` → players, queue, map, wipe\n'
+                         '`/wipe server:…` → last and next wipe\n`/forcewipe` → next forced wipe countdown',
+                         '### 🖥️ Servidores\n`/serversearch query:rustoria` → servidores en vivo por jugadores\n`/server server:Rusty Moose` → jugadores, cola, mapa, wipe\n'
+                         '`/wipe server:…` → último y próximo wipe\n`/forcewipe` → cuenta atrás del wipe forzado'),
+    'examples.players': ('### 🕵️ Players\n`/who player:76561198848618940` → Steam, bans, name history, Rust stats\n'
+                         '`/who player:<steam link> battlemetrics:<BM link>` → plus hours and servers\n`/player profile:<BM link> server:…` → online right now?',
+                         '### 🕵️ Jugadores\n`/who player:76561198848618940` → Steam, baneos, nombres anteriores, estadísticas\n'
+                         '`/who player:<enlace steam> battlemetrics:<enlace BM>` → además horas y servidores\n`/player profile:<enlace BM> server:…` → ¿está conectado?'),
+    'examples.admin': ('### ⚙️ Admin\n`/track action:Add profile:<BM link>` → ping @wipe on connect/disconnect\n`/settings language:Spanish channel:#alerts` → alert channel and language\n'
+                       '`/pausealerts` · `/resumealerts` · `/status`',
+                       '### ⚙️ Admin\n`/track action:Añadir profile:<enlace BM>` → avisa a @wipe al conectar/desconectar\n`/settings language:Español channel:#avisos` → canal e idioma de avisos\n'
+                       '`/pausealerts` · `/resumealerts` · `/status`'),
+    'examples.footer': ('Open `/help` for buttons that launch the raid tools directly.', 'Abre `/help` para botones que lanzan las herramientas de raid.'),
 
     # ── Items & crafting ──
     'item.unknown': ('Ambiguous or unknown item.', 'Ítem ambiguo o desconocido.'),
@@ -363,6 +391,8 @@ COMMAND_ES: dict[str, str] = {
     '🕵️ Full player profile: Steam, bans, name history, Rust stats, BattleMetrics': '🕵️ Ficha del jugador: Steam, baneos, nombres anteriores, Rust y BattleMetrics',
     'SteamID64, STEAM_0, or a Steam, steamid.io, SteamDB, RustWho or BattleMetrics link': 'SteamID64, STEAM_0 o enlace de Steam, steamid.io, SteamDB, RustWho o BattleMetrics',
     'BattleMetrics profile link (optional) for hours, servers and in-game names': 'Enlace de BattleMetrics (opcional) para horas, servidores y nombres en el juego',
+    '👑 Who made RuxtBot': '👑 Quién creó RuxtBot',
+    '📖 Examples of what the bot does and how to use it': '📖 Ejemplos de lo que hace el bot y cómo usarlo',
     'Add': 'Añadir', 'Remove': 'Quitar', 'List': 'Listar',
     'Hard side': 'Lado duro', 'Soft side': 'Lado blando',
     'English': 'Inglés', 'Spanish': 'Español',

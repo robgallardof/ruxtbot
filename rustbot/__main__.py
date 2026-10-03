@@ -5,6 +5,7 @@ Larger command groups live in their own modules:
     who.py               /who
     utility_commands.py  /ping, /status, /servers, /serversearch, /syncservers, /wipe, /forcewipe, alerts
     help.py              /help menu
+    info_commands.py     /author, /examples
 """
 from __future__ import annotations
 import logging
@@ -18,6 +19,7 @@ from .catalog import Catalog
 from .config import Settings
 from .help import help_layout
 from .i18n import CommandTranslator, lang_for, t
+from .info_commands import register_info
 from .raid import register_raid_commands
 from .raid_data import RaidData
 from .servers import ServerDirectory, profile_id
@@ -384,6 +386,7 @@ def main():
     register_raid_commands(bot, raid)
     register_utilities(bot, cat, require_admin)
     register_who(bot, bot.who)
+    register_info(bot)
     bot.run(s.discord_token)
 
 
