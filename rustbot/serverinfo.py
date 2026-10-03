@@ -90,7 +90,7 @@ def settings_line(lang: str, details: dict) -> str:
     team = cfg.get('teamUILimit')
     if isinstance(group, int) and group < 1000:
         parts.append(t(lang, 'server.group', n=group))
-    elif isinstance(team, int):
+    elif isinstance(team, int) and team < 1000:
         parts.append(t(lang, 'server.team', n=team))
     if cfg.get('upkeep') not in (None, 1):
         parts.append(t(lang, 'server.upkeep', n=fmt_num(cfg['upkeep'])))
@@ -216,7 +216,7 @@ def server_matches(a: dict, gather: str | None, group: str | None, kind: str | N
         return False
     if group:
         limit = cfg.get('groupLimit') if isinstance(cfg.get('groupLimit'), int) and cfg.get('groupLimit') < 1000 else cfg.get('teamUILimit')
-        if not isinstance(limit, int) or limit > int(group):
+        if not isinstance(limit, int) or limit >= 1000 or limit > int(group):
             return False
     if kind and (d.get('rust_type') or '') != kind:
         return False
@@ -408,7 +408,7 @@ def register_serverinfo(bot, can_manage):
             await interaction.followup.send(embed=error_embed(t(lang, 'server.fail'), t(lang, 'server.fail.hint'), lang), ephemeral=not share)
             return
         values = [v for _, v in counts]
-        e = brand_embed(t(lang, 'stats.title', server=esc(a.get('name', sid)), period=t(lang, f'stats.period.{period}'))[:256], color=YELLOW)
+        e = brand_embed(t(lang, 'stats.title', server=a.get('name', sid), period=t(lang, f'stats.period.{period}'))[:256], color=YELLOW)
         e.url = f'https://www.battlemetrics.com/servers/rust/{sid}'
         if values:
             e.description = f"```\n{spark(values, 30)}\n```" + t(lang, 'stats.players', peak=int(max(values)), avg=round(sum(values) / len(values)), low=int(min(values)),
@@ -439,7 +439,7 @@ def register_serverinfo(bot, can_manage):
         for r in rows:
             place = medals.get(r['rank']) or '`{:>3}`'.format(r['rank'] or '?')
             lines.append(f"{place} **{esc(r['name'])[:40]}** · {fmt_num(round(r['seconds'] / 3600, 1))} h")
-        e = brand_embed(t(lang, 'top.title', server=esc(name), period=t(lang, f'top.period.{days}'))[:256], '\n'.join(lines) or t(lang, 'top.none'), color=YELLOW)
+        e = brand_embed(t(lang, 'top.title', server=name, period=t(lang, f'top.period.{days}'))[:256], '\n'.join(lines) or t(lang, 'top.none'), color=YELLOW)
         e.url = f'https://www.battlemetrics.com/servers/rust/{sid}/leaderboard'
         e.set_footer(text=t(lang, 'top.footer', page=page))
         view = OwnedView(interaction.user.id)
@@ -505,7 +505,7 @@ def register_serverinfo(bot, can_manage):
                 t(lang, 'search.wiped', ts=iso_to_ts(d.get('rust_last_wipe'))) if iso_to_ts(d.get('rust_last_wipe')) else '', f"🆔 `{s['id']}`") if x)
             info = settings_line(lang, d)
             lines.append(f"{'🟢' if a.get('status') == 'online' else '🔴'} [{esc(a['name'][:70])}](https://www.battlemetrics.com/servers/rust/{s['id']})\n-# {extra}" + (f'\n-# {info}' if info else ''))
-        title = t(lang, 'search.title', q=esc(query)) if query else t(lang, 'search.title.any')
+        title = t(lang, 'search.title', q=query) if query else t(lang, 'search.title.any')
         e = brand_embed(title[:256], '\n'.join(lines)[:4000] or t(lang, 'search.none'))
         e.set_footer(text=t(lang, 'search.footer'))
         view = OwnedView(interaction.user.id)

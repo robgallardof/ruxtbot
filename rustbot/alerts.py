@@ -211,7 +211,7 @@ async def check_alerts(bot):
             if not wiped or wiped == last:
                 continue
             if last and (iso_to_ts(wiped) or 0) > (iso_to_ts(last) or 0):
-                e = brand_embed(t(lang, 'wipealert.wiped', server=esc(attrs.get('name', sid))), color=GREEN)
+                e = brand_embed(t(lang, 'wipealert.wiped', server=str(attrs.get('name', sid))[:200]), color=GREEN)
                 e.description = t(lang, 'wipealert.wiped.body', ts=iso_to_ts(wiped), p=attrs.get('players', 0), m=attrs.get('maxPlayers', 0))
                 if nxt := iso_to_ts(details.get('rust_next_wipe')):
                     e.add_field(name=t(lang, 'server.next_wipe'), value=f'<t:{nxt}:F> · <t:{nxt}:R>')
@@ -234,7 +234,7 @@ async def check_alerts(bot):
                 continue
             if state is not None and current in ('above', 'below'):
                 queue = (attrs.get('details') or {}).get('rust_queued_players')
-                e = brand_embed(t(lang, 'serverwatch.' + current, server=esc(attrs.get('name', sid)), n=above if current == 'above' else below),
+                e = brand_embed(t(lang, 'serverwatch.' + current, server=str(attrs.get('name', sid))[:200], n=above if current == 'above' else below),
                                 t(lang, 'serverwatch.body', p=players, m=attrs.get('maxPlayers', 0)) + (f" · {t(lang, 'server.queue', n=queue)}" if queue else ''),
                                 color=GREEN if current == 'above' else ORANGE)
                 await send_alert(channel, owner_id, e, server_button(lang, sid))
@@ -260,7 +260,7 @@ async def check_alerts(bot):
                 joined, left = online - previous, previous - online
                 lines = [f"🟢 **{esc(labels[b])}** · {esc(presence[b][2] or '?')}" for b in joined]
                 lines += [f"🔴 **{esc(labels[b])}**" for b in left if b in labels]
-                e = brand_embed(t(lang, 'team.alert.title', team=esc(team), n=len(online), m=len(members)), '\n'.join(lines),
+                e = brand_embed(t(lang, 'team.alert.title', team=team, n=len(online), m=len(members)), '\n'.join(lines),
                                 color=GREEN if len(online) > len(previous) else ORANGE)
                 where = {}
                 for b in online:
@@ -538,7 +538,7 @@ def register_alerts(bot, can_manage):
         where = {}
         for bm, label in online:
             where.setdefault(presence[bm][2] or '?', []).append(label)
-        e = brand_embed(t(lang, 'team.title', team=esc(name), n=len(online), m=len(members)), color=GREEN if online else YELLOW)
+        e = brand_embed(t(lang, 'team.title', team=name, n=len(online), m=len(members)), color=GREEN if online else YELLOW)
         e.description = '\n'.join(f'🖥️ **{esc(s)}**\n' + ', '.join(f'🟢 {esc(n)}' for n in names) for s, names in where.items()) or t(lang, 'team.nobody')
         rest = [f"{'🔴' if presence[bm][0] is False else '⚪'} {esc(label)}" for bm, label in members if presence[bm][0] is not True]
         if rest:

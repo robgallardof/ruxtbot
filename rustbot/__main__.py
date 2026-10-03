@@ -55,7 +55,8 @@ class RustBot(commands.Bot):
     """Bot with shared state: database, HTTP clients, raid data and server directory."""
 
     def __init__(self, settings, catalog, raid_data=None):
-        super().__init__(command_prefix='!', intents=discord.Intents.default())
+        # Slash commands only; when_mentioned keeps discord.py from warning about the message content intent.
+        super().__init__(command_prefix=commands.when_mentioned, intents=discord.Intents.default())
         self.settings, self.catalog = settings, catalog
         self.raid_data = raid_data or RaidData.load(Path(settings.data_path).with_name('raid.json'))
         self.store = Store(settings.state_path)
@@ -368,8 +369,8 @@ def main():
     player_choices = player_autocomplete(bot)
 
     @bot.tree.command(description='🟢 Is a player online right now?')
-    @app_commands.describe(player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Server (empty = every synchronized server)', share='Publish the result in this channel')
-    @app_commands.autocomplete(player=player_choices, server=server_choices)
+    @app_commands.describe(player='Name you looked up before, SteamID64 or BattleMetrics player ID', server="One of the player's servers (empty = all of them)", share='Publish the result in this channel')
+    @app_commands.autocomplete(player=player_choices, server=server_autocomplete(bot, player_param='player'))
     async def player(interaction: discord.Interaction, player: str, server: str | None = None, share: bool = False):
         if not server:
             # Without a server the useful answer is "where is this player": the presence overview.
@@ -418,7 +419,7 @@ def main():
     @app_commands.describe(action='What to do', player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Server, 🌍 any server, or empty for their usual servers', label='Name shown in alerts', days='Duration in days (maximum 15)', share='Publish the result in this channel')
     @app_commands.choices(action=[app_commands.Choice(name='Add', value='add'), app_commands.Choice(name='Remove', value='remove'),
                                   app_commands.Choice(name='List', value='list')])
-    @app_commands.autocomplete(player=player_choices, server=server_autocomplete(bot, include_any=True))
+    @app_commands.autocomplete(player=player_choices, server=server_autocomplete(bot, include_any=True, player_param='player'))
     async def track(interaction: discord.Interaction, action: str = 'list', player: str | None = None, server: str | None = None, label: str | None = None, days: app_commands.Range[int, 1, 15] = 7, share: bool = False):
         lang = lang_for(interaction)
         if not interaction.guild:

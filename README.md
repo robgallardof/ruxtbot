@@ -38,6 +38,7 @@ A server manager saves the community's servers once: `/setserver name:Main addre
 - `/leaderboard period:all time|30 days|7 days|24 h`: players with the most hours on a server, paged, with a picker that opens their profile.
 - `/serversearch`: name, country, minimum players, gather (1x, 2x, 3x+), maximum group (solo, duo, trio, quad), type, wiped in the last N days and PvE. BattleMetrics ignores or rejects most Rust feature filters (checked 2026-10-03), so the bot fetches up to 100 servers and filters them itself. A picker opens the full card.
 - `/player player: server:` adds hours on that server, first and last seen, and a 30-day hours-per-day graph.
+- In `/player`, `/sessions` and `/track`, the `server` suggestions follow the player already typed: their servers first (🟢 online there now, then most recent) with their hours on each. This works for BattleMetrics IDs and for SteamIDs already linked in the Discord.
 - `/rust`: players and servers worldwide, with the 24-hour range and 7-day peak.
 - `/upkeep server:` and `/decay server:` apply that server's upkeep and decay multipliers.
 

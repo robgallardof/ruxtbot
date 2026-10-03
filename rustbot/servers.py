@@ -55,18 +55,67 @@ class ServerDirectory:
         self.rows = sorted(merged.values(), key=lambda r: r['name'].casefold())
 
 
-def server_autocomplete(bot, include_any: bool = False):
+def known_player_id(bot, interaction, value: str | None) -> str | None:
+    """BattleMetrics ID for an already-typed player option, without any API call (None when unknown)."""
+    from .players import expand, scope_of, steam_of
+    value = (expand(bot, interaction, value) or '').strip() if value else ''
+    if not value:
+        return None
+    if re.fullmatch(r'[0-9]{1,16}', value):
+        return value
+    steamid = steam_of(value)
+    if steamid:
+        return bot.store.bm_for_steam(scope_of(interaction), steamid) or bot.store.identity(steamid)
+    return None
+
+
+def server_autocomplete(bot, include_any: bool = False, player_param: str | None = None):
     """Directory matches first; when the directory has few, live BattleMetrics results fill the list.
 
+    With `player_param`, the servers of the player already typed in that option come first (🟢 online
+    there now, otherwise most recent first, with their hours), so picking "their" server is one tap.
     Live searches need 3+ characters, are cached for a minute and give up after 2 s, because Discord
     drops autocomplete answers after 3 s and every keystroke triggers one.
     """
     cache: dict[str, tuple[float, list[dict]]] = {}
+    player_cache: dict[str, tuple[float, list[dict]]] = {}
     last_live = [0.0]  # at most one live search per second, so typing never eats the tracker's rate limit
 
+    async def player_rows(interaction, query: str) -> list[dict]:
+        pid = known_player_id(bot, interaction, getattr(interaction.namespace, player_param, None))
+        if not pid or not bot.bm.token:
+            return []
+        hit = player_cache.get(pid)
+        if hit and time.monotonic() - hit[0] < 60:
+            rows = hit[1]
+        else:
+            try:
+                from .battlemetrics import online_state
+                profile = await asyncio.wait_for(bot.bm.profile(pid), 2)
+            except Exception as exc:
+                logging.debug('player server autocomplete failed for %s: %r', pid, exc)
+                return []
+            servers = [s for s in profile.get('included', []) if s.get('type') == 'server']
+            # Most recent first, then (stable sort) the ones they are online on right now move to the top.
+            servers.sort(key=lambda s: (s.get('meta') or {}).get('lastSeen') or '', reverse=True)
+            servers.sort(key=lambda s: online_state(s) != 'online')
+            rows = []
+            for s in servers:
+                meta, name = s.get('meta') or {}, (s.get('attributes') or {}).get('name', s['id'])
+                icon = '🟢' if online_state(s) == 'online' else '🕒'
+                hours = (meta.get('timePlayed') or 0) / 3600
+                rows.append({'id': str(s['id']), 'name': f'{icon} {name}'[:85] + f' · {hours:,.0f} h', 'plain': name})
+            for key in [k for k, (stamp, _) in player_cache.items() if time.monotonic() - stamp >= 60]:
+                player_cache.pop(key, None)
+            player_cache[pid] = (time.monotonic(), rows)
+        return [r for r in rows if not query or query in r['plain'].casefold() or query == r['id']]
+
     async def complete(interaction, current: str):
-        rows = [{'id': r['id'], 'name': r['name']} for r in bot.directory.search(current)]
         query = current.strip().casefold()
+        mine = await player_rows(interaction, query) if player_param else []
+        rows = mine + [{'id': r['id'], 'name': r['name']} for r in bot.directory.search(current) if r['id'] not in {m['id'] for m in mine}]
+        if mine and not query:
+            rows = mine
         if len(rows) < 5 and len(query) >= 3 and not query.isdigit() and bot.bm.token:
             hit = cache.get(query)
             if hit and time.monotonic() - hit[0] < 60:

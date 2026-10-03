@@ -11,6 +11,7 @@ from .battlemetrics import online_state
 from .i18n import lang_for, t
 from .players import expand, player_autocomplete, player_error, remember, resolve_player, scope_of, steam_of
 from .profiles import current_server, default_server
+from .servers import server_autocomplete
 from .ui import GREEN, OwnedView, brand_embed, error_embed
 from .utility_commands import iso_to_ts
 
@@ -133,14 +134,14 @@ def register_activity(bot):
         pages = max(1, (len(lines) + 9) // 10)
         page = min(page, pages)
         name = ((data.get('data') or {}).get('attributes') or {}).get('name') or pid
-        e = brand_embed(f'📍 {safe(name)} · {page}/{pages}', '\n'.join(lines[(page-1)*10:page*10]) or t(lang, 'activity.empty'))
+        e = brand_embed(f'📍 {str(name)[:200]} · {page}/{pages}', '\n'.join(lines[(page-1)*10:page*10]) or t(lang, 'activity.empty'))
         e.url = f'https://www.battlemetrics.com/players/{pid}'
         e.set_footer(text=t(lang, 'activity.footer'))
         await interaction.followup.send(embed=e, ephemeral=not share)
 
     @bot.tree.command(description='🕒 Recent player sessions, timestamps and duration')
     @app_commands.describe(player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Optional server name', share='Publish the result in this channel')
-    @app_commands.autocomplete(player=players, server=servers)
+    @app_commands.autocomplete(player=players, server=server_autocomplete(bot, player_param='player'))
     async def sessions(interaction: discord.Interaction, player: str, server: str | None = None, share: bool = False):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
@@ -236,7 +237,7 @@ def register_activity(bot):
         ids_here = {p['id'] for p in here}
         found = here + [p for p in found if p['id'] not in ids_here]
         lines = [f"**{safe(p['name'])}** · `{p['id']}`" + (f" · {t(lang, 'who.bm.active', ts=p['seen'])}" if p.get('seen') else '') for p in found if p['id'] not in ids_here]
-        e = brand_embed(t(lang, 'find.title', q=safe(name)), '\n'.join(lines[:15]) or (t(lang, 'find.none') if not here else None))
+        e = brand_embed(t(lang, 'find.title', q=name[:64]), '\n'.join(lines[:15]) or (t(lang, 'find.none') if not here else None))
         if here:
             e.insert_field_at(0, name=t(lang, 'find.here', server=safe(here_name)), value='\n'.join(f"🟢 **{safe(p['name'])}** · `{p['id']}`" for p in here)[:1024], inline=False)
         e.set_footer(text=t(lang, 'find.footer') + ('' if sid else ' · ' + t(lang, 'find.tip_me')))
@@ -283,7 +284,7 @@ def register_activity(bot):
             lines.append(f"🖥️ **{safe(maps[0][key]['attributes'].get('name', key))}**{together}\n"
                          f"-# {safe(names[0])}: {hours(a.get('timePlayed'))}" + (f' · <t:{seen[0]}:R>' if seen[0] else '') +
                          f" │ {safe(names[1])}: {hours(b.get('timePlayed'))}" + (f' · <t:{seen[1]}:R>' if seen[1] else ''))
-        e = brand_embed(t(lang, 'compare.title', a=safe(names[0]), b=safe(names[1]))[:256], '\n'.join(lines) or t(lang, 'compare.none'))
+        e = brand_embed(t(lang, 'compare.title', a=str(names[0])[:100], b=str(names[1])[:100])[:256], '\n'.join(lines) or t(lang, 'compare.none'))
         e.add_field(name=t(lang, 'compare.summary'), value=t(lang, 'compare.summary.value', n=len(shared), a=len(maps[0]), b=len(maps[1])), inline=False)
         e.set_footer(text=t(lang, 'compare.footer'))
         await interaction.followup.send(embed=e, ephemeral=not share)

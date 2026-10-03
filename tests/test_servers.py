@@ -261,3 +261,35 @@ def test_binds_guide_is_public_and_split_by_part(bot):
     long = '# T\n' + '\n\n'.join(f'**{n}**\n```\nbind {n} x\n```' for n in range(200))
     chunks = split_sections(long)
     assert all(len(c) <= 2000 and c.count('```') % 2 == 0 for c in chunks) and len(chunks) > 1
+
+
+def test_server_suggestions_follow_the_chosen_player(bot):
+    async def go():
+        use(bot)
+        for command in ('player', 'sessions', 'track'):
+            i = FakeInteraction()
+            i.namespace = SimpleNamespace(player='1128280744')
+            choices = await bot.tree.get_command(command)._params['server'].autocomplete(i, '')
+            mine = [c for c in choices if c.value != '*']
+            assert mine[0].value == '5931597' and mine[0].name.startswith('🟢 Rusty Moose') and mine[0].name.endswith('· 2 h'), command
+        # A SteamID linked in this Discord also works; an unknown name falls back to the normal list.
+        bot.store.remember_player(1, 'KingGallardo', STEAMID, '1128280744')
+        linked = FakeInteraction()
+        linked.namespace = SimpleNamespace(player=STEAMID)
+        assert (await bot.tree.get_command('player')._params['server'].autocomplete(linked, ''))[0].value == '5931597'
+        unknown = FakeInteraction()
+        unknown.namespace = SimpleNamespace(player='nobody here')
+        assert not any(c.name.startswith('🟢') for c in await bot.tree.get_command('player')._params['server'].autocomplete(unknown, 'rust'))
+    run(go())
+
+
+def test_titles_are_not_markdown_escaped(bot):
+    async def go():
+        use(bot)
+        s = FakeInteraction()
+        await cmd(bot, 'serverstats')(s, '5931597', 7)
+        assert s.sent()['embed'].title.startswith('📈 Rusty Moose |US Medium|')
+        top = FakeInteraction()
+        await cmd(bot, 'leaderboard')(top, '5931597', 7)
+        assert chr(92) not in top.sent()['embed'].title   # no backslashes
+    run(go())
