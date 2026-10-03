@@ -1,0 +1,738 @@
+meta:
+  version: Rust catalog 2026-10-02
+  updated: '2026-10-02'
+  source: Facepunch Wiki recipes; RustClash durability tables (individual target source
+    links)
+  confidence: Community raid estimates; direct hit, no splash stacking. Fire estimates
+    vary. Not independently tested in game.
+items:
+  sulfur:
+    id: sulfur
+    name: Sulfur
+    aliases:
+    - azufre
+  charcoal:
+    id: charcoal
+    name: Charcoal
+    aliases:
+    - carbon
+    - carbón
+  low-grade-fuel:
+    id: low-grade-fuel
+    name: Low Grade Fuel
+    aliases:
+    - lowgrade
+    - low grade
+    - combustible bajo grado
+  metal-fragments:
+    id: metal-fragments
+    name: Metal Fragments
+    aliases:
+    - fragments
+    - fragmentos
+  metal-pipe:
+    id: metal-pipe
+    name: Metal Pipe
+    aliases:
+    - pipe
+    - tubo
+    - tubos
+  cloth:
+    id: cloth
+    name: Cloth
+    aliases:
+    - tela
+  tech-trash:
+    id: tech-trash
+    name: Tech Trash
+    aliases:
+    - techtrash
+    - basura tecnológica
+  gunpowder:
+    id: gunpowder
+    name: Gun Powder
+    aliases:
+    - gp
+    - pólvora
+    - polvora
+    recipe:
+      sulfur: 2
+      charcoal: 3
+  explosives:
+    id: explosives
+    name: Explosives
+    aliases:
+    - expo
+    - explosive
+    - explosivos
+    recipe:
+      gunpowder: 50
+      sulfur: 10
+      metal-fragments: 10
+      low-grade-fuel: 3
+    source: https://wiki.facepunch.com/rust/item/explosives
+  rocket:
+    id: rocket
+    name: Rocket
+    aliases:
+    - rockets
+    - cohete
+    - cohetes
+    recipe:
+      explosives: 10
+      gunpowder: 150
+      metal-pipe: 2
+  c4:
+    id: c4
+    name: Timed Explosive Charge (C4)
+    aliases:
+    - timedexplosivecharge
+    - carga c4
+    recipe:
+      explosives: 20
+      cloth: 5
+      tech-trash: 2
+  satchel:
+    id: satchel
+    name: Satchel Charge
+    aliases:
+    - satchels
+    - carga satchel
+    recipe:
+      beancan: 4
+      rope: 1
+      small-stash: 1
+    source: https://wiki.facepunch.com/rust/item/explosive.satchel
+  explosive-ammo:
+    id: explosive-ammo
+    name: Explosive 5.56 Rifle Ammo
+    aliases:
+    - expammo
+    - exp ammo
+    - munición explosiva
+    - explosive ammo
+    recipe:
+      gunpowder: 20
+      sulfur: 10
+      metal-fragments: 10
+    yield: 2
+    source: https://wiki.facepunch.com/rust/item/ammo.rifle.explosive
+  rope:
+    id: rope
+    name: Rope
+    aliases: []
+  small-stash:
+    id: small-stash
+    name: Small Stash
+    aliases: []
+    recipe:
+      cloth: 10
+  beancan:
+    id: beancan
+    name: Beancan Grenade
+    aliases: []
+    recipe:
+      gunpowder: 60
+      metal-fragments: 20
+    source: https://wiki.facepunch.com/rust/item/grenade.beancan
+  f1:
+    id: f1
+    name: F1 Grenade
+    aliases: []
+    recipe:
+      gunpowder: 30
+      metal-fragments: 25
+    source: https://wiki.facepunch.com/rust/item/grenade.f1
+  hv-rocket:
+    id: hv-rocket
+    name: High Velocity Rocket
+    aliases: []
+    recipe:
+      gunpowder: 100
+      metal-pipe: 1
+  molotov:
+    id: molotov
+    name: Molotov Cocktail
+    aliases: []
+    recipe:
+      cloth: 10
+      low-grade-fuel: 50
+    source: https://wiki.facepunch.com/rust/item/grenade.molotov
+  mlrs:
+    id: mlrs
+    name: MLRS Rocket
+    aliases: []
+    cost_status: Recipe/equipment cost not verified
+  hammerhead:
+    id: hammerhead
+    name: Ballista · Hammerhead Bolt
+    aliases: []
+    recipe:
+      high-quality-metal: 5
+      metal-fragments: 75
+    source: https://wiki.rustclash.com/item/hammerhead-bolt
+  ram:
+    id: ram
+    name: Battering Ram · hit
+    aliases: []
+    cost_status: Recipe/equipment cost not verified
+  propane:
+    id: propane
+    name: Propane Bomb · planted
+    aliases: []
+    recipe:
+      empty-propane-tank: 1
+      gunpowder: 450
+      low-grade-fuel: 20
+    source: https://wiki.rustclash.com/item/propane-explosive-bomb
+  catapult-propane:
+    id: catapult-propane
+    name: Catapult · Propane Bomb
+    aliases: []
+    recipe:
+      empty-propane-tank: 1
+      gunpowder: 450
+      low-grade-fuel: 20
+    source: https://wiki.rustclash.com/item/propane-explosive-bomb
+  he-grenade:
+    id: he-grenade
+    name: 40mm HE Grenade
+    aliases: []
+    cost_status: Recipe/equipment cost not verified
+  cannonball:
+    id: cannonball
+    name: Cannon · Cannonball
+    aliases: []
+    recipe:
+      metal-fragments: 50
+      gunpowder: 15
+    source: https://wiki.rustclash.com/item/cannonball
+    yield: 2
+  mortar:
+    id: mortar
+    name: Mortar Shell
+    aliases: []
+    recipe:
+      metal-pipe: 1
+      gunpowder: 300
+    source: https://wiki.rustclash.com/item/mortar-shell
+    yield: 2
+  incendiary-rocket:
+    id: incendiary-rocket
+    name: Incendiary Rocket
+    aliases: []
+    recipe:
+      metal-pipe: 2
+      gunpowder: 150
+      low-grade-fuel: 75
+    source: https://wiki.rustclash.com/item/incendiary-rocket
+  handmade-shell:
+    id: handmade-shell
+    name: Pump Shotgun · Handmade Shell
+    aliases: []
+    cost_status: Recipe/equipment cost not verified
+  empty-propane-tank:
+    id: empty-propane-tank
+    name: Empty Propane Tank
+    aliases: []
+  high-quality-metal:
+    id: high-quality-metal
+    name: High Quality Metal
+    aliases:
+    - hqm
+targets:
+  wood-door:
+    name: Wooden Door
+    category: doors
+    aliases:
+    - wooddoor
+    - puerta madera
+    hp: 200
+    methods:
+      rocket:
+        count: 1
+        damage: 550.375
+      c4:
+        count: 1
+        damage: 1100
+      satchel:
+        count: 2
+        damage: 170
+      explosive-ammo:
+        count: 18
+        damage: 11.27
+      beancan:
+        count: 6
+        damage: 35
+      f1:
+        count: 23
+        damage: 8.75
+      hv-rocket:
+        count: 4
+        damage: 63.75
+      mlrs:
+        count: 1
+        damage: 700.375
+      hammerhead:
+        count: 4
+        damage: 50
+      ram:
+        count: 1
+        damage: 200.25
+      propane:
+        count: 1
+        damage: 320.375
+      catapult-propane:
+        count: 1
+        damage: 550.375
+      he-grenade:
+        count: 3
+        damage: 70.275
+      cannonball:
+        count: 67
+        damage: 3
+      mortar:
+        count: 2
+        damage: 120.375
+      molotov:
+        count: 2
+        damage: 147
+      incendiary-rocket:
+        count: 1
+        damage: 1713.03
+      handmade-shell:
+        count: 45
+        damage: 4.5
+    source: https://wiki.rustclash.com/item/wooden-door
+    notes: Direct hit; explosive ammo uses Assault Rifle. Beancan/F1 planted. Siege
+      requires launcher/equipment. Fire is approximate.
+  sheet-door:
+    name: Sheet Metal Door
+    category: doors
+    aliases:
+    - sheetdoor
+    - metaldoor
+    - puerta metal
+    hp: 250
+    methods:
+      rocket:
+        count: 2
+        damage: 220.375
+      c4:
+        count: 1
+        damage: 440
+      satchel:
+        count: 4
+        damage: 70
+      explosive-ammo:
+        count: 63
+        damage: 4.008
+      beancan:
+        count: 18
+        damage: 14.5
+      f1:
+        count: 50
+        damage: 5
+      hv-rocket:
+        count: 11
+        damage: 24
+      mlrs:
+        count: 1
+        damage: 280.375
+      hammerhead:
+        count: 13
+        damage: 20
+      ram:
+        count: 4
+        damage: 80.25
+      propane:
+        count: 2
+        damage: 128.375
+      catapult-propane:
+        count: 2
+        damage: 220.375
+      he-grenade:
+        count: 9
+        damage: 28.275
+      cannonball:
+        count: 500
+        damage: 0.5
+      mortar:
+        count: 6
+        damage: 48.375
+    source: https://wiki.rustclash.com/item/sheet-metal-door
+    notes: Direct hit; explosive ammo uses Assault Rifle. Beancan/F1 planted. Siege
+      requires launcher/equipment. Fire is approximate.
+  garage-door:
+    name: Garage Door
+    category: doors
+    aliases:
+    - garagedoor
+    - puerta garaje
+    hp: 600
+    methods:
+      rocket:
+        count: 3
+        damage: 220.375
+      c4:
+        count: 2
+        damage: 440
+      satchel:
+        count: 9
+        damage: 70
+      explosive-ammo:
+        count: 150
+        damage: 4.008
+      beancan:
+        count: 42
+        damage: 14.5
+      f1:
+        count: 120
+        damage: 5
+      hv-rocket:
+        count: 25
+        damage: 24
+      mlrs:
+        count: 3
+        damage: 280.375
+      hammerhead:
+        count: 30
+        damage: 20
+      ram:
+        count: 8
+        damage: 80.25
+      propane:
+        count: 5
+        damage: 128.375
+      catapult-propane:
+        count: 3
+        damage: 220.375
+      he-grenade:
+        count: 22
+        damage: 28.275
+      cannonball:
+        count: 1200
+        damage: 0.5
+      mortar:
+        count: 13
+        damage: 48.375
+    source: https://wiki.rustclash.com/item/garage-door
+    notes: Direct hit; explosive ammo uses Assault Rifle. Beancan/F1 planted. Siege
+      requires launcher/equipment. Fire is approximate.
+  hq-door:
+    name: Armored Door / HQ Door
+    category: doors
+    aliases:
+    - hqdoor
+    - armoreddoor
+    - puerta hq
+    - puerta blindada
+    hp: 1000
+    methods:
+      rocket:
+        count: 5
+        damage: 220.375
+      c4:
+        count: 3
+        damage: 440
+      satchel:
+        count: 15
+        damage: 70
+      explosive-ammo:
+        count: 250
+        damage: 4.008
+      beancan:
+        count: 69
+        damage: 14.5
+      f1:
+        count: 200
+        damage: 5
+      hv-rocket:
+        count: 42
+        damage: 24
+      mlrs:
+        count: 4
+        damage: 280.375
+      hammerhead:
+        count: 50
+        damage: 20
+      ram:
+        count: 13
+        damage: 80.25
+      propane:
+        count: 8
+        damage: 128.375
+      catapult-propane:
+        count: 5
+        damage: 220.375
+      he-grenade:
+        count: 36
+        damage: 28.275
+      cannonball:
+        count: 2000
+        damage: 0.5
+      mortar:
+        count: 21
+        damage: 48.375
+    source: https://wiki.rustclash.com/item/armored-door
+    notes: Direct hit; explosive ammo uses Assault Rifle. Beancan/F1 planted. Siege
+      requires launcher/equipment. Fire is approximate.
+  wood-wall:
+    name: Wooden Wall
+    category: walls
+    aliases:
+    - woodwall
+    - muro madera
+    - pared madera
+    hp: 250
+    source: https://wiki.rustclash.com/building/wooden-wall
+    notes: Hard side, direct hit. Soft side and placement differ.
+    methods:
+      rocket:
+        count: 2
+        damage: 247.65
+      c4:
+        count: 1
+        damage: 495
+      satchel:
+        count: 3
+        damage: 91.5
+      hv-rocket:
+        count: 9
+        damage: 29.25
+      mortar:
+        count: 5
+        damage: 54.15
+  stone-wall:
+    name: Stone Wall
+    category: walls
+    aliases:
+    - stonewall
+    - muro piedra
+    - pared piedra
+    hp: 500
+    source: https://wiki.rustclash.com/building/stone-wall
+    notes: Hard side, direct hit. Soft side and placement differ.
+    methods:
+      rocket:
+        count: 4
+        damage: 137.65
+      c4:
+        count: 2
+        damage: 275
+      satchel:
+        count: 10
+        damage: 51.5
+      hv-rocket:
+        count: 32
+        damage: 15.75
+      mortar:
+        count: 17
+        damage: 30.15
+      propane:
+        count: 7
+        damage: 80.15
+      catapult-propane:
+        count: 4
+        damage: 137.65
+  sheet-wall:
+    name: Sheet Metal Wall
+    category: walls
+    aliases:
+    - sheetwall
+    - metalwall
+    - muro metal
+    - pared metal
+    hp: 1000
+    source: https://wiki.rustclash.com/building/metal-wall
+    notes: Hard side, direct hit. Soft side and placement differ.
+    methods:
+      rocket:
+        count: 8
+        damage: 137.575
+      c4:
+        count: 4
+        damage: 275
+      satchel:
+        count: 23
+        damage: 43.5
+      hv-rocket:
+        count: 67
+        damage: 15.0075
+      mortar:
+        count: 34
+        damage: 30.075
+      propane:
+        count: 13
+        damage: 80.075
+      catapult-propane:
+        count: 8
+        damage: 137.575
+  hq-wall:
+    name: Armored Wall / HQ Wall
+    category: walls
+    aliases:
+    - hqwall
+    - wallhq
+    - muro blindado
+    - pared hq
+    hp: 2000
+    source: https://wiki.rustclash.com/building/armored-wall
+    notes: Hard side, direct hit. Soft side and placement differ.
+    methods:
+      rocket:
+        count: 15
+        damage: 137.575
+      c4:
+        count: 8
+        damage: 275
+      satchel:
+        count: 46
+        damage: 43.5
+      hv-rocket:
+        count: 134
+        damage: 15.0075
+      mortar:
+        count: 67
+        damage: 30.075
+      propane:
+        count: 25
+        damage: 80.075
+      catapult-propane:
+        count: 15
+        damage: 137.575
+  wood-floor:
+    name: Wooden Floor
+    category: building
+    aliases:
+    - woodfloor
+    - piso madera
+    - suelo madera
+    status: pending_verification
+  stone-floor:
+    name: Stone Floor
+    category: building
+    aliases:
+    - stonefloor
+    - piso piedra
+    - suelo piedra
+    status: pending_verification
+  sheet-floor:
+    name: Sheet Metal Floor
+    category: building
+    aliases:
+    - sheetfloor
+    - metalfloor
+    - piso metal
+    status: pending_verification
+  hq-floor:
+    name: Armored Floor / HQ Floor
+    category: building
+    aliases:
+    - hqfloor
+    - piso blindado
+    status: pending_verification
+  wood-roof:
+    name: Wooden Roof
+    category: building
+    aliases:
+    - woodroof
+    - techo madera
+    status: pending_verification
+  stone-roof:
+    name: Stone Roof
+    category: building
+    aliases:
+    - stoneroof
+    - techo piedra
+    status: pending_verification
+  sheet-roof:
+    name: Sheet Metal Roof
+    category: building
+    aliases:
+    - sheetroof
+    - metalroof
+    - techo metal
+    status: pending_verification
+  hq-roof:
+    name: Armored Roof / HQ Roof
+    category: building
+    aliases:
+    - hqroof
+    - techo blindado
+    status: pending_verification
+  ladder-hatch:
+    name: Ladder Hatch
+    category: building
+    aliases:
+    - hatch
+    - escotilla
+    status: pending_verification
+  high-external-wood-wall:
+    name: High External Wooden Wall
+    category: deployables
+    aliases:
+    - highwoodwall
+    - muro externo madera
+    status: pending_verification
+  high-external-stone-wall:
+    name: High External Stone Wall
+    category: deployables
+    aliases:
+    - highstonewall
+    - muro externo piedra
+    status: pending_verification
+  tool-cupboard:
+    name: Tool Cupboard
+    category: deployables
+    aliases:
+    - tc
+    - cupboard
+    - armario herramientas
+    status: pending_verification
+  shotgun-trap:
+    name: Shotgun Trap
+    category: deployables
+    aliases:
+    - shotguntrap
+    - trampa escopeta
+    status: pending_verification
+  flame-turret:
+    name: Flame Turret
+    category: deployables
+    aliases:
+    - flameturret
+    - lanzallamas
+    status: pending_verification
+  auto-turret:
+    name: Auto Turret
+    category: deployables
+    aliases:
+    - autoturret
+    - torreta
+    status: pending_verification
+  propane-tank:
+    name: Propane Tank
+    category: siege
+    aliases:
+    - propane
+    - tanque propano
+    - bombona
+    - bombona propano
+    status: pending_verification
+  cannon:
+    name: Cannon
+    category: siege
+    aliases:
+    - cañon
+    - cañón
+    - canon
+    status: pending_verification
+  cannon-shell:
+    name: Cannon Shell
+    category: siege
+    aliases:
+    - cannonball
+    - bola cañon
+    - municion cañon
+    status: pending_verification

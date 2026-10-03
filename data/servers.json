@@ -1,0 +1,305 @@
+{
+  "profile": "https://www.battlemetrics.com/players/1128280744",
+  "servers": [
+    {
+      "id": "433747",
+      "name": "Rustafied.com - US Friday"
+    },
+    {
+      "id": "1101014",
+      "name": "Rustafied.com - US Monday"
+    },
+    {
+      "id": "1245187",
+      "name": "Rusticated.com - US Premium Trio | Thursday Wipes"
+    },
+    {
+      "id": "1477148",
+      "name": "Rustafied.com - US Long - Small"
+    },
+    {
+      "id": "1877911",
+      "name": "Reddit.com/r/PlayRust - US Low Pop"
+    },
+    {
+      "id": "2068512",
+      "name": "[US] Rustoria.co RTG - Aimtrain | FaceChecks | Arena | 1v1"
+    },
+    {
+      "id": "2337832",
+      "name": "Reddit.com/r/PlayRust - US Small"
+    },
+    {
+      "id": "2522221",
+      "name": "[US] Stevious 2x | Solo/Duo/Trio | 10/1"
+    },
+    {
+      "id": "2933470",
+      "name": "Rusty Moose |US Small|"
+    },
+    {
+      "id": "2933685",
+      "name": "Rusty Moose |US Biweekly|"
+    },
+    {
+      "id": "2936493",
+      "name": "Reddit.com/r/PlayRust - US Friday"
+    },
+    {
+      "id": "2942892",
+      "name": "Rusty Moose |US Medium|"
+    },
+    {
+      "id": "2956597",
+      "name": "[US] Stevious 2x Mondays | Vanilla | 10/1"
+    },
+    {
+      "id": "2997745",
+      "name": "[NA] Raid Simulator 2.0 (Raidsim)"
+    },
+    {
+      "id": "2997747",
+      "name": "[EU] Raid Simulator 2.0 (Raidsim)"
+    },
+    {
+      "id": "3260244",
+      "name": "\u29bf ICEFUSE Vanilla (Solo/Duo/Trio) JUST WIPED!"
+    },
+    {
+      "id": "3345988",
+      "name": "Reddit.com/r/PlayRust - US Monthly"
+    },
+    {
+      "id": "3477804",
+      "name": "PICKLE QUAD MONTHLY | No BP Wipe | Low Upkeep | Quad Trio"
+    },
+    {
+      "id": "3753675",
+      "name": "Rusticated.com - Creative | Bedwars | CREATIVE 4.0 OUT NOW!\r"
+    },
+    {
+      "id": "3849942",
+      "name": "[US] Stevious 2x Main | Vanilla | 10/1"
+    },
+    {
+      "id": "4026528",
+      "name": "Rustafied.com - US Small - Monday"
+    },
+    {
+      "id": "5363028",
+      "name": "RustReborn.gg US - Bedwars | AimTrain | Creative | Arena | FFA"
+    },
+    {
+      "id": "5372805",
+      "name": "US|AndysolAM 10x Main|No BPs|PVP|Shop|Loot+|Kits|Raid+|Skins"
+    },
+    {
+      "id": "5931597",
+      "name": "Rusty Moose |US Mondays|"
+    },
+    {
+      "id": "6071691",
+      "name": "[US] Stevious 2x Large | Vanilla | 8/7"
+    },
+    {
+      "id": "6323771",
+      "name": "Rusticated.com - US Premium Medium"
+    },
+    {
+      "id": "6727424",
+      "name": "Rusticated.com - US | 2x Vanilla | Thursday | Shared Bps | 10/1"
+    },
+    {
+      "id": "6792417",
+      "name": "UKN.GG - US Training Grounds - Main"
+    },
+    {
+      "id": "6803740",
+      "name": "RustReborn.gg EU - Bedwars | AimTrain | Creative | Arena | FFA"
+    },
+    {
+      "id": "7509879",
+      "name": "UKN.GG - US Sandbox - Creative | Build | Noclip"
+    },
+    {
+      "id": "8005608",
+      "name": "Rusticated.com - US | 2x Vanilla | Monday | Shared Bps | 10/1"
+    },
+    {
+      "id": "8649871",
+      "name": "WARBANDITS.GG 2X |Solo/Duo/Trio|X2 JUST FULLWIPED"
+    },
+    {
+      "id": "8674239",
+      "name": "Tommygun's Frag | US | BedWars | Aim Train | Scrim | Gun Game"
+    },
+    {
+      "id": "9594571",
+      "name": "Rustoria.co - EU Long"
+    },
+    {
+      "id": "9594576",
+      "name": "Rustoria.co - US Long Premium"
+    },
+    {
+      "id": "9594602",
+      "name": "Rustoria.co - US Medium Premium"
+    },
+    {
+      "id": "9611162",
+      "name": "Rusty Moose |US Monthly|"
+    },
+    {
+      "id": "9638661",
+      "name": "WARBANDITS.GG 3X |Solo/Duo/Trio|LootX3| JUST FULLWIPED"
+    },
+    {
+      "id": "9714379",
+      "name": "WARBANDITS.GG 2X |Solo/Duo/Trio/Quad| JUST FULLWIPED"
+    },
+    {
+      "id": "9890273",
+      "name": "HollowServers.co 2x Solo/Duo/Trio | JUST FULL WIPED"
+    },
+    {
+      "id": "11132682",
+      "name": "HollowServers.co 3x Solo/Duo/Trio/Quad|LootX3|JUST FULLWIPED"
+    },
+    {
+      "id": "11157430",
+      "name": "KoalaKopters - Minicopter / Helicopter Training|Arena|Dogfight"
+    },
+    {
+      "id": "11378166",
+      "name": "Rusty Moose |EU Monthly|"
+    },
+    {
+      "id": "11580473",
+      "name": "HollowServers.co 3x Solo/Duo |LootX3|JUST FULLWIPED"
+    },
+    {
+      "id": "11851766",
+      "name": "RustForNoobs.com | Solo Duo Trio | Monthly US"
+    },
+    {
+      "id": "11938291",
+      "name": "US RENEGADE 2x Monthly | Solo Duo | 50% Upkeep | No BP Wipe"
+    },
+    {
+      "id": "12410930",
+      "name": "Rustoria.co - US Mondays"
+    },
+    {
+      "id": "13519849",
+      "name": "WARBANDITS.GG 3X |Solo/Duo/Trio/Quad|LootX3| JUST WIPED"
+    },
+    {
+      "id": "13820079",
+      "name": "DOPERUST.COM \u2013 5X US Solo Only [MyMini|Kits|Rewards]"
+    },
+    {
+      "id": "14035317",
+      "name": "RustForNoobs.com | Solo Duo Trio Quad | Monthly | US"
+    },
+    {
+      "id": "14137676",
+      "name": "WARBANDITS.GG EU 3X |Solo/Duo|LootX3| JUST WIPED"
+    },
+    {
+      "id": "14616220",
+      "name": "WARBANDITS.GG 3X |Solo/Duo|LootX3| JUST WIPED"
+    },
+    {
+      "id": "14876661",
+      "name": "Rustopia.gg - US Main Premium"
+    },
+    {
+      "id": "14876729",
+      "name": "Rustopia.gg - US Large"
+    },
+    {
+      "id": "14876730",
+      "name": "Rustopia.gg - US Small"
+    },
+    {
+      "id": "14940354",
+      "name": "RustForNoobs.com | Main | Monthly | US"
+    },
+    {
+      "id": "15242712",
+      "name": "Bestrust Solo/Duo 2x #6 | JUST FULLWIPED 01.10 10/01"
+    },
+    {
+      "id": "15614902",
+      "name": "AceRust.com 3x Monthly Solo/Duo/Trio/Quad | JUST FULL WIPED"
+    },
+    {
+      "id": "16187073",
+      "name": "WARBANDITS.GG 2X |Solo/Duo/Trio/Quad/Max5| JUST FULLWIPED"
+    },
+    {
+      "id": "16616210",
+      "name": "Rustoria.co - US Low Pop"
+    },
+    {
+      "id": "16646780",
+      "name": "Rusty Moose |US Low|"
+    },
+    {
+      "id": "17927305",
+      "name": "WARBANDITS.GG 3X |Solo/Duo/Trio/Quad/Max5|LootX3| JUST WIPED"
+    },
+    {
+      "id": "17938811",
+      "name": "US Limitless 2x Monthly Solo/Duo|No BP Wipes|Noob Friendly"
+    },
+    {
+      "id": "20122909",
+      "name": "Rusty Spoon US PVE 5x [Events|Raid|Quests|Zombies|SkillTree]"
+    },
+    {
+      "id": "21361168",
+      "name": "[EU] TideRust - Solo/Duo/Trio/Quad | Monthly |No BP Wipes"
+    },
+    {
+      "id": "21570246",
+      "name": "Rustonic US - SOLO/DUO/TRIO/QUAD - WIPE 04/02 04.02"
+    },
+    {
+      "id": "21763974",
+      "name": "Atlas - US 10x | No BPs | Kits | Shop"
+    },
+    {
+      "id": "22325367",
+      "name": "[US] Rust in Peace - 2x Vanilla Mondays | Shared BPs | Max 8"
+    },
+    {
+      "id": "24021632",
+      "name": "[US] Spoonkid Rust - 2x Saturdays | 6 MAX | Shared BPs"
+    },
+    {
+      "id": "24599573",
+      "name": "DOPE Test"
+    },
+    {
+      "id": "26375548",
+      "name": "Atlas - US 2X Monthly | Vanilla+ | No BP Wipes"
+    },
+    {
+      "id": "27531248",
+      "name": "Rustoria.co - BR Main"
+    },
+    {
+      "id": "32291406",
+      "name": "Rusty Moose |US Main|"
+    },
+    {
+      "id": "37058990",
+      "name": "Bestrust Solo/Duo/Trio/Quad 2x #5 | JUST FULLWIPED 06.09 09/06"
+    },
+    {
+      "id": "37330309",
+      "name": "US | Helli's Aimtrain | Facechecks/1v1/Speargun/Hellis"
+    }
+  ]
+}

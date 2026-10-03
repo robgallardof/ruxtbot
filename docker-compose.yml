@@ -1,0 +1,12 @@
+services:
+  rustbot:
+    build: .
+    image: rust-discord-bot:latest
+    env_file: .env
+    environment:
+      RUST_TRACKER_STATE_PATH: /data/rustbot.sqlite3
+    volumes:
+      - rustbot-data:/data
+    restart: unless-stopped
+volumes:
+  rustbot-data:
