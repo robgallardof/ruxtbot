@@ -1,4 +1,4 @@
-"""SQLite persistence: watches, per-guild settings and imported servers."""
+"""SQLite persistence: watches, per-guild settings, imported servers and the player book."""
 from __future__ import annotations
 import sqlite3
 import time
@@ -34,6 +34,7 @@ class Store:
         self.conn = sqlite3.connect(path)
         self.conn.execute("CREATE TABLE IF NOT EXISTS watches(steamid TEXT,server_id TEXT,channel_id INTEGER,label TEXT,was_online INTEGER,PRIMARY KEY(steamid,server_id,channel_id))")
         self.conn.execute("CREATE TABLE IF NOT EXISTS settings(guild_id INTEGER PRIMARY KEY,channel_id INTEGER,language TEXT,alerts INTEGER,poll_interval INTEGER)")
+        self.conn.execute("CREATE TABLE IF NOT EXISTS players(scope INTEGER,ref TEXT,name TEXT,steamid TEXT,bm_id TEXT,used_at REAL,PRIMARY KEY(scope,ref))")
         columns = {r[1] for r in self.conn.execute('PRAGMA table_info(watches)')}
         if 'owner_id' not in columns:
             self.conn.execute('ALTER TABLE watches ADD COLUMN owner_id INTEGER NOT NULL DEFAULT 0')
@@ -82,3 +83,33 @@ class Store:
     def servers(self):
         self.conn.execute("CREATE TABLE IF NOT EXISTS server_directory(id TEXT PRIMARY KEY,name TEXT NOT NULL)")
         return [{'id': r[0], 'name': r[1]} for r in self.conn.execute("SELECT id,name FROM server_directory")]
+
+    # ── Player book: players looked up in each guild, for name autocomplete ──
+    def remember_player(self, scope: int, name: str | None, steamid: str | None = None, bm_id: str | None = None):
+        """Save or refresh a player. One row per player: a SteamID row absorbs an older BattleMetrics-only row."""
+        if not steamid and not bm_id:
+            return
+        if not steamid and bm_id:
+            row = self.conn.execute('SELECT steamid FROM players WHERE scope=? AND bm_id=? AND steamid IS NOT NULL', (scope, bm_id)).fetchone()
+            steamid = row[0] if row else None
+        if steamid and bm_id:
+            old = self.conn.execute('SELECT name FROM players WHERE scope=? AND ref=?', (scope, 'bm:' + bm_id)).fetchone()
+            name = name or (old[0] if old else None)
+            self.conn.execute('DELETE FROM players WHERE scope=? AND ref=?', (scope, 'bm:' + bm_id))
+        ref = steamid or 'bm:' + bm_id
+        self.conn.execute('INSERT INTO players(scope,ref,name,steamid,bm_id,used_at) VALUES(?,?,?,?,?,?) ON CONFLICT(scope,ref) DO UPDATE SET '
+                          'name=COALESCE(excluded.name,players.name),bm_id=COALESCE(excluded.bm_id,players.bm_id),used_at=excluded.used_at',
+                          (scope, ref, (name or '').strip()[:100] or None, steamid, bm_id, time.time()))
+        # Bounded: keep the 500 most recent players per guild.
+        self.conn.execute('DELETE FROM players WHERE scope=? AND ref NOT IN (SELECT ref FROM players WHERE scope=? ORDER BY used_at DESC LIMIT 500)', (scope, scope))
+        self.conn.commit()
+
+    def player_name(self, scope: int, bm_id: str) -> str | None:
+        row = self.conn.execute('SELECT name FROM players WHERE scope=? AND bm_id=? AND name IS NOT NULL', (scope, bm_id)).fetchone()
+        return row[0] if row else None
+
+    def known_players(self, scope: int, query: str = '', limit: int = 25) -> list[tuple[str | None, str | None, str | None]]:
+        """(name, steamid, bm_id) matching name or ID, most recently used first."""
+        like = f"%{query.strip().replace('%', '').replace('_', '')}%"
+        return self.conn.execute('SELECT name,steamid,bm_id FROM players WHERE scope=? AND (name LIKE ? OR steamid LIKE ? OR bm_id LIKE ?) '
+                                 'ORDER BY used_at DESC LIMIT ?', (scope, like, like, like, limit)).fetchall()

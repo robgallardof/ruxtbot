@@ -2,7 +2,8 @@
 
 Larger command groups live in their own modules:
     raid.py              /raid, /raidcalc, /raidbudget, /raidcompare, /raidtools
-    who.py               /who
+    who.py               /who, /steamid
+    activity.py          /presence, /sessions, /online, /findplayer, /playercompare
     utility_commands.py  /ping, /status, /servers, /serversearch, /syncservers, /wipe, /forcewipe, alerts
     help.py              /help menu
     info_commands.py     /author, /examples
@@ -23,7 +24,8 @@ from .info_commands import register_info
 from .activity import register_activity, presence_lines
 from .raid import register_raid_commands
 from .raid_data import RaidData
-from .servers import ServerDirectory
+from .players import player_autocomplete, remember, steam_of
+from .servers import ServerDirectory, server_autocomplete
 from .tracking import Store, transition
 from .track_ui import TrackingPanel
 from .ui import GREEN, GREY, RED, brand_embed, error_embed, reply, success_embed
@@ -52,6 +54,7 @@ class RustBot(commands.Bot):
         # Base directory (servers.json) + servers imported with /syncservers.
         self.directory = ServerDirectory(Path(settings.data_path).with_name('servers.json'))
         self.directory.merge(self.store.servers())
+        self.server_choices = server_autocomplete(self)
         self.last_poll = {}  # (steamid, server, channel) -> last check, to honour the interval
         self.poll.change_interval(seconds=10)
 
@@ -255,11 +258,11 @@ def main():
         await interaction.response.send_message(embed=e, ephemeral=True)
 
     # ── Servers and presence ──
-    async def server_choices(interaction, current: str):
-        return [app_commands.Choice(name=row['name'][:100], value=row['id']) for row in bot.directory.search(current)]
+    server_choices = bot.server_choices
+    player_choices = player_autocomplete(bot)
 
     @bot.tree.command(description='🖥️ Live server status: players, queue, map and wipe')
-    @app_commands.describe(server='Type part of the name and pick a suggestion')
+    @app_commands.describe(server='Server name or BattleMetrics server ID')
     @app_commands.autocomplete(server=server_choices)
     async def server(interaction: discord.Interaction, server: str):
         lang = lang_for(interaction)
@@ -299,18 +302,18 @@ def main():
             e.add_field(name=t(lang, 'server.connect'), value=f"`client.connect {a['ip']}:{a['port']}`", inline=False)
         if d.get('rust_headerimage'):
             e.set_image(url=d['rust_headerimage'])
-        e.set_footer(text='BattleMetrics')
+        e.set_footer(text=t(lang, 'server.footer', id=sid))
         await interaction.followup.send(embed=e, ephemeral=True)
 
-    @bot.tree.command(description='🟢 Is a BattleMetrics profile online on a server?')
-    @app_commands.describe(profile='SteamID64 or BattleMetrics player ID', server='Server (pick from the list)', share='Publish the result in this channel')
-    @app_commands.autocomplete(server=server_choices)
-    async def player(interaction: discord.Interaction, profile: str, server: str, share: bool = False):
+    @bot.tree.command(description='🟢 Is a player online on a server right now?')
+    @app_commands.describe(player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Server name or BattleMetrics server ID', share='Publish the result in this channel')
+    @app_commands.autocomplete(player=player_choices, server=server_choices)
+    async def player(interaction: discord.Interaction, player: str, server: str, share: bool = False):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
         try:
             sid = bot.directory.resolve(server)
-            pid = await bot.bm.resolve_player(profile)
+            pid = await bot.bm.resolve_player(player)
         except ValueError as exc:
             key = str(exc) if str(exc).startswith('identity.') else 'identity.input'
             await interaction.followup.send(embed=error_embed(t(lang, key), lang=lang), ephemeral=not share)
@@ -320,6 +323,7 @@ def main():
         except Exception:
             await interaction.followup.send(embed=error_embed(t(lang, 'bm.fail'), lang=lang), ephemeral=not share)
             return
+        await remember(bot, interaction, bm_id=pid, steamid=steam_of(player))
         key, color = {True: ('player.online', GREEN), False: ('player.offline', RED), None: ('player.unknown', GREY)}[online]
         e = brand_embed(description=f"{t(lang, key)}\n🖥️ {discord.utils.escape_markdown(bot.directory.name(sid))}", color=color)
         e.set_footer(text=t(lang, 'player.footer'))
@@ -327,11 +331,11 @@ def main():
 
     # ── Watches ──
     @bot.tree.command(description='👀 Manage your temporary connection alerts')
-    @app_commands.describe(action='What to do', profile='SteamID64 or BattleMetrics player ID', server='Server (empty = all known)', label='Name shown in alerts', days='Duration in days (maximum 15)', share='Publish the result in this channel')
+    @app_commands.describe(action='What to do', player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Server (empty = all known)', label='Name shown in alerts', days='Duration in days (maximum 15)', share='Publish the result in this channel')
     @app_commands.choices(action=[app_commands.Choice(name='Add', value='add'), app_commands.Choice(name='Remove', value='remove'),
                                   app_commands.Choice(name='List', value='list')])
-    @app_commands.autocomplete(server=server_choices)
-    async def track(interaction: discord.Interaction, action: str = 'list', profile: str | None = None, server: str | None = None, label: str | None = None, days: app_commands.Range[int, 1, 15] = 7, share: bool = False):
+    @app_commands.autocomplete(player=player_choices, server=server_choices)
+    async def track(interaction: discord.Interaction, action: str = 'list', player: str | None = None, server: str | None = None, label: str | None = None, days: app_commands.Range[int, 1, 15] = 7, share: bool = False):
         lang = lang_for(interaction)
         if not interaction.guild:
             await interaction.response.send_message(embed=error_embed(t(lang, 'track.guild'), lang=lang), ephemeral=not share)
@@ -348,12 +352,12 @@ def main():
             await interaction.response.send_message(embed=e, view=panel, ephemeral=not share)
             panel.message = await interaction.original_response()
             return
-        if not profile:
+        if not player:
             await interaction.response.send_message(embed=error_embed(t(lang, 'track.need_profile'), t(lang, 'track.need_profile.hint'), lang), ephemeral=not share)
             return
         await interaction.response.defer(ephemeral=not share)
         try:
-            pid = await bot.bm.resolve_player(profile)
+            pid = await bot.bm.resolve_player(player)
             saved = bot.store.settings(interaction.guild_id)
             channel_id = saved[0] if saved else interaction.channel_id
             data = await bot.bm.profile(pid) if action == 'add' else None
@@ -378,6 +382,7 @@ def main():
                     await interaction.followup.send(embed=error_embed(t(lang, 'track.need_role'), lang=lang), ephemeral=not share)
                     return
                 lines = await presence_lines(bot, pid, data)
+                await remember(bot, interaction, bm_id=pid, steamid=steam_of(player), profile=data)
                 name = label or data['data']['attributes'].get('name', pid)
                 for sid in ids:
                     bot.store.add('bm:' + pid, sid, channel_id, name, owner_id=interaction.user.id, days=days)

@@ -50,7 +50,7 @@ def servers_page_embed(lang: str, rows: list[dict], query: str, page: int) -> tu
     """Page `page` (1-based) of the filtered directory."""
     pages = max(1, math.ceil(len(rows) / PAGE_SIZE))
     page = max(1, min(page, pages))
-    lines = [f"• [{discord.utils.escape_markdown(r['name'])}](https://www.battlemetrics.com/servers/rust/{r['id']})"
+    lines = [f"• [{discord.utils.escape_markdown(r['name'])}](https://www.battlemetrics.com/servers/rust/{r['id']}) · `{r['id']}`"
              for r in rows[(page - 1) * PAGE_SIZE:page * PAGE_SIZE]]
     title = t(lang, 'servers.title', page=page, pages=pages) + (f' · «{query}»' if query else '')
     e = brand_embed(title, '\n'.join(lines) or t(lang, 'servers.none'))
@@ -89,8 +89,7 @@ class ServerPagesView(OwnedView):
 
 
 def register_utilities(bot, catalog, require_admin):
-    async def servers(interaction, current: str):
-        return [app_commands.Choice(name=r['name'][:100], value=r['id']) for r in bot.directory.search(current)]
+    servers = bot.server_choices
 
     def guild_watches(interaction):
         # Only watches whose channels belong to this Discord server.
@@ -157,12 +156,13 @@ def register_utilities(bot, catalog, require_admin):
             rank = f" · 🏆 #{a['rank']:,}" if a.get('rank') else ''
             flag = f" · {a['country']}" if a.get('country') else ''
             lines.append(f"{dot} [{discord.utils.escape_markdown(a['name'][:70])}](https://www.battlemetrics.com/servers/rust/{s['id']})\n"
-                         f"-# 👥 {a.get('players', 0)}/{a.get('maxPlayers', 0)}{extra}{rank}{flag}")
+                         f"-# 👥 {a.get('players', 0)}/{a.get('maxPlayers', 0)}{extra}{rank}{flag} · 🆔 `{s['id']}`")
         e = brand_embed(t(lang, 'search.title', q=query), '\n'.join(lines) or t(lang, 'search.none'))
         e.set_footer(text=t(lang, 'search.footer'))
         await interaction.followup.send(embed=e, ephemeral=True)
 
     @bot.tree.command(name='syncservers', description='📥 Import servers from a BattleMetrics profile')
+    @app_commands.describe(profile='SteamID64 or BattleMetrics player ID whose servers are imported')
     async def sync_servers(interaction, profile: str = '1128280744'):
         if not await require_admin(interaction):
             return
@@ -201,7 +201,7 @@ def register_utilities(bot, catalog, require_admin):
         await toggle(interaction, True)
 
     @bot.tree.command(name='wipe', description="🗓️ A server's last and next wipe")
-    @app_commands.describe(server='Type part of the name and pick a suggestion')
+    @app_commands.describe(server='Server name or BattleMetrics server ID')
     @app_commands.autocomplete(server=servers)
     async def wipe(interaction, server: str):
         lang = lang_for(interaction)

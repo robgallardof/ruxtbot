@@ -14,10 +14,12 @@ from datetime import datetime, timezone
 import discord
 import httpx
 from discord import app_commands
+from .battlemetrics import steamid_from
 from .i18n import lang_for, t
+from .players import player_autocomplete, remember
 from .servers import profile_id
 from .tracking import STEAMID64_MIN as STEAM64_BASE, valid_steamid64
-from .ui import ORANGE, RED, STEAM_BLUE, YELLOW, error_embed
+from .ui import ORANGE, RED, STEAM_BLUE, YELLOW, OwnedView, error_embed
 
 RUST_APP_ID = 252490
 COOLDOWN_SECONDS = 10
@@ -164,6 +166,15 @@ class WhoService:
         steamid = target.steamid or (await self.resolve_vanity(target.vanity) if target.vanity else None)
         bm_id = bm_id or target.bm_id
         resolution_error = None
+        # Only a BattleMetrics ID: its profile may expose the SteamID, which unlocks Steam and RustWho.
+        prefetched, prefetch_failed = None, False
+        if bm_id and not steamid and self.bm.token:
+            try:
+                prefetched = await self.bm_detail(bm_id)
+                steamid = steamid_from(prefetched)
+            except Exception as exc:
+                logging.info('who: bm prefetch failed: %r', exc)
+                prefetch_failed = True
         if steamid and not bm_id and self.bm.token:
             try:
                 bm_id = await self.bm.resolve_player(steamid)
@@ -175,10 +186,12 @@ class WhoService:
         if steamid:
             jobs |= {'steam': self.steam_profile(steamid), 'page': self.steam_page(steamid), 'aliases': self.steam_aliases(steamid),
                      'games': self.steam_games(steamid), 'rustwho': self.rustwho(steamid)}
-        if bm_id and self.bm.token:
+        if bm_id and self.bm.token and prefetched is None and not prefetch_failed:
             jobs['bm'] = self.bm_detail(bm_id)
         results = await asyncio.gather(*jobs.values(), return_exceptions=True)
-        report = {'steamid': steamid, 'bm_id': bm_id, 'errors': [], 'resolution_error': resolution_error}
+        report = {'steamid': steamid, 'bm_id': bm_id, 'errors': ['bm'] if prefetch_failed else [], 'resolution_error': resolution_error}
+        if prefetched is not None:
+            report['bm'] = prefetched
         for key, result in zip(jobs, results):
             if isinstance(result, BaseException):
                 logging.info('who: %s failed: %r', key, result)
@@ -482,21 +495,59 @@ def build_embeds(report: dict, bm_configured: bool = True, lang: str = 'en') -> 
     return embeds
 
 
-class LinksView(discord.ui.View):
-    def __init__(self, steamid: str | None, bm_id: str | None):
-        super().__init__(timeout=None)
+def report_name(report: dict) -> str | None:
+    return ((report.get('steam') or {}).get('name') or ((report.get('rustwho') or {}).get('steamInfo') or {}).get('name')
+            or (((report.get('bm') or {}).get('data') or {}).get('attributes') or {}).get('name'))
+
+
+class LinksView(OwnedView):
+    """Links to every site, plus optional shortcut buttons (label, emoji, coroutine) that only the requester can use."""
+
+    def __init__(self, steamid: str | None, bm_id: str | None, owner_id: int | None = None, actions=()):
+        super().__init__(owner_id, timeout=600)
         emoji = {'Steam': '🎮', 'SteamID I/O': '🆔', 'SteamDB': '💰', 'RustWho': '🦀', 'BattleMetrics': '📊'}
         for label, url in links(steamid, bm_id).items():
             self.add_item(discord.ui.Button(label=label, url=url, emoji=emoji[label]))
+        for label, icon, action in actions:
+            button = discord.ui.Button(label=label, emoji=icon, style=discord.ButtonStyle.primary)
+            button.callback = action
+            self.add_item(button)
+
+
+def steamid_embed(steamid: str, lang: str) -> discord.Embed:
+    ids = steam_ids(steamid)
+    rows = [('SteamID64', ids['steam64']), ('SteamID', ids['steam2']), ('SteamID3', ids['steam3']), ('Account ID', ids['account'])]
+    e = discord.Embed(title=t(lang, 'steamid.title'), color=STEAM_BLUE, url=f'https://steamcommunity.com/profiles/{steamid}')
+    e.description = '```\n' + '\n'.join(f'{k:<11}{v}' for k, v in rows) + '\n```'
+    e.add_field(name=t(lang, 'steamid.copy'), value=f'`{steamid}`', inline=False)
+    e.set_footer(text=t(lang, 'steamid.footer'))
+    return e
+
+
+def shortcut_actions(bot, report: dict, lang: str, in_guild: bool):
+    """Buttons under a profile: watch the player and open their sessions without retyping anything."""
+    if not report.get('bm_id') or not bot.bm.token:
+        return []
+
+    async def watch(interaction):
+        await bot.tree.get_command('track').callback(interaction, action='add', player=report['bm_id'])
+
+    async def sessions(interaction):
+        await bot.tree.get_command('sessions').callback(interaction, player=report['bm_id'])
+
+    actions = [(t(lang, 'who.button.watch'), '👀', watch)] if in_guild else []
+    return actions + [(t(lang, 'who.button.sessions'), '🕒', sessions)]
 
 
 def register_who(bot, service: WhoService):
     cooldowns: dict[int, float] = {}
+    players = player_autocomplete(bot)
 
     @bot.tree.command(name='who', description='🕵️ Full player profile: Steam, bans, name history, Rust stats, BattleMetrics')
-    @app_commands.describe(player='SteamID64, STEAM_0, or a Steam, steamid.io, SteamDB, RustWho or BattleMetrics link',
-                           battlemetrics='BattleMetrics profile link (optional) for hours, servers and in-game names', share='Publish the result in this channel')
-    async def who(interaction: discord.Interaction, player: str, battlemetrics: str | None = None, share: bool = False):
+    @app_commands.describe(player='Name you looked up before, SteamID64, STEAM_0 or BattleMetrics player ID',
+                           bm_id='BattleMetrics player ID (optional, numbers only)', share='Publish the result in this channel')
+    @app_commands.autocomplete(player=players)
+    async def who(interaction: discord.Interaction, player: str, bm_id: str | None = None, share: bool = False):
         lang = lang_for(interaction)
         try:
             target = parse_target(player)
@@ -504,7 +555,7 @@ def register_who(bot, service: WhoService):
             await interaction.response.send_message(embed=error_embed(t(lang, 'who.bad_input'), lang=lang), ephemeral=not share)
             return
         try:
-            bm_id = profile_id(battlemetrics) if battlemetrics else None
+            bm_id = profile_id(bm_id) if bm_id else None
         except ValueError:
             await interaction.response.send_message(embed=error_embed(t(lang, 'bm.profile_link'), lang=lang), ephemeral=not share)
             return
@@ -527,10 +578,37 @@ def register_who(bot, service: WhoService):
             logging.exception('who lookup failed')
             await interaction.followup.send(embed=error_embed(t(lang, 'who.fail'), lang=lang), ephemeral=not share)
             return
-        view = LinksView(report['steamid'], report['bm_id'])
+        await remember(bot, interaction, bm_id=report['bm_id'], steamid=report['steamid'], name=report_name(report))
+        view = LinksView(report['steamid'], report['bm_id'], interaction.user.id, shortcut_actions(bot, report, lang, bool(interaction.guild)))
         if report['steamid'] and 'steam' in report['errors'] and 'rustwho' in report['errors']:
             await interaction.followup.send(embed=error_embed(t(lang, 'who.both_down'), lang=lang), view=view, ephemeral=not share)
+        else:
+            await interaction.followup.send(embeds=build_embeds(report, bool(service.bm.token), lang), view=view, ephemeral=not share)
+        view.message = await interaction.original_response()
+
+    @bot.tree.command(name='steamid', description='🆔 Convert a player to every SteamID format')
+    @app_commands.describe(player='Name you looked up before, SteamID64, STEAM_0, [U:1:…] or Steam custom URL')
+    @app_commands.autocomplete(player=players)
+    async def steamid(interaction: discord.Interaction, player: str):
+        lang = lang_for(interaction)
+        await interaction.response.defer(ephemeral=True)
+        try:
+            target = parse_target(player)
+        except ValueError:
+            target = Target()
+        try:
+            if target.bm_id and bot.bm.token:
+                target = Target(steamid=steamid_from(await service.bm_detail(target.bm_id)))
+            sid = target.steamid or (await service.resolve_vanity(target.vanity) if target.vanity else None)
+        except VanityNotFound as exc:
+            await interaction.followup.send(embed=error_embed(t(lang, 'who.bad_vanity', v=esc(exc.vanity)), lang=lang), ephemeral=True)
             return
-        await interaction.followup.send(embeds=build_embeds(report, bool(service.bm.token), lang), view=view, ephemeral=not share)
+        except Exception:
+            await interaction.followup.send(embed=error_embed(t(lang, 'steamid.fail'), lang=lang), ephemeral=True)
+            return
+        if not sid:
+            await interaction.followup.send(embed=error_embed(t(lang, 'steamid.bad'), lang=lang), ephemeral=True)
+            return
+        await interaction.followup.send(embed=steamid_embed(sid, lang), view=LinksView(sid, None), ephemeral=True)
 
     return who

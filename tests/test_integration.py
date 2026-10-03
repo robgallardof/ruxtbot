@@ -25,7 +25,9 @@ def bm_player(pid='1128280744', online=True):
               'meta': {'online': online, 'timePlayed': 7200, 'firstSeen': iso(9000), 'lastSeen': iso(2)}}
     names = [{'type': 'identifier', 'attributes': {'type': 'name', 'identifier': n, 'lastSeen': iso(i * 1000)}}
              for i, n in enumerate(['KingGallardo', 'robgallardof'])]
-    return {'data': {'id': pid, 'attributes': {'name': 'KingGallardo', 'private': False}}, 'included': [server, *names]}
+    steam = [{'type': 'identifier', 'attributes': {'type': 'steamID', 'identifier': STEAMID}}] if pid == '1128280744' else []
+    return {'data': {'id': pid, 'attributes': {'name': 'KingGallardo' if pid == '1128280744' else f'Player{pid}', 'private': False}},
+            'included': [server, *names, *steam]}
 
 
 def fake_http(request: httpx.Request) -> httpx.Response:
@@ -41,6 +43,12 @@ def fake_http(request: httpx.Request) -> httpx.Response:
         return httpx.Response(200, json={'data': [{'id': '9611162', 'attributes': {'name': 'Rusty Moose |US Monthly|', 'status': 'online', 'players': 833,
                                                                                     'maxPlayers': 850, 'rank': 40, 'country': 'US',
                                                                                     'details': {'rust_queued_players': 30}}}]})
+    if 'api.battlemetrics.com/servers/' in url and 'include=player' in url:
+        players = [{'type': 'player', 'id': pid, 'attributes': {'name': name}} for pid, name in
+                   [('1128280744', 'KingGallardo'), ('77', 'Bob <@everyone>'), *[(str(100 + n), f'Filler{n}') for n in range(25)]]]
+        sessions = [{'type': 'session', 'attributes': {'start': iso(90), 'stop': None}, 'relationships': {'player': {'data': {'type': 'player', 'id': '1128280744'}}}}]
+        return httpx.Response(200, json={'data': {'id': '5931597', 'attributes': {'name': 'Rusty Moose |US Medium|', 'players': 27, 'maxPlayers': 200}},
+                                         'included': players + sessions})
     if 'api.battlemetrics.com/servers/' in url:
         return httpx.Response(200, json={'data': {'attributes': {'name': 'Rusty Moose |US Medium|', 'status': 'online', 'players': 190, 'maxPlayers': 200,
                                                                  'rank': 12, 'country': 'US', 'ip': '1.2.3.4', 'port': 28015,
@@ -49,7 +57,7 @@ def fake_http(request: httpx.Request) -> httpx.Response:
     if 'api.battlemetrics.com/players?' in url:
         return httpx.Response(200, json={'data': [{'id': '1128280744', 'attributes': {'name': 'KingGallardo', 'updatedAt': iso(5)}}]})
     if 'api.battlemetrics.com/players/' in url:
-        return httpx.Response(200, json=bm_player())
+        return httpx.Response(200, json=bm_player(request.url.path.split('/')[2]))
     if 'ajaxaliases' in url:
         return httpx.Response(200, json=[{'newname': 'OldName', 'timechanged': '4 Jun, 2021 @ 6:33am'}])
     if 'steamcommunity.com' in url and 'xml=1' in url:
@@ -155,7 +163,7 @@ def test_every_command_is_registered_localized_and_serializable(bot):
     async def go():
         from rustbot.i18n import CommandTranslator
         names = sorted(c.name for c in bot.tree.get_commands())
-        assert names == sorted(['presence', 'sessions', 'author', 'craft', 'examples', 'forcewipe', 'help', 'item', 'pausealerts', 'ping', 'player', 'raid', 'raidbudget',
+        assert names == sorted(['online', 'findplayer', 'playercompare', 'steamid', 'presence', 'sessions', 'author', 'craft', 'examples', 'forcewipe', 'help', 'item', 'pausealerts', 'ping', 'player', 'raid', 'raidbudget',
                                 'raidcalc', 'raidcompare', 'raidtools', 'resumealerts', 'server', 'servers', 'serversearch', 'settings',
                                 'sources', 'status', 'syncservers', 'track', 'who', 'wipe'])
         for command in bot.tree.get_commands():
@@ -479,4 +487,97 @@ def test_guided_tracking_panel_and_modal(bot):
         stop.player._value = STEAMID
         await stop.on_submit(FakeInteraction(locale='es-ES', admin=False))
         assert not bot.store.watches()
+    run(go())
+
+
+def test_player_book_autocompletes_names_after_a_lookup(bot):
+    async def go():
+        i = FakeInteraction()
+        await cmd(bot, 'who')(i, STEAMID)
+        complete = bot.tree.get_command('player')._params['player'].autocomplete
+        choices = await complete(FakeInteraction(), 'king')
+        assert [(c.name, c.value) for c in choices] == [(f'KingGallardo · {STEAMID}', STEAMID)]
+        # Other guilds never see this guild's lookups.
+        other = FakeInteraction()
+        other.guild_id = 999
+        assert await complete(other, 'king') == []
+        typed = await complete(FakeInteraction(), '1128280744')
+        assert typed[0].value == '1128280744' and 'BattleMetrics' in typed[0].name
+        # The value picked from autocomplete works directly in every player command.
+        p = FakeInteraction()
+        await cmd(bot, 'player')(p, choices[0].value, '5931597')
+        assert 'Online' in p.sent()['embed'].description
+    run(go())
+
+
+def test_who_with_only_a_battlemetrics_id_finds_the_steam_profile(bot):
+    async def go():
+        i = FakeInteraction()
+        await cmd(bot, 'who')(i, '1128280744')
+        sent = i.sent()
+        assert sent['embeds'][0].title == '👤 KingGallardo'
+        assert any(e.title.startswith('📊 BattleMetrics') for e in sent['embeds'])
+        labels = [b.label for b in sent['view'].children]
+        assert 'Steam' in labels and 'Watch 7 days' in labels and 'Sessions' in labels
+        sessions = await click(next(b for b in sent['view'].children if b.label == 'Sessions'))
+        assert 'Rusty Moose' in sessions.sent()['embed'].description
+        bad = FakeInteraction()
+        await cmd(bot, 'who')(bad, STEAMID, 'https://evil.test/1')
+        assert 'numbers only' in bad.sent()['embed'].description
+    run(go())
+
+
+def test_online_lists_players_marks_known_ones_and_opens_profiles(bot):
+    async def go():
+        bot.store.remember_player(1, 'KingGallardo', STEAMID, '1128280744')
+        i = FakeInteraction()
+        await cmd(bot, 'online')(i, '5931597')
+        e, view = i.sent()['embed'], i.sent()['view']
+        assert '⭐ **KingGallardo** · <t:' in e.description and '27/200' in e.fields[0].value
+        assert '@everyone' not in e.description.replace('\\@everyone', '')
+        picker = find(view, placeholder='Open a player profile')
+        assert len(picker.options) == 20
+        page2 = await click(next(c for c in view.children if str(getattr(c, 'emoji', '')) == '▶️'))
+        assert '` 21` **Filler18**' in page2.response.calls[-1][2]['embed'].description
+        opened = await click(picker, values=['1128280744'])
+        assert opened.sent()['embeds'][0].title == '👤 KingGallardo'
+        f = FakeInteraction('es-ES')
+        await cmd(bot, 'online')(f, 'Rusty Moose |US Medium|', 'bob')
+        assert 'filtro' in f.sent()['embed'].fields[0].value and 'Filler' not in f.sent()['embed'].description
+    run(go())
+
+
+def test_findplayer_playercompare_and_steamid(bot):
+    async def go():
+        f = FakeInteraction()
+        await cmd(bot, 'findplayer')(f, 'KingGallardo')
+        assert '`1128280744`' in f.sent()['embed'].description
+        assert find(f.sent()['view'], placeholder='Open a player profile').options[0].value == '1128280744'
+        c = FakeInteraction()
+        await cmd(bot, 'playercompare')(c, STEAMID, '555')
+        e = c.sent()['embed']
+        assert 'KingGallardo' in e.title and 'Player555' in e.title
+        assert 'Rusty Moose' in e.description and '🟢🟢' in e.description and '**1**' in e.fields[0].value
+        same = FakeInteraction()
+        await cmd(bot, 'playercompare')(same, STEAMID, '1128280744')
+        assert 'same player' in same.sent()['embed'].description
+        s = FakeInteraction()
+        await cmd(bot, 'steamid')(s, 'STEAM_0:0:444176606')
+        assert STEAMID in s.sent()['embed'].description and '[U:1:888353212]' in s.sent()['embed'].description
+        b = FakeInteraction()
+        await cmd(bot, 'steamid')(b, '!!!')
+        assert 'SteamID64' in b.sent()['embed'].description
+    run(go())
+
+
+def test_servers_accept_any_id_and_autocomplete_live(bot):
+    async def go():
+        i = FakeInteraction()
+        await cmd(bot, 'server')(i, '424242')
+        assert '190/200' in i.sent()['embed'].description and '424242' in i.sent()['embed'].footer.text
+        complete = bot.tree.get_command('online')._params['server'].autocomplete
+        choices = await complete(FakeInteraction(), 'xyzq')
+        assert any(c.value == '9611162' and '👥 833' in c.name for c in choices)
+        typed = await complete(FakeInteraction(), '123456')
+        assert typed[0].value == '123456'
     run(go())

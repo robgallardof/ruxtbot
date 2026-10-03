@@ -10,8 +10,8 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 | --- | --- |
 | 💥 Raid | `/raid`, `/raidcalc`, `/raidbudget`, `/raidcompare`, `/raidtools` |
 | 🛠️ Crafting | `/craft`, `/item`, `/sources` |
-| 🖥️ Servers | `/server`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe` |
-| 🕵️ Players | `/who`, `/player`, `/presence`, `/sessions` |
+| 🖥️ Servers | `/server`, `/online`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe` |
+| 🕵️ Players | `/who`, `/findplayer`, `/player`, `/presence`, `/sessions`, `/playercompare`, `/steamid`, `/track` |
 | ℹ️ Info | `/help`, `/examples`, `/author` |
 | ⚙️ Admin | `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers`, `/ping` |
 
@@ -25,9 +25,20 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 - `/raidbudget sulfur:20000`: how many of each explosive you can craft and how many targets of each kind you can destroy.
 - "Cheapest" only considers common explosives; siege (catapult, mortar, ballista, ram, MLRS, 40mm HE, cannon) and fire are tagged in comparisons but never recommended by default. Unverified craft costs are shown as such, never as free.
 
-### Players — `/who`
+### Players: no links, just IDs or names
 
-`/who player:<SteamID64 or link> battlemetrics:<optional numeric ID>` accepts SteamID64, `STEAM_0:X:Y`, `[U:1:N]`, a custom URL, or Steam, steamid.io, SteamDB, RustWho and BattleMetrics links. It shows:
+Every player option takes a **SteamID64** (`7656119…`), `STEAM_0:X:Y`, `[U:1:N]` or a **BattleMetrics player ID** (numbers only). You never have to paste a link (pasted links still work).
+
+After the first lookup the player goes into the guild's **player book** and every player option **autocompletes by name** (`KingGallardo · 7656119…`). The book is per Discord server (per user in DMs), keeps the 500 most recent players and never shares names between servers.
+
+- `/findplayer name:` searches BattleMetrics by in-game name and shows each **BattleMetrics ID**; pick one to open the full profile.
+- `/online server:` lists who is playing right now (20 per page, time in the current session). 👀 marks watched players, ⭐ players you looked up before; the picker opens a profile.
+- `/playercompare first: second:` lists the servers two players have in common, hours of each and 🟢🟢 when both are online (possible teammates; not proof).
+- `/steamid player:` converts between every SteamID format.
+
+### Players: `/who`
+
+`/who player:<SteamID64, BattleMetrics ID or name> bm_id:<optional BattleMetrics ID>`. With only a BattleMetrics ID, the bot reads the SteamID from the BattleMetrics profile when the token can see it, so Steam and RustWho data still appear. Buttons under the profile open **Watch 7 days** and **Sessions** directly. It shows:
 
 - 📝 **Name history first**: merged from Steam, RustWho and BattleMetrics with date and source, plus how many older names are locked on RustWho.
 - 👤 Steam status, every SteamID format (like steamid.io), creation date, level, games, badges, limited account.
@@ -38,13 +49,14 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 
 ### Servers
 
+- Every `server` option takes a name from the suggestions **or any BattleMetrics server ID**. When the local directory has few matches, suggestions are filled live from BattleMetrics (cached, at most one search per second so the tracker keeps its rate limit).
 - `/server`: live players, queue, map, rank, country, wipes, header image and `client.connect`.
-- `/serversearch query:`: search any Rust server on BattleMetrics, most players first.
+- `/serversearch query:`: search any Rust server on BattleMetrics, most players first, with each server ID.
 - `/forcewipe`: next Facepunch forced wipe (first Thursday of the month, 2 PM US Eastern) with countdowns in each user's time zone.
 
 ### Alerts
 
-`/track action:Add profile:<SteamID64> server:<name>` pings the single `wipe` role on connect/disconnect. The first reading is silent, unknown data never counts as a disconnect, and player names are escaped so they cannot mention anyone. Available to server members; owners manage their watches and administrators can manage all watches.
+`/track action:Add player:<name, SteamID64 or BattleMetrics ID> server:<name>` pings the single `wipe` role on connect/disconnect. The first reading is silent, unknown data never counts as a disconnect, and player names are escaped so they cannot mention anyone. Available to server members; owners manage their watches and administrators can manage all watches.
 
 ## UX rules
 
@@ -75,18 +87,18 @@ The test suite checks the raid math, every panel against Discord's limits (40 co
 
 ### SteamID-first activity
 
-- `/track action:Add profile:<SteamID64>` watches the player's known servers in the synchronized directory, with no server IDs to copy. It displays current observations and retains the existing silent first-reading policy.
-- `/syncservers profile:<SteamID64>` imports accessible Rust servers; `/track` activates alerts separately.
-- `/player profile:<SteamID64> server:<name>` checks a selected server.
+- `/track action:Add player:<SteamID64>` watches the player's known servers in the synchronized directory, with no server IDs to copy. It displays current observations and retains the existing silent first-reading policy.
+- `/syncservers profile:<SteamID64 or BattleMetrics ID>` imports accessible Rust servers; `/track` activates alerts separately.
+- `/player player:<SteamID64> server:<name>` checks a selected server.
 - `/presence player:<SteamID64> page:1` lists synchronized servers, fresh presence, recorded hours and last seen, ten per page.
 - `/sessions player:<SteamID64> server:<optional name>` shows ten accessible sessions with start/end and duration. An unfinished session is not treated as proof of being online.
-- Numeric BattleMetrics player IDs continue to work as an alternative; links are optional. Access denial, no exact match and ambiguity are reported separately.
+- Numeric BattleMetrics player IDs work everywhere; when SteamID matching is denied for the token, `/findplayer` gives the ID to use instead. Access denial, no exact match and ambiguity are reported separately.
 
 API contract: [BattleMetrics developer documentation](https://www.battlemetrics.com/developers/documentation), Player Quick Match Identifiers and Player Session History, reviewed 2026-10-03. New commands require a bot restart to sync with Discord.
 
 ### Temporary, shareable tracking
 
-`/track action:Add profile:<SteamID64> days:7` works for regular server members. Duration defaults to seven days and accepts 1–15 days. Adding the same watch again renews it; only its owner or an administrator can modify it. One shared watch per player/server/channel avoids duplicate role notifications. Legacy watches expire seven days after migration and remain administrator-managed.
+`/track action:Add player:<SteamID64> days:7` works for regular server members. Duration defaults to seven days and accepts 1–15 days. Adding the same watch again renews it; only its owner or an administrator can modify it. One shared watch per player/server/channel avoids duplicate role notifications. Legacy watches expire seven days after migration and remain administrator-managed.
 
 Expiry is stored in SQLite and survives restarts. Expired watches are removed before polling. The bot itself continues serving commands, but makes no tracking requests when no active watches remain. Connection and disconnection changes mention the configured server's `wipe` role; the existing role and channel permissions still apply.
 

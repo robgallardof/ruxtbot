@@ -6,6 +6,15 @@ from urllib.parse import urlencode
 import httpx
 
 
+def steamid_from(profile: dict) -> str | None:
+    """SteamID64 from a profile's identifiers, when the token is allowed to see them."""
+    for row in profile.get('included', []):
+        attrs = row.get('attributes') or {}
+        if row.get('type') == 'identifier' and attrs.get('type') == 'steamID' and str(attrs.get('identifier', '')).isdigit():
+            return str(attrs['identifier'])
+    return None
+
+
 class BattleMetrics:
     def __init__(self, token: str | None):
         # blocked_until: after a 429 no request is made until this monotonic time.
@@ -16,7 +25,7 @@ class BattleMetrics:
         self.cache = {}
 
     async def request(self, path: str, *, body: dict | None = None) -> dict:
-        """Authenticated GET. Retries 5xx with exponential backoff; a 429 blocks the following calls."""
+        """Authenticated GET (or POST with `body`). Retries 5xx with exponential backoff; a 429 blocks the following calls."""
         if not self.token:
             raise PermissionError('BattleMetrics is not configured')
         if time.monotonic() < self.blocked_until:
@@ -119,6 +128,25 @@ class BattleMetrics:
         if len(ids) != 1 or (result.get('links') or {}).get('next'):
             raise ValueError('identity.ambiguous')
         return ids.pop()
+
+    async def server_players(self, server_id: str) -> tuple[dict, list[dict]]:
+        """(server attributes, online players) with the start of each current session when BattleMetrics shares it."""
+        try:
+            data = await self.request(f'servers/{server_id}?include=player,session')
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code != 400:
+                raise
+            data = await self.request(f'servers/{server_id}?include=player')
+        started = {}
+        for row in data.get('included', []):
+            if row.get('type') == 'session' and not (row.get('attributes') or {}).get('stop'):
+                pid = ((row.get('relationships') or {}).get('player') or {}).get('data', {}).get('id')
+                if pid:
+                    started[str(pid)] = (row.get('attributes') or {}).get('start')
+        players = [{'id': str(r['id']), 'name': (r.get('attributes') or {}).get('name') or str(r['id']), 'start': started.get(str(r['id']))}
+                   for r in data.get('included', []) if r.get('type') == 'player' and r.get('id')]
+        players.sort(key=lambda p: p['start'] or '9999')
+        return data['data'], players
 
     async def sessions(self, player_id: str, server_id: str | None = None) -> dict:
         params = {'include': 'server', 'page[size]': 10}

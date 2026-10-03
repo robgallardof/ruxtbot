@@ -126,12 +126,12 @@ STRINGS: dict[str, tuple[str, str]] = {
                   '### 💥 Raid\n`/raid` planificador con imágenes · `/raidcalc` calculadora de base · `/raidbudget` presupuesto de azufre · `/raidcompare` · `/raidtools`'),
     'help.craft': ('### 🛠️ Crafting\n`/craft` materials for any amount · `/item` item card with picture · `/sources` data sources',
                    '### 🛠️ Crafteo\n`/craft` materiales para cualquier cantidad · `/item` ficha con imagen · `/sources` fuentes de datos'),
-    'help.servers': ('### 🖥️ Servers\n`/server` live status · `/serversearch` find any server · `/servers` directory · `/wipe` · `/forcewipe` next forced wipe',
-                     '### 🖥️ Servidores\n`/server` estado en vivo · `/serversearch` busca cualquier servidor · `/servers` directorio · `/wipe` · `/forcewipe` próximo wipe forzado'),
-    'help.players': ('### 🕵️ Players\n`/who` Steam, bans, **name history**, Rust stats and BattleMetrics · `/player` online check',
-                     '### 🕵️ Jugadores\n`/who` Steam, baneos, **nombres anteriores**, estadísticas de Rust y BattleMetrics · `/player` ¿está conectado?'),
-    'help.admin': ('### ⚙️ Admin\n`/track` connection alerts · `/settings` · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers` · `/ping`',
-                   '### ⚙️ Admin\n`/track` avisos de conexión · `/settings` · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers` · `/ping`'),
+    'help.servers': ('### 🖥️ Servers\n`/server` live status · `/online` who is playing now · `/serversearch` find any server · `/servers` directory · `/wipe` · `/forcewipe` next forced wipe',
+                     '### 🖥️ Servidores\n`/server` estado en vivo · `/online` quién está jugando · `/serversearch` busca cualquier servidor · `/servers` directorio · `/wipe` · `/forcewipe` próximo wipe forzado'),
+    'help.players': ("### 🕵️ Players\n`/who` Steam, bans, **name history**, Rust stats and BattleMetrics · `/findplayer` name → ID · `/player` online check · `/presence` · `/sessions` · `/playercompare` possible teammates · `/steamid`\n`/track` → guided 7/15-day watches for everyone · `share:true` → share reports\n-# After the first lookup, just type the player's name: it autocompletes.",
+                     '### 🕵️ Jugadores\n`/who` Steam, baneos, **nombres anteriores**, estadísticas de Rust y BattleMetrics · `/findplayer` nombre → ID · `/player` ¿está conectado? · `/presence` · `/sessions` · `/playercompare` posibles compañeros · `/steamid`\n`/track` → seguimiento guiado de 7/15 días para todos · `share:true` → compartir fichas\n-# Tras la primera consulta, escribe el nombre del jugador: se autocompleta.'),
+    'help.admin': ('### ⚙️ Admin\n`/settings` · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers` · `/ping`',
+                   '### ⚙️ Admin\n`/settings` · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers` · `/ping`'),
     'help.footer': ('`/examples` shows ready-to-copy examples · `/author` · replies follow your Discord language (English/Spanish).', '`/examples` muestra ejemplos listos para copiar · `/author` · las respuestas siguen el idioma de tu Discord (inglés/español).'),
 
     # ── Author & examples ──
@@ -148,18 +148,12 @@ STRINGS: dict[str, tuple[str, str]] = {
                       '`/raidbudget sulfur:20000` → qué fabricas y destruyes con ese azufre\n`/raidcompare target:garaje` → todos los métodos lado a lado'),
     'examples.craft': ('### 🛠️ Crafting\n`/craft item:rocket quantity:10` → sulfur, charcoal, pipes…\n`/item query:c4` → recipe, picture and raid uses',
                        '### 🛠️ Crafteo\n`/craft item:cohete quantity:10` → azufre, carbón, tubos…\n`/item query:c4` → receta, imagen y usos en raid'),
-    'examples.servers': ('### 🖥️ Servers\n`/serversearch query:rustoria` → live servers by players\n`/server server:Rusty Moose` → players, queue, map, wipe\n'
-                         '`/wipe server:…` → last and next wipe\n`/forcewipe` → next forced wipe countdown',
-                         '### 🖥️ Servidores\n`/serversearch query:rustoria` → servidores en vivo por jugadores\n`/server server:Rusty Moose` → jugadores, cola, mapa, wipe\n'
-                         '`/wipe server:…` → último y próximo wipe\n`/forcewipe` → cuenta atrás del wipe forzado'),
-    'examples.players': ('### 🕵️ Players\n`/who player:76561198848618940` → Steam, bans, name history, Rust stats\n'
-                         '`/who player:<steam link> battlemetrics:<BM link>` → plus hours and servers\n`/player profile:<BM link> server:…` → online right now?',
-                         '### 🕵️ Jugadores\n`/who player:76561198848618940` → Steam, baneos, nombres anteriores, estadísticas\n'
-                         '`/who player:<enlace steam> battlemetrics:<enlace BM>` → además horas y servidores\n`/player profile:<enlace BM> server:…` → ¿está conectado?'),
-    'examples.admin': ('### ⚙️ Admin\n`/track action:Add profile:<BM link>` → ping @wipe on connect/disconnect\n`/settings language:Spanish channel:#alerts` → alert channel and language\n'
-                       '`/pausealerts` · `/resumealerts` · `/status`',
-                       '### ⚙️ Admin\n`/track action:Añadir profile:<enlace BM>` → avisa a @wipe al conectar/desconectar\n`/settings language:Español channel:#avisos` → canal e idioma de avisos\n'
-                       '`/pausealerts` · `/resumealerts` · `/status`'),
+    'examples.servers': ('### 🖥️ Servers\n`/serversearch query:rustoria` → live servers by players, with their ID\n`/server server:Rusty Moose` → players, queue, map, wipe\n`/online server:5931597` → who is playing right now (name or server ID)\n`/wipe server:…` → last and next wipe · `/forcewipe` → forced wipe countdown',
+                         '### 🖥️ Servidores\n`/serversearch query:rustoria` → servidores en vivo por jugadores, con su ID\n`/server server:Rusty Moose` → jugadores, cola, mapa, wipe\n`/online server:5931597` → quién está jugando ahora (nombre o ID del servidor)\n`/wipe server:…` → último y próximo wipe · `/forcewipe` → cuenta atrás del wipe forzado'),
+    'examples.players': ("### 🕵️ Players\n`/who player:76561198848618940` → Steam, bans, name history, Rust stats, BattleMetrics\n`/who player:1128280744` → same with a BattleMetrics ID\n`/findplayer name:KingGallardo` → find someone's BattleMetrics ID\n`/player player:KingGallardo server:…` → online right now? (names autocomplete after the first lookup)\n`/presence player:…` · `/sessions player:…` · `/playercompare first:… second:…`",
+                         '### 🕵️ Jugadores\n`/who player:76561198848618940` → Steam, baneos, nombres anteriores, estadísticas, BattleMetrics\n`/who player:1128280744` → lo mismo con un ID de BattleMetrics\n`/findplayer name:KingGallardo` → encuentra el ID de BattleMetrics\n`/player player:KingGallardo server:…` → ¿está conectado? (los nombres se autocompletan tras la primera consulta)\n`/presence player:…` · `/sessions player:…` · `/playercompare first:… second:…`'),
+    'examples.admin': ('### ⚙️ Admin\n`/track` → guided panel: watch a player 7 or 15 days, @wipe is pinged on connect/disconnect\n`/settings language:Spanish channel:#alerts` → alert channel and language\n`/pausealerts` · `/resumealerts` · `/status`',
+                       '### ⚙️ Admin\n`/track` → panel guiado: sigue a un jugador 7 o 15 días, se avisa a @wipe al conectar/desconectar\n`/settings language:Español channel:#avisos` → canal e idioma de avisos\n`/pausealerts` · `/resumealerts` · `/status`'),
     'examples.footer': ('Open `/help` for buttons that launch the raid tools directly.', 'Abre `/help` para botones que lanzan las herramientas de raid.'),
 
     # ── Items & crafting ──
@@ -227,8 +221,9 @@ STRINGS: dict[str, tuple[str, str]] = {
     'server.next_wipe': ('⏭️ Next wipe', '⏭️ Próximo wipe'),
     'server.connect': ('🔌 Connect (F1)', '🔌 Conectar (F1)'),
     'server.fail': ('Could not load that server.', 'No se pudo consultar el servidor.'),
-    'server.fail.hint': ('Pick its name from the suggestions.', 'Selecciona su nombre en las sugerencias.'),
-    'server.pick': ('Pick a server from the suggestions.', 'Selecciona un servidor por nombre en las sugerencias.'),
+    'server.fail.hint': ('Pick its name from the suggestions or use its BattleMetrics server ID.',
+                         'Selecciona su nombre en las sugerencias o usa el ID del servidor en BattleMetrics.'),
+    'server.pick': ('Pick a server from the suggestions or enter its BattleMetrics server ID.', 'Selecciona un servidor de las sugerencias o escribe su ID de BattleMetrics.'),
     'wipe.last': ('🧹 Last wipe', '🧹 Último wipe'),
     'wipe.next': ('⏭️ Next wipe', '⏭️ Próximo wipe'),
     'wipe.unpublished': ('Not published', 'No publicado'),
@@ -250,12 +245,12 @@ STRINGS: dict[str, tuple[str, str]] = {
     'player.unknown': ('⚪ **Unknown**: BattleMetrics has no recent observation.', '⚪ **Estado desconocido**: BattleMetrics no tiene una observación reciente.'),
     'player.footer': ('Use /track for automatic alerts.', 'Usa /track para recibir avisos automáticos.'),
     'bm.fail': ('Could not reach BattleMetrics.', 'No se pudo consultar BattleMetrics.'),
-    'bm.profile_link': ('Use the BattleMetrics profile link, not a SteamID.', 'Usa el enlace del perfil de BattleMetrics, no un SteamID.'),
+    'bm.profile_link': ('BattleMetrics IDs are numbers only, for example `1128280744`.', 'Los ID de BattleMetrics son solo números, por ejemplo `1128280744`.'),
     'track.title': ('👀 Watches · {n}', '👀 Vigilancias · {n}'),
-    'track.none': ('No watches yet. Add one with `/track action:Add`.', 'No hay vigilancias. Añade una con `/track action:Añadir`.'),
-    'track.need_profile': ('Missing profile.', 'Falta el perfil.'),
-    'track.need_profile.hint': ('Paste the BattleMetrics profile link. Pick a server by name, or leave it empty for their known servers.',
-                                'Pega el enlace del perfil de BattleMetrics. Elige el servidor por nombre o déjalo vacío para sus servidores conocidos.'),
+    'track.none': ('No active watches. Choose a duration below to get started.', 'No tienes seguimientos activos. Elige una duración abajo para empezar.'),
+    'track.need_profile': ('Missing player.', 'Falta el jugador.'),
+    'track.need_profile.hint': ('Pick a name from the suggestions or enter the SteamID64 / BattleMetrics ID. Leave server empty to use synchronized servers.',
+                                'Elige un nombre de las sugerencias o escribe el SteamID64 / ID de BattleMetrics. Deja servidor vacío para usar los servidores sincronizados.'),
     'track.no_servers': ('No servers shared with the imported directory.', 'No hay servidores compartidos con el directorio importado.'),
     'track.need_role': ('There must be exactly one role named wipe for alerts.', 'Debe existir exactamente un rol llamado wipe para las alertas.'),
     'track.added': ('Watching on **{n}** server(s). I will ping @wipe when they connect or disconnect.', 'Vigilancia activada en **{n}** servidor(es). Avisaré a @wipe cuando se conecte o desconecte.'),
@@ -267,12 +262,12 @@ STRINGS: dict[str, tuple[str, str]] = {
     'alert.button': ('View server', 'Ver servidor'),
 
     # ── /who ──
-    'who.bad_input': ("I don't recognize that player. Use a SteamID64 or a Steam, steamid.io, SteamDB, RustWho or BattleMetrics link.",
-                      'No reconozco ese jugador. Usa un SteamID64 o un enlace de Steam, steamid.io, SteamDB, RustWho o BattleMetrics.'),
+    'who.bad_input': ("I don't recognize that player. Use a SteamID64 (7656119…), STEAM_0:…, a BattleMetrics ID (numbers) or pick a name from the suggestions.",
+                      'No reconozco ese jugador. Usa un SteamID64 (7656119…), STEAM_0:…, un ID de BattleMetrics (números) o elige un nombre de las sugerencias.'),
     'who.bad_vanity': ('No Steam profile uses the custom URL «{v}».', 'No existe un perfil de Steam con la URL personalizada «{v}».'),
     'who.cooldown': ('⏳ Wait {s} s before another lookup.', '⏳ Espera {s} s antes de otra consulta.'),
     'who.fail': ('Could not load the profile right now. Try again in a moment.', 'No se pudo consultar el perfil ahora mismo. Inténtalo de nuevo en un momento.'),
-    'who.both_down': ('Steam and RustWho did not answer. Check the link or try later.', 'Steam y RustWho no respondieron. Revisa el enlace o inténtalo más tarde.'),
+    'who.both_down': ('Steam and RustWho did not answer. Check the SteamID or try later.', 'Steam y RustWho no respondieron. Revisa el SteamID o inténtalo más tarde.'),
     'who.status.online': ('🟢 Online', '🟢 En línea'),
     'who.status.ingame': ('🎮 Playing **{game}**', '🎮 Jugando **{game}**'),
     'who.status.offline': ('⚫ Offline', '⚫ Desconectado'),
@@ -311,8 +306,8 @@ STRINGS: dict[str, tuple[str, str]] = {
     'who.names.count': ('📝 Name history ({n} recorded on Steam)', '📝 Nombres anteriores ({n} registrados en Steam)'),
     'who.names.more': ('…and {n} more', '…y {n} más'),
     'who.names.locked': ('🔐 +{n} older names only visible on RustWho', '🔐 +{n} nombres antiguos solo visibles en RustWho'),
-    'who.names.none': ('No public name changes found. Add the `battlemetrics:` link to include in-game names.',
-                       'No hay cambios de nombre públicos. Añade el enlace `battlemetrics:` para incluir los nombres dentro del juego.'),
+    'who.names.none': ('No public name changes found. Add `bm_id:` (BattleMetrics ID) to include in-game names.',
+                       'No hay cambios de nombre públicos. Añade `bm_id:` (ID de BattleMetrics) para incluir los nombres dentro del juego.'),
     'who.names.legend': ('-# `Steam` profile history · `RW` RustWho · `BM` names seen on servers', '-# `Steam` historial del perfil · `RW` RustWho · `BM` nombres vistos en servidores'),
     'who.rust.title': ('🦀 Rust stats', '🦀 Estadísticas de Rust'),
     'who.rust.private': ('🔒 Stats are private or empty. Game details must be public on Steam.', '🔒 Estadísticas privadas o sin datos. El jugador debe tener los detalles de juego públicos en Steam.'),
@@ -335,10 +330,70 @@ STRINGS: dict[str, tuple[str, str]] = {
     'who.bm.candidate_names': ('also used: {names}', 'también usó: {names}'),
     'who.bm.active': ('active <t:{ts}:R>', 'activo <t:{ts}:R>'),
     'who.bm.no_candidates': ('No profiles found with that name.', 'No encontré perfiles con ese nombre.'),
-    'who.bm.tip': ('💡 Add `battlemetrics:` with the profile link to see hours, servers and in-game names.', '💡 Añade `battlemetrics:` con el enlace del perfil para ver horas, servidores y nombres.'),
-    'who.bm_only': ('ℹ️ You only gave a BattleMetrics link. Also pass the SteamID64 or Steam link to see bans, Steam names and stats.',
-                    'ℹ️ Solo diste un enlace de BattleMetrics. Pasa también el SteamID64 o el enlace de Steam para ver baneos, nombres de Steam y estadísticas.'),
+    'who.bm_only': ('ℹ️ Only BattleMetrics data: this account does not expose the SteamID. Pass the SteamID64 to also see bans, Steam names and stats.',
+                    'ℹ️ Solo datos de BattleMetrics: esta cuenta no muestra el SteamID. Pasa también el SteamID64 para ver baneos, nombres de Steam y estadísticas.'),
     'who.no_answer': ('⚠️ No answer from: {list}', '⚠️ Sin respuesta de: {list}'),
+
+    # ── Player identity ──
+    'identity.input': ('Enter a SteamID64, STEAM_0:…, a BattleMetrics player ID (numbers) or pick a name from the suggestions.',
+                       'Introduce un SteamID64, STEAM_0:…, un ID de jugador de BattleMetrics (números) o elige un nombre de las sugerencias.'),
+    'identity.permission': ('BattleMetrics denied SteamID matching for this token. Use the BattleMetrics player ID instead (find it with `/findplayer`).',
+                            'BattleMetrics denegó la búsqueda por SteamID para este token. Usa el ID de jugador de BattleMetrics (búscalo con `/findplayer`).'),
+    'identity.missing': ('No exact SteamID match is visible to this BattleMetrics account. Try `/findplayer` and use the BattleMetrics ID.',
+                         'Esta cuenta de BattleMetrics no ve una coincidencia exacta del SteamID. Prueba `/findplayer` y usa el ID de BattleMetrics.'),
+    'identity.ambiguous': ('Multiple possible identities were returned; nothing was assigned. Use the BattleMetrics ID.', 'La API devolvió varias identidades posibles; no se asignó nada. Usa el ID de BattleMetrics.'),
+    'identity.unavailable': ('BattleMetrics is temporarily unavailable. Try again later.', 'BattleMetrics no está disponible temporalmente. Inténtalo después.'),
+
+    # ── Activity: /presence, /sessions, /online, /findplayer, /playercompare ──
+    'activity.title': ('Presence across synchronized servers', 'Presencia en servidores sincronizados'),
+    'activity.empty': ('No accessible observations on synchronized servers.', 'Sin observaciones accesibles en los servidores sincronizados.'),
+    'activity.footer': ('🟢 Online · 🔴 Offline · ⚪ Unknown (not the same as offline) · fresh BattleMetrics observations only', '🟢 Conectado · 🔴 Desconectado · ⚪ Sin datos (no es desconectado) · solo observaciones recientes de BattleMetrics'),
+    'sessions.title': ('🕒 Last 10 sessions', '🕒 Últimas 10 sesiones'),
+    'sessions.empty': ('No accessible sessions.', 'Sin sesiones accesibles.'),
+    'sessions.open': ('🟢 still open', '🟢 sigue abierta'),
+    'sessions.total': ('⏱️ Total shown', '⏱️ Total mostrado'),
+    'sessions.footer': ('Session history is not proof of current presence.', 'El historial de sesiones no confirma la presencia actual.'),
+    'online.pick': ('👤 Open a player profile…', '👤 Abrir el perfil de un jugador…'),
+    'online.none': ('Nobody matches right now.', 'No hay nadie que coincida ahora mismo.'),
+    'online.summary': ('Server', 'Servidor'),
+    'online.count': ('👥 **{n}/{m}** online', '👥 **{n}/{m}** conectados'),
+    'online.filter': ('filter «{q}»: **{n}**', 'filtro «{q}»: **{n}**'),
+    'online.footer': ('Page {page}/{pages} · 👀 watched · ⭐ looked up before · time = current session', 'Página {page}/{pages} · 👀 vigilado · ⭐ consultado antes · tiempo = sesión actual'),
+    'find.title': ('🔎 Players named «{q}»', '🔎 Jugadores llamados «{q}»'),
+    'find.none': ('No BattleMetrics players found with that name.', 'No hay jugadores en BattleMetrics con ese nombre.'),
+    'find.footer': ('The number is the BattleMetrics ID. Same name ≠ same person: pick one to open the full profile.', 'El número es el ID de BattleMetrics. Mismo nombre ≠ misma persona: elige uno para ver la ficha completa.'),
+    'compare.title': ('🤝 {a} × {b}', '🤝 {a} × {b}'),
+    'compare.none': ('No servers in common.', 'No tienen servidores en común.'),
+    'compare.same': ('Both options are the same player.', 'Ambas opciones son el mismo jugador.'),
+    'compare.summary': ('Summary', 'Resumen'),
+    'compare.summary.value': ('**{n}** servers in common · {a} vs {b} servers in total', '**{n}** servidores en común · {a} vs {b} servidores en total'),
+    'compare.footer': ('Shared servers suggest, but do not prove, that they play together. 🟢🟢 both online now.', 'Compartir servidores sugiere, pero no prueba, que jueguen juntos. 🟢🟢 ambos conectados ahora.'),
+    'steamid.title': ('🆔 SteamID formats', '🆔 Formatos de SteamID'),
+    'steamid.copy': ('📋 SteamID64', '📋 SteamID64'),
+    'steamid.footer': ('Use the SteamID64 with /who, /track, /presence and /sessions.', 'Usa el SteamID64 con /who, /track, /presence y /sessions.'),
+    'steamid.bad': ('Enter a SteamID64, STEAM_0:…, [U:1:…] or a Steam custom URL name.', 'Introduce un SteamID64, STEAM_0:…, [U:1:…] o el nombre de la URL personalizada de Steam.'),
+    'steamid.fail': ('Steam did not answer. Try again later.', 'Steam no respondió. Inténtalo más tarde.'),
+    'server.footer': ('BattleMetrics · server ID {id}', 'BattleMetrics · ID del servidor {id}'),
+    'who.button.watch': ('Watch 7 days', 'Seguir 7 días'),
+    'who.button.sessions': ('Sessions', 'Sesiones'),
+
+    # ── Tracking ownership and guided panel ──
+    'track.guild': ('Use tracking in a Discord server.', 'Usa el seguimiento dentro de un servidor Discord.'),
+    'track.owner': ('This watch belongs to another user. Only its owner or an admin can change it.', 'Esta vigilancia pertenece a otro usuario. Solo su creador o un administrador puede modificarla.'),
+    'track.form.add': ('Watch for {days} days', 'Seguir durante {days} días'),
+    'track.form.remove': ('Stop watching a player', 'Dejar de seguir a un jugador'),
+    'track.form.player': ('SteamID64 or BattleMetrics player ID', 'SteamID64 o ID de jugador de BattleMetrics'),
+    'track.form.label': ('Nickname (optional)', 'Apodo (opcional)'),
+    'track.button.add': ('Watch · {days} days', 'Seguir · {days} días'),
+    'track.button.stop': ('Stop watching', 'Dejar de seguir'),
+    'track.button.refresh': ('My watches', 'Mis seguimientos'),
+    'track.panel.title': ('Start here', 'Empieza aquí'),
+    'track.panel.help': ('Choose 7 or 15 days, then enter the SteamID or BattleMetrics ID. Known synchronized servers are selected automatically. 🟢 Online · 🔴 Offline · ⚪ Unknown. Alerts mention @wipe.',
+                         'Elige 7 o 15 días e introduce el SteamID o ID de BattleMetrics. Los servidores conocidos sincronizados se seleccionan automáticamente. 🟢 Conectado · 🔴 Desconectado · ⚪ Sin datos. Los avisos mencionan a @wipe.'),
+    'track.summary.channel': ('Alerts go to', 'Avisos en'),
+    'track.summary.expires': ('Stops automatically', 'Finaliza automáticamente'),
+    'track.summary.manage': ('Manage or share', 'Gestionar o compartir'),
+    'track.summary.help': ('Open /track to manage watches. Use share:true on player reports to show them to friends in this channel.', 'Abre /track para gestionar seguimientos. Usa share:true en las consultas para mostrarlas a tus amigos en este canal.'),
 }
 
 # Spanish versions of slash command / option descriptions (English is the source text in code).
@@ -356,10 +411,7 @@ COMMAND_ES: dict[str, str] = {
     'Channel for alerts': 'Canal para los avisos',
     '🖥️ Live server status: players, queue, map and wipe': '🖥️ Estado en vivo: jugadores, cola, mapa y wipe',
     'Type part of the name and pick a suggestion': 'Escribe parte del nombre y elige una sugerencia',
-    '🟢 Is a BattleMetrics profile online on a server?': '🟢 ¿Está conectado un perfil de BattleMetrics en un servidor?',
-    'BattleMetrics profile link': 'Enlace del perfil de BattleMetrics',
     'Server (pick from the list)': 'Servidor (elige de la lista)',
-    '👀 Manage connection alerts (admins)': '👀 Gestiona avisos de conexión (admins)',
     'What to do': 'Qué hacer',
     'Server (empty = all known)': 'Servidor (vacío = todos los conocidos)',
     'Name shown in alerts': 'Nombre a mostrar en los avisos',
@@ -389,32 +441,35 @@ COMMAND_ES: dict[str, str] = {
     '🔎 Search any Rust server on BattleMetrics': '🔎 Busca cualquier servidor de Rust en BattleMetrics',
     'Server name to search': 'Nombre del servidor a buscar',
     '🕵️ Full player profile: Steam, bans, name history, Rust stats, BattleMetrics': '🕵️ Ficha del jugador: Steam, baneos, nombres anteriores, Rust y BattleMetrics',
-    'SteamID64, STEAM_0, or a Steam, steamid.io, SteamDB, RustWho or BattleMetrics link': 'SteamID64, STEAM_0 o enlace de Steam, steamid.io, SteamDB, RustWho o BattleMetrics',
-    'BattleMetrics profile link (optional) for hours, servers and in-game names': 'Enlace de BattleMetrics (opcional) para horas, servidores y nombres en el juego',
     '👑 Who made RuxtBot': '👑 Quién creó RuxtBot',
     '📖 Examples of what the bot does and how to use it': '📖 Ejemplos de lo que hace el bot y cómo usarlo',
+    'Name you looked up before, SteamID64, STEAM_0 or BattleMetrics player ID': 'Nombre consultado antes, SteamID64, STEAM_0 o ID de jugador de BattleMetrics',
+    'BattleMetrics player ID (optional, numbers only)': 'ID de jugador de BattleMetrics (opcional, solo números)',
+    '🆔 Convert a player to every SteamID format': '🆔 Convierte un jugador a todos los formatos de SteamID',
+    'Name you looked up before, SteamID64, STEAM_0, [U:1:…] or Steam custom URL': 'Nombre consultado antes, SteamID64, STEAM_0, [U:1:…] o URL personalizada de Steam',
+    'Name you looked up before, SteamID64 or BattleMetrics player ID': 'Nombre consultado antes, SteamID64 o ID de jugador de BattleMetrics',
+    'Server name or BattleMetrics server ID': 'Nombre del servidor o ID de BattleMetrics',
+    '🟢 Is a player online on a server right now?': '🟢 ¿Está conectado un jugador en un servidor ahora?',
+    'SteamID64 or BattleMetrics player ID whose servers are imported': 'SteamID64 o ID de BattleMetrics cuyos servidores se importan',
+    '📍 Presence on synchronized servers: online, hours and last seen': '📍 Presencia en servidores sincronizados: conectado, horas y última vez',
+    '🕒 Recent player sessions, timestamps and duration': '🕒 Sesiones recientes del jugador, fechas y duración',
+    '👥 Who is online on a server right now': '👥 Quién está conectado en un servidor ahora',
+    'Only players whose name contains this': 'Solo jugadores cuyo nombre contenga esto',
+    '🔎 Find a player by name and get their BattleMetrics ID': '🔎 Busca un jugador por nombre y obtén su ID de BattleMetrics',
+    'In-game name (or part of it)': 'Nombre en el juego (o parte)',
+    '🤝 Servers two players have in common (possible teammates)': '🤝 Servidores en común entre dos jugadores (posibles compañeros)',
+    'First player: name, SteamID64 or BattleMetrics ID': 'Primer jugador: nombre, SteamID64 o ID de BattleMetrics',
+    'Second player: name, SteamID64 or BattleMetrics ID': 'Segundo jugador: nombre, SteamID64 o ID de BattleMetrics',
+    'Optional server name': 'Nombre de servidor opcional',
+    'Page of 10 servers': 'Página de 10 servidores',
+    'SteamID64 or BattleMetrics player ID': 'SteamID64 o ID de jugador de BattleMetrics',
+    '👀 Manage your temporary connection alerts': '👀 Gestiona tus alertas temporales de conexión',
+    'Duration in days (maximum 15)': 'Duración en días (máximo 15)',
+    'Publish the result in this channel': 'Publicar el resultado en este canal',
     'Add': 'Añadir', 'Remove': 'Quitar', 'List': 'Listar',
     'Hard side': 'Lado duro', 'Soft side': 'Lado blando',
     'English': 'Inglés', 'Spanish': 'Español',
 }
-
-
-STRINGS.update({
-    'identity.input': ('Enter a SteamID64, SteamID2/3 or numeric BattleMetrics player ID.', 'Introduce un SteamID64, SteamID2/3 o ID numérico de jugador BattleMetrics.'),
-    'identity.permission': ('BattleMetrics denied SteamID matching for this token. An authorized account is required.', 'BattleMetrics denegó la búsqueda por SteamID para este token. Se necesita una cuenta con acceso autorizado.'),
-    'identity.missing': ('No exact SteamID match is visible to this BattleMetrics account. No tracking identity was guessed.', 'Esta cuenta de BattleMetrics no ve una coincidencia exacta del SteamID. No se asignó una identidad por nombre.'),
-    'identity.ambiguous': ('Multiple possible identities were returned; tracking was not assigned.', 'La API devolvió varias identidades posibles; no se asignó el seguimiento.'),
-    'identity.unavailable': ('BattleMetrics is temporarily unavailable. Try again later.', 'BattleMetrics no está disponible temporalmente. Inténtalo después.'),
-    'bm.profile_link': ('Enter a SteamID64 or BattleMetrics player ID.', 'Introduce el SteamID64 o ID de jugador BattleMetrics.'),
-    'track.need_profile.hint': ('Enter the SteamID64. Leave server empty to use synchronized servers.', 'Introduce el SteamID64. Deja servidor vacío para usar los servidores sincronizados.'),
-    'activity.empty': ('No accessible observations on synchronized servers.', 'Sin observaciones accesibles en los servidores sincronizados.'),
-    'activity.footer': ('Fresh BattleMetrics observations only. Unknown is not offline.', 'Solo observaciones recientes de BattleMetrics. Desconocido no significa desconectado.'),
-    'activity.title': ('Presence across synchronized servers', 'Presencia en servidores sincronizados'),
-    'sessions.title': ('Last 10 accessible sessions', 'Últimas 10 sesiones accesibles'),
-    'sessions.empty': ('No accessible sessions.', 'Sin sesiones accesibles.'),
-    'sessions.open': ('No recorded end', 'Sin cierre registrado'),
-    'sessions.footer': ('Session history is not proof of current presence.', 'El historial de sesiones no confirma la presencia actual.'),
-})
 
 
 def normalize_lang(value) -> str:
@@ -443,50 +498,3 @@ class CommandTranslator(app_commands.Translator):
         if normalize_lang(locale.value) != 'es':
             return None
         return COMMAND_ES.get(string.message)
-
-COMMAND_ES.update({
-    'Optional server name': 'Nombre de servidor opcional',
-    'Page of 10 servers': 'Página de 10 servidores',
-    'Presence on synchronized servers from a SteamID': 'Presencia en servidores sincronizados mediante SteamID',
-    'Recent player sessions, timestamps and duration': 'Sesiones recientes, fechas y duración del jugador',
-    'SteamID64 or BattleMetrics player ID': 'SteamID64 o ID de jugador BattleMetrics',
-})
-
-for _key in ('help.players', 'examples.players'):
-    if _key in STRINGS:
-        _en, _es = STRINGS[_key]
-        STRINGS[_key] = (_en + '\n`/presence player:SteamID64` · `/sessions player:SteamID64`', _es + '\n`/presence player:SteamID64` · `/sessions player:SteamID64`')
-
-STRINGS.update({
-    'track.guild': ('Use tracking in a Discord server.', 'Usa el seguimiento dentro de un servidor Discord.'),
-    'track.owner': ('This watch belongs to another user. Only its owner or an admin can change it.', 'Esta vigilancia pertenece a otro usuario. Solo su creador o un administrador puede modificarla.'),
-})
-COMMAND_ES['👀 Manage your temporary connection alerts'] = '👀 Gestiona tus alertas temporales de conexión'
-
-COMMAND_ES.update({
-    'Duration in days (maximum 15)': 'Duración en días (máximo 15)',
-    'Publish the result in this channel': 'Publicar el resultado en este canal',
-})
-
-STRINGS.update({
-    'track.form.add': ('Watch for {days} days', 'Seguir durante {days} días'),
-    'track.form.remove': ('Stop watching a player', 'Dejar de seguir a un jugador'),
-    'track.form.player': ('SteamID or BattleMetrics player ID', 'SteamID o ID de jugador BattleMetrics'),
-    'track.form.label': ('Nickname (optional)', 'Apodo (opcional)'),
-    'track.button.add': ('Watch · {days} days', 'Seguir · {days} días'),
-    'track.button.stop': ('Stop watching', 'Dejar de seguir'),
-    'track.button.refresh': ('My watches', 'Mis seguimientos'),
-    'track.panel.title': ('Start here', 'Empieza aquí'),
-    'track.panel.help': ('Choose 7 or 15 days, then enter the SteamID. Known synchronized servers are selected automatically. 🟢 Online · 🔴 Offline · ⚪ Unknown. Alerts mention @wipe.', 'Elige 7 o 15 días e introduce el SteamID. Los servidores conocidos sincronizados se seleccionan automáticamente. 🟢 Conectado · 🔴 Desconectado · ⚪ Sin datos. Los avisos mencionan a @wipe.'),
-    'track.summary.channel': ('Alerts go to', 'Avisos en'),
-    'track.summary.expires': ('Stops automatically', 'Finaliza automáticamente'),
-    'track.summary.manage': ('Manage or share', 'Gestionar o compartir'),
-    'track.summary.help': ('Open /track to manage watches. Use share:true on player reports to show them to friends in this channel.', 'Abre /track para gestionar seguimientos. Usa share:true en las consultas para mostrarlas a tus amigos en este canal.'),
-    'track.none': ('No active watches. Choose a duration below to get started.', 'No tienes seguimientos activos. Elige una duración abajo para empezar.'),
-})
-for _key in ('help.admin', 'examples.admin'):
-    _en, _es = STRINGS[_key]
-    STRINGS[_key] = (_en.replace('`/track` connection alerts · ', '').replace('/track action:Add profile:<BM link>', '/track'),
-                     _es.replace('`/track` avisos de conexión · ', '').replace('/track action:Añadir profile:<enlace BM>', '/track'))
-_en, _es = STRINGS['help.players']
-STRINGS['help.players'] = (_en + '\n`/track` → guided 7/15-day watches for everyone · `share:true` → share reports', _es + '\n`/track` → seguimiento guiado de 7/15 días para todos · `share:true` → compartir fichas')

@@ -15,7 +15,7 @@ class TrackModal(discord.ui.Modal):
             self.add_item(self.nickname)
 
     async def on_submit(self, interaction):
-        await self.callback(interaction, action=self.action, profile=self.player.value.strip(),
+        await self.callback(interaction, action=self.action, player=self.player.value.strip(),
                             label=self.nickname.value.strip() or None if self.action == 'add' else None,
                             days=self.days)
 

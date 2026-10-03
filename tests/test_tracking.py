@@ -38,3 +38,18 @@ def test_expiration_migrates_and_survives_restart(tmp_path):
         store = Store(path)
         assert store.watches() == []
         store.conn.close()
+
+
+def test_player_book_merges_ids_and_stays_bounded(tmp_path):
+    store = Store(str(tmp_path / 'book.db'))
+    store.remember_player(1, 'King', None, '42')
+    store.remember_player(1, None, '76561198848618940', '42')
+    assert store.known_players(1) == [('King', '76561198848618940', '42')]
+    store.remember_player(1, 'King2', None, '42')
+    assert store.known_players(1) == [('King2', '76561198848618940', '42')]
+    assert store.known_players(1, '8618') and not store.known_players(2)
+    assert store.known_players(1, '%') == store.known_players(1)
+    for n in range(510):
+        store.remember_player(1, f'p{n}', None, str(1000 + n))
+    assert len(store.known_players(1, limit=1000)) == 500
+    store.conn.close()
