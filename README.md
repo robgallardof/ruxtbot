@@ -11,7 +11,7 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 | 💥 Raid | `/raid`, `/raidcalc`, `/raidbudget`, `/raidcompare`, `/raidtools` |
 | 🛠️ Crafting | `/craft`, `/item`, `/sources` |
 | 🖥️ Servers | `/server`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe` |
-| 🕵️ Players | `/who`, `/player` |
+| 🕵️ Players | `/who`, `/player`, `/presence`, `/sessions` |
 | ℹ️ Info | `/help`, `/examples`, `/author` |
 | ⚙️ Admin | `/track`, `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers`, `/ping` |
 
@@ -27,13 +27,13 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 
 ### Players — `/who`
 
-`/who player:<SteamID64 or link> battlemetrics:<optional link>` accepts SteamID64, `STEAM_0:X:Y`, `[U:1:N]`, a custom URL, or Steam, steamid.io, SteamDB, RustWho and BattleMetrics links. It shows:
+`/who player:<SteamID64 or link> battlemetrics:<optional numeric ID>` accepts SteamID64, `STEAM_0:X:Y`, `[U:1:N]`, a custom URL, or Steam, steamid.io, SteamDB, RustWho and BattleMetrics links. It shows:
 
 - 📝 **Name history first**: merged from Steam, RustWho and BattleMetrics with date and source, plus how many older names are locked on RustWho.
 - 👤 Steam status, every SteamID format (like steamid.io), creation date, level, games, badges, limited account.
 - 🛡️ VAC, game, community, trade and server bans.
 - 🦀 Rust stats from RustWho; 📊 BattleMetrics hours, servers and most played servers.
-- Without a BattleMetrics link, same-name candidates are listed **with the other names they used**, clearly marked as unverified (the public API cannot map a SteamID to a BattleMetrics player).
+- SteamIDs are resolved automatically through the official authenticated `POST /players/quick-match` endpoint. Only an exact, unique identifier match is used. Account permissions may limit available matches; same-name candidates remain unverified and never activate tracking.
 - Buttons to Steam, SteamID I/O, SteamDB (MXN calculator), RustWho and BattleMetrics. `STEAM_API_KEY` (optional) adds Rust hours.
 
 ### Servers
@@ -44,7 +44,7 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 
 ### Alerts
 
-`/track action:Add profile:<BattleMetrics link> server:<name>` pings the single `wipe` role on connect/disconnect. The first reading is silent, unknown data never counts as a disconnect, and player names are escaped so they cannot mention anyone. Admin only.
+`/track action:Add profile:<SteamID64> server:<name>` pings the single `wipe` role on connect/disconnect. The first reading is silent, unknown data never counts as a disconnect, and player names are escaped so they cannot mention anyone. Admin only.
 
 ## UX rules
 
@@ -72,3 +72,14 @@ PYTHONPATH=. pytest
 ```
 
 The test suite checks the raid math, every panel against Discord's limits (40 components, 4000 characters) in both languages, that every translation key exists in English and Spanish with matching placeholders, that every command description has a Spanish version, presence/alert safety rules and the `/who` parsers.
+
+### SteamID-first activity
+
+- `/track action:Add profile:<SteamID64>` watches the player's known servers in the synchronized directory, with no server IDs to copy. It displays current observations and retains the existing silent first-reading policy.
+- `/syncservers profile:<SteamID64>` imports accessible Rust servers; `/track` activates alerts separately.
+- `/player profile:<SteamID64> server:<name>` checks a selected server.
+- `/presence player:<SteamID64> page:1` lists synchronized servers, fresh presence, recorded hours and last seen, ten per page.
+- `/sessions player:<SteamID64> server:<optional name>` shows ten accessible sessions with start/end and duration. An unfinished session is not treated as proof of being online.
+- Numeric BattleMetrics player IDs continue to work as an alternative; links are optional. Access denial, no exact match and ambiguity are reported separately.
+
+API contract: [BattleMetrics developer documentation](https://www.battlemetrics.com/developers/documentation), Player Quick Match Identifiers and Player Session History, reviewed 2026-10-03. New commands require a bot restart to sync with Discord.

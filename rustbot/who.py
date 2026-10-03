@@ -43,6 +43,8 @@ class Target:
 def parse_target(value: str) -> Target:
     """Accepts SteamID64/2/3, a vanity name, or Steam, steamid.io, SteamDB, RustWho and BattleMetrics links."""
     v = value.strip().strip('<>').strip()
+    if re.fullmatch(r'[0-9]{1,16}', v):
+        return Target(bm_id=v)
     if m := re.search(r'battlemetrics\.com/players/(\d{1,16})', v):
         return Target(bm_id=m[1])
     if m := re.search(r'steamid\.io/lookup/([^/?#\s]+)', v):
@@ -161,6 +163,14 @@ class WhoService:
     async def lookup(self, target: Target, bm_id: str | None = None) -> dict:
         steamid = target.steamid or (await self.resolve_vanity(target.vanity) if target.vanity else None)
         bm_id = bm_id or target.bm_id
+        resolution_error = None
+        if steamid and not bm_id and self.bm.token:
+            try:
+                bm_id = await self.bm.resolve_player(steamid)
+            except ValueError as exc:
+                resolution_error = str(exc)
+            except Exception:
+                resolution_error = 'identity.unavailable'
         jobs = {}
         if steamid:
             jobs |= {'steam': self.steam_profile(steamid), 'page': self.steam_page(steamid), 'aliases': self.steam_aliases(steamid),
@@ -168,7 +178,7 @@ class WhoService:
         if bm_id and self.bm.token:
             jobs['bm'] = self.bm_detail(bm_id)
         results = await asyncio.gather(*jobs.values(), return_exceptions=True)
-        report = {'steamid': steamid, 'bm_id': bm_id, 'errors': []}
+        report = {'steamid': steamid, 'bm_id': bm_id, 'errors': [], 'resolution_error': resolution_error}
         for key, result in zip(jobs, results):
             if isinstance(result, BaseException):
                 logging.info('who: %s failed: %r', key, result)
@@ -446,7 +456,7 @@ def bm_embed(report: dict, bm_configured: bool, lang: str = 'en') -> discord.Emb
         e.description = t(lang, 'who.bm.candidates') + '\n' + '\n'.join(lines)
     else:
         e.description = t(lang, 'who.bm.no_candidates')
-    e.description += '\n\n' + t(lang, 'who.bm.tip')
+    e.description += '\n\n' + t(lang, report.get('resolution_error') or 'identity.missing')
     return e
 
 

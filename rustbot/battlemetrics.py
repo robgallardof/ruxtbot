@@ -15,15 +15,18 @@ class BattleMetrics:
         self.blocked_until = 0.0
         self.cache = {}
 
-    async def request(self, path: str) -> dict:
+    async def request(self, path: str, *, body: dict | None = None) -> dict:
         """Authenticated GET. Retries 5xx with exponential backoff; a 429 blocks the following calls."""
         if not self.token:
             raise PermissionError('BattleMetrics is not configured')
         if time.monotonic() < self.blocked_until:
             raise RuntimeError('BattleMetrics rate limit cooldown')
         for attempt in range(3):
-            r = await self.client.get('https://api.battlemetrics.com/' + path,
-                                      headers={'Authorization': f'Bearer {self.token}'})
+            headers = {'Authorization': f'Bearer {self.token}'}
+            if body is None:
+                r = await self.client.get('https://api.battlemetrics.com/' + path, headers=headers)
+            else:
+                r = await self.client.post('https://api.battlemetrics.com/' + path, headers=headers, json=body)
             if r.status_code == 429:
                 try:
                     delay = float(r.headers.get('Retry-After', '60'))
@@ -83,3 +86,39 @@ class BattleMetrics:
         """Players by name (the public API cannot search by SteamID)."""
         query = urlencode({'filter[search]': name, 'page[size]': 25})
         return (await self.request(f'players?{query}'))['data']
+
+    async def resolve_player(self, value: str) -> str:
+        """Resolve an exact Steam identifier; never infer identity from a name."""
+        from .servers import profile_id
+        from .who import parse_target
+        try:
+            return profile_id(value)
+        except ValueError:
+            pass
+        target = parse_target(value)
+        if not target.steamid:
+            raise ValueError('identity.input')
+        payload = {'data': [{'type': 'identifier', 'attributes': {'type': 'steamID', 'identifier': target.steamid}}]}
+        try:
+            result = await self.request('players/quick-match', body=payload)
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code in (401, 403):
+                raise ValueError('identity.permission') from exc
+            raise
+        ids = set()
+        for row in result.get('data', []):
+            attrs = row.get('attributes') or {}
+            player = (row.get('relationships') or {}).get('player', {}).get('data') or {}
+            if row.get('type') == 'identifier' and attrs.get('type') == 'steamID' and attrs.get('identifier') == target.steamid and player.get('type') == 'player' and str(player.get('id', '')).isdigit():
+                ids.add(str(player['id']))
+        if not ids:
+            raise ValueError('identity.missing')
+        if len(ids) != 1 or (result.get('links') or {}).get('next'):
+            raise ValueError('identity.ambiguous')
+        return ids.pop()
+
+    async def sessions(self, player_id: str, server_id: str | None = None) -> dict:
+        params = {'include': 'server', 'page[size]': 10}
+        if server_id:
+            params['filter[servers]'] = server_id
+        return await self.request(f'players/{player_id}/relationships/sessions?{urlencode(params)}')

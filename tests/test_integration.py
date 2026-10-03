@@ -31,6 +31,12 @@ def bm_player(pid='1128280744', online=True):
 def fake_http(request: httpx.Request) -> httpx.Response:
     """Routes every outgoing request of the bot to canned responses."""
     url = str(request.url)
+    if request.url.path == '/players/quick-match':
+        return httpx.Response(200, json={'data': [{'type': 'identifier', 'attributes': {'type': 'steamID', 'identifier': STEAMID},
+            'relationships': {'player': {'data': {'type': 'player', 'id': '1128280744'}}}}]})
+    if '/relationships/sessions' in url:
+        return httpx.Response(200, json={'data': [{'type': 'session', 'attributes': {'start': iso(120), 'stop': iso(60)},
+            'relationships': {'server': {'data': {'id': '5931597'}}}}], 'included': bm_player()['included']})
     if 'api.battlemetrics.com/servers?' in url:
         return httpx.Response(200, json={'data': [{'id': '9611162', 'attributes': {'name': 'Rusty Moose |US Monthly|', 'status': 'online', 'players': 833,
                                                                                     'maxPlayers': 850, 'rank': 40, 'country': 'US',
@@ -149,7 +155,7 @@ def test_every_command_is_registered_localized_and_serializable(bot):
     async def go():
         from rustbot.i18n import CommandTranslator
         names = sorted(c.name for c in bot.tree.get_commands())
-        assert names == sorted(['author', 'craft', 'examples', 'forcewipe', 'help', 'item', 'pausealerts', 'ping', 'player', 'raid', 'raidbudget',
+        assert names == sorted(['presence', 'sessions', 'author', 'craft', 'examples', 'forcewipe', 'help', 'item', 'pausealerts', 'ping', 'player', 'raid', 'raidbudget',
                                 'raidcalc', 'raidcompare', 'raidtools', 'resumealerts', 'server', 'servers', 'serversearch', 'settings',
                                 'sources', 'status', 'syncservers', 'track', 'who', 'wipe'])
         for command in bot.tree.get_commands():
@@ -326,7 +332,8 @@ def test_who_end_to_end(bot):
         names = steam.fields[0]
         assert names.name.startswith('📝 Nombres anteriores') and 'OldName' in names.value and '+2' in names.value
         assert 'Jugando **Rust**' in steam.description
-        assert 'también usó: robgallardof' in bm.description
+        assert 'En línea ahora' in bm.description
+        assert 'robgallardof' in names.value
         assert [b.label for b in sent['view'].children][:2] == ['Steam', 'SteamID I/O']
         again = FakeInteraction()
         await cmd(bot, 'who')(again, STEAMID, None)
@@ -407,3 +414,20 @@ def test_raid_json_matches_build_script_output(tmp_path):
     spec.loader.exec_module(module)
     module.main()
     assert json.loads((root / 'data' / 'raid.json').read_text(encoding='utf-8')) == before
+
+
+def test_steamid_tracking_presence_sessions_and_who(bot):
+    async def go():
+        i = FakeInteraction(locale='es-ES')
+        await cmd(bot, 'track')(i, 'add', STEAMID)
+        assert bot.store.watches()[0].steamid == 'bm:1128280744'
+        for command in ('presence', 'sessions'):
+            i = FakeInteraction(locale='es-ES')
+            await cmd(bot, command)(i, STEAMID)
+            e = i.followup.send.call_args.kwargs['embed']
+            assert 'Rusty Moose' in e.description
+            assert len(e) <= 6000
+        report = await bot.who.lookup(__import__('rustbot.who', fromlist=['parse_target']).parse_target(STEAMID))
+        assert report['bm_id'] == '1128280744'
+        assert 'bm' in report and not report.get('bm_candidates')
+    run(go())

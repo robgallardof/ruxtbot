@@ -20,9 +20,10 @@ from .config import Settings
 from .help import help_layout
 from .i18n import CommandTranslator, lang_for, t
 from .info_commands import register_info
+from .activity import register_activity, presence_lines
 from .raid import register_raid_commands
 from .raid_data import RaidData
-from .servers import ServerDirectory, profile_id
+from .servers import ServerDirectory
 from .tracking import Store, transition
 from .ui import GREEN, GREY, RED, brand_embed, error_embed, reply, success_embed
 from .utility_commands import iso_to_ts, register_utilities
@@ -292,16 +293,17 @@ def main():
         await interaction.followup.send(embed=e, ephemeral=True)
 
     @bot.tree.command(description='🟢 Is a BattleMetrics profile online on a server?')
-    @app_commands.describe(profile='BattleMetrics profile link', server='Server (pick from the list)')
+    @app_commands.describe(profile='SteamID64 or BattleMetrics player ID', server='Server (pick from the list)')
     @app_commands.autocomplete(server=server_choices)
     async def player(interaction: discord.Interaction, profile: str, server: str):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=True)
         try:
             sid = bot.directory.resolve(server)
-            pid = profile_id(profile)
-        except ValueError:
-            await interaction.followup.send(embed=error_embed(t(lang, 'bm.profile_link'), t(lang, 'server.pick'), lang), ephemeral=True)
+            pid = await bot.bm.resolve_player(profile)
+        except ValueError as exc:
+            key = str(exc) if str(exc).startswith('identity.') else 'identity.input'
+            await interaction.followup.send(embed=error_embed(t(lang, key), lang=lang), ephemeral=True)
             return
         try:
             online = await bot.bm.player_online(sid, 'bm:' + pid)
@@ -315,7 +317,7 @@ def main():
 
     # ── Watches ──
     @bot.tree.command(description='👀 Manage connection alerts (admins)')
-    @app_commands.describe(action='What to do', profile='BattleMetrics profile link', server='Server (empty = all known)', label='Name shown in alerts')
+    @app_commands.describe(action='What to do', profile='SteamID64 or BattleMetrics player ID', server='Server (empty = all known)', label='Name shown in alerts')
     @app_commands.choices(action=[app_commands.Choice(name='Add', value='add'), app_commands.Choice(name='Remove', value='remove'),
                                   app_commands.Choice(name='List', value='list')])
     @app_commands.autocomplete(server=server_choices)
@@ -336,7 +338,7 @@ def main():
             return
         await interaction.response.defer(ephemeral=True)
         try:
-            pid = profile_id(profile)
+            pid = await bot.bm.resolve_player(profile)
             saved = bot.store.settings(interaction.guild_id)
             channel_id = saved[0] if saved else interaction.channel_id
             data = await bot.bm.profile(pid) if action == 'add' else None
@@ -356,18 +358,22 @@ def main():
                 if len([r for r in interaction.guild.roles if r.name.casefold() == 'wipe']) != 1:
                     await interaction.followup.send(embed=error_embed(t(lang, 'track.need_role'), lang=lang), ephemeral=True)
                     return
+                lines = await presence_lines(bot, pid, data)
                 name = label or data['data']['attributes'].get('name', pid)
                 for sid in ids:
                     bot.store.add('bm:' + pid, sid, channel_id, name)
                 e = success_embed(t(lang, 'track.added', n=len(ids)))
+                if lines:
+                    e.add_field(name=t(lang, 'activity.title'), value='\n'.join(lines[:6])[:1024], inline=False)
                 e.set_footer(text=t(lang, 'track.added.footer'))
             else:
                 for sid in ids:
                     bot.store.remove('bm:' + pid, sid, channel_id)
                 e = success_embed(t(lang, 'track.removed', n=len(ids)))
             await interaction.followup.send(embed=e, ephemeral=True, allowed_mentions=discord.AllowedMentions.none())
-        except ValueError:
-            await interaction.followup.send(embed=error_embed(t(lang, 'bm.profile_link'), t(lang, 'server.pick'), lang), ephemeral=True)
+        except ValueError as exc:
+            key = str(exc) if str(exc).startswith('identity.') else 'identity.input'
+            await interaction.followup.send(embed=error_embed(t(lang, key), lang=lang), ephemeral=True)
         except Exception:
             await interaction.followup.send(embed=error_embed(t(lang, 'track.fail'), lang=lang), ephemeral=True)
 
@@ -387,6 +393,7 @@ def main():
     register_utilities(bot, cat, require_admin)
     register_who(bot, bot.who)
     register_info(bot)
+    register_activity(bot)
     bot.run(s.discord_token)
 
 

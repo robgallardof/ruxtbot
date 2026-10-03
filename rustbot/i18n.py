@@ -399,6 +399,24 @@ COMMAND_ES: dict[str, str] = {
 }
 
 
+STRINGS.update({
+    'identity.input': ('Enter a SteamID64, SteamID2/3 or numeric BattleMetrics player ID.', 'Introduce un SteamID64, SteamID2/3 o ID numérico de jugador BattleMetrics.'),
+    'identity.permission': ('BattleMetrics denied SteamID matching for this token. An authorized account is required.', 'BattleMetrics denegó la búsqueda por SteamID para este token. Se necesita una cuenta con acceso autorizado.'),
+    'identity.missing': ('No exact SteamID match is visible to this BattleMetrics account. No tracking identity was guessed.', 'Esta cuenta de BattleMetrics no ve una coincidencia exacta del SteamID. No se asignó una identidad por nombre.'),
+    'identity.ambiguous': ('Multiple possible identities were returned; tracking was not assigned.', 'La API devolvió varias identidades posibles; no se asignó el seguimiento.'),
+    'identity.unavailable': ('BattleMetrics is temporarily unavailable. Try again later.', 'BattleMetrics no está disponible temporalmente. Inténtalo después.'),
+    'bm.profile_link': ('Enter a SteamID64 or BattleMetrics player ID.', 'Introduce el SteamID64 o ID de jugador BattleMetrics.'),
+    'track.need_profile.hint': ('Enter the SteamID64. Leave server empty to use synchronized servers.', 'Introduce el SteamID64. Deja servidor vacío para usar los servidores sincronizados.'),
+    'activity.empty': ('No accessible observations on synchronized servers.', 'Sin observaciones accesibles en los servidores sincronizados.'),
+    'activity.footer': ('Fresh BattleMetrics observations only. Unknown is not offline.', 'Solo observaciones recientes de BattleMetrics. Desconocido no significa desconectado.'),
+    'activity.title': ('Presence across synchronized servers', 'Presencia en servidores sincronizados'),
+    'sessions.title': ('Last 10 accessible sessions', 'Últimas 10 sesiones accesibles'),
+    'sessions.empty': ('No accessible sessions.', 'Sin sesiones accesibles.'),
+    'sessions.open': ('No recorded end', 'Sin cierre registrado'),
+    'sessions.footer': ('Session history is not proof of current presence.', 'El historial de sesiones no confirma la presencia actual.'),
+})
+
+
 def normalize_lang(value) -> str:
     """'es-ES', 'es-419', Locale.spain_spanish… -> 'es'; anything else -> 'en'."""
     return 'es' if str(value or '').lower().startswith('es') else DEFAULT
@@ -425,3 +443,16 @@ class CommandTranslator(app_commands.Translator):
         if normalize_lang(locale.value) != 'es':
             return None
         return COMMAND_ES.get(string.message)
+
+COMMAND_ES.update({
+    'Optional server name': 'Nombre de servidor opcional',
+    'Page of 10 servers': 'Página de 10 servidores',
+    'Presence on synchronized servers from a SteamID': 'Presencia en servidores sincronizados mediante SteamID',
+    'Recent player sessions, timestamps and duration': 'Sesiones recientes, fechas y duración del jugador',
+    'SteamID64 or BattleMetrics player ID': 'SteamID64 o ID de jugador BattleMetrics',
+})
+
+for _key in ('help.players', 'examples.players'):
+    if _key in STRINGS:
+        _en, _es = STRINGS[_key]
+        STRINGS[_key] = (_en + '\n`/presence player:SteamID64` · `/sessions player:SteamID64`', _es + '\n`/presence player:SteamID64` · `/sessions player:SteamID64`')

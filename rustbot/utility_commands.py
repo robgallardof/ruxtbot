@@ -5,7 +5,6 @@ from datetime import date, datetime, timedelta, timezone
 import discord
 from discord import app_commands
 from .i18n import lang_for, t
-from .servers import profile_id
 from .ui import GREEN, ORANGE, OwnedView, brand_embed, error_embed, success_embed
 
 PAGE_SIZE = 10
@@ -164,13 +163,13 @@ def register_utilities(bot, catalog, require_admin):
         await interaction.followup.send(embed=e, ephemeral=True)
 
     @bot.tree.command(name='syncservers', description='📥 Import servers from a BattleMetrics profile')
-    async def sync_servers(interaction, profile: str = 'https://www.battlemetrics.com/players/1128280744'):
+    async def sync_servers(interaction, profile: str = '1128280744'):
         if not await require_admin(interaction):
             return
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=True)
         try:
-            data = await bot.bm.profile(profile_id(profile))
+            data = await bot.bm.profile(await bot.bm.resolve_player(profile))
             rows = [{'id': r['id'], 'name': r['attributes']['name'].strip()} for r in data.get('included', [])
                     if r.get('type') == 'server' and r.get('relationships', {}).get('game', {}).get('data', {}).get('id') == 'rust']
             if not rows:
@@ -179,8 +178,9 @@ def register_utilities(bot, catalog, require_admin):
             bot.store.save_servers(rows)
             bot.directory.merge(rows)
             await interaction.followup.send(embed=success_embed(t(lang, 'sync.done', n=len(rows))), ephemeral=True)
-        except ValueError:
-            await interaction.followup.send(embed=error_embed(t(lang, 'bm.profile_link'), lang=lang), ephemeral=True)
+        except ValueError as exc:
+            key = str(exc) if str(exc).startswith('identity.') else 'identity.input'
+            await interaction.followup.send(embed=error_embed(t(lang, key), lang=lang), ephemeral=True)
         except Exception:
             await interaction.followup.send(embed=error_embed(t(lang, 'sync.fail'), t(lang, 'sync.fail.hint'), lang), ephemeral=True)
 

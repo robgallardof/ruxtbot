@@ -22,7 +22,7 @@ def test_parse_target_accepts_every_supported_link(value, expected):
     assert parse_target(value) == expected
 
 
-@pytest.mark.parametrize('value', ['', '123', 'https://evil.test/x y', 'two words', '<@123>'])
+@pytest.mark.parametrize('value', ['', 'https://evil.test/x y', 'two words', '<@123>'])
 def test_parse_target_rejects_garbage(value):
     with pytest.raises(ValueError):
         parse_target(value)
@@ -115,3 +115,7 @@ def test_lookup_survives_a_failing_source_and_resolves_vanity():
     assert report['errors'] == ['rustwho']
     assert [p['id'] for p in report['bm_candidates']] == ['1']
     assert len(build_embeds(report)) == 2
+
+
+def test_numeric_battlemetrics_input():
+    assert parse_target('123').bm_id == '123'

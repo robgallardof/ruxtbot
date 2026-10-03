@@ -1,111 +1,135 @@
-# Graph Report - ruxtbot  (2026-10-02)
+# Graph Report - ruxtbot  (2026-10-03)
 
 ## Corpus Check
-- 20 files · ~376,134 words
+- 35 files · ~414,891 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 203 nodes · 378 edges · 11 communities (9 shown, 2 thin omitted)
-- Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 30 edges (avg confidence: 0.88)
+- 529 nodes · 1249 edges · 14 communities (13 shown, 1 thin omitted)
+- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 91 edges (avg confidence: 0.88)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `973a1679`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - test_utilities.py
-- .__init__
-- RustBot
+- raid.py
+- test_integration.py
 - BattleMetrics
 - Store
-- __main__.py
+- t
 - Catalog
 - RuxtBot
-- HelpView
+- who.py
 - __init__.py
-- register_utilities
+- RaidData
+- ServerPagesView
+- CommandTranslator
+- build_raid_data.py
 
 ## God Nodes (most connected - your core abstractions)
-1. `main()` - 22 edges
-2. `register_utilities()` - 19 edges
-3. `Store` - 18 edges
-4. `BattleMetrics` - 17 edges
-5. `RustBot` - 13 edges
-6. `raid_embed()` - 13 edges
-7. `embed()` - 12 edges
-8. `Catalog` - 12 edges
-9. `RaidProgressView` - 11 edges
-10. `ServerDirectory` - 11 edges
+1. `t()` - 65 edges
+2. `lang_for()` - 64 edges
+3. `RaidData` - 37 edges
+4. `main()` - 36 edges
+5. `target_layout()` - 32 edges
+6. `error_embed()` - 31 edges
+7. `builder_layout()` - 28 edges
+8. `BattleMetrics` - 23 edges
+9. `FakeInteraction` - 22 edges
+10. `brand_embed()` - 21 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `test_poll_transition_and_delivery()` --uses--> `RustBot`  [INFERRED]
-  tests/test_poll.py → rustbot/__main__.py
+- `handler()` --indirect_call--> `status()`  [INFERRED]
+  tests/test_identity.py → rustbot/utility_commands.py
 - `request()` --indirect_call--> `status()`  [INFERRED]
   tests/test_presence.py → rustbot/utility_commands.py
-- `test_health_and_bar_describe_remaining_health()` --calls--> `raid_embed()`  [EXTRACTED]
-  tests/test_raid_ui.py → rustbot/__main__.py
-- `test_unknown_cost_never_claims_free()` --calls--> `raid_embed()`  [EXTRACTED]
-  tests/test_raid_ui.py → rustbot/__main__.py
-- `test_only_explicit_fresh_presence()` --uses--> `BattleMetrics`  [INFERRED]
-  tests/test_presence.py → rustbot/battlemetrics.py
+- `track()` --indirect_call--> `bot()`  [INFERRED]
+  rustbot/__main__.py → tests/test_integration.py
+- `presence()` --indirect_call--> `bot()`  [INFERRED]
+  rustbot/activity.py → tests/test_integration.py
+- `bot()` --uses--> `Settings`  [INFERRED]
+  tests/test_integration.py → rustbot/config.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (11 total, 2 thin omitted)
+## Communities (14 total, 1 thin omitted)
 
 ### Community 0 - "test_utilities.py"
-Cohesion: 0.18
-Nodes (14): Settings, comparison(), execute(), run(), test_admin_commands_reject_dms(), test_alert_toggle_preserves_channel_interval_and_watches(), test_all_commands_register_and_serialize(), case() (+6 more)
+Cohesion: 0.11
+Nodes (22): date, datetime, Settings read from environment variables (or a .env file during development)., Process settings. Only DISCORD_TOKEN is required; everything else has a default., Settings, forced_wipes(), _nth_weekday(), n-th given weekday (Mon=0) of a month. (+14 more)
 
-### Community 1 - ".__init__"
-Cohesion: 0.09
-Nodes (17): CompareMethodsButton, CompleteRaidButton, DetonateButton, raid_embed(), RaidBackButton, RaidBackButtonView, RaidCategorySelect, RaidMethodSelect (+9 more)
+### Community 1 - "raid.py"
+Cohesion: 0.06
+Nodes (69): Item, /help: a Components V2 menu in the user's language, with buttons that open the…, Tiny translation layer. English is the default language. Users whose Discord…, Informational commands: /author and /examples., best_line(), budget_layout(), builder_layout(), add_target() (+61 more)
 
-### Community 2 - "RustBot"
-Cohesion: 0.14
-Nodes (6): before_loop, loop, Path, RustBot, ServerDirectory, test_named_servers_and_profile_input()
+### Community 2 - "test_integration.py"
+Cohesion: 0.07
+Nodes (53): fixture, Request, Response, bm_player(), bot(), click(), cmd(), fake_http() (+45 more)
 
 ### Community 3 - "BattleMetrics"
-Cohesion: 0.14
-Nodes (8): BattleMetrics, parametrize, test_only_explicit_fresh_presence(), run(), request(), test_rate_limit_stops_following_requests(), run(), test_rustwho_uses_only_the_requested_public_profile()
+Cohesion: 0.09
+Nodes (23): BattleMetrics, Minimal BattleMetrics API client with retries and a brake for rate limits., Authenticated GET. Retries 5xx with exponential backoff; a 429 blocks the…, True/False only with an explicit, fresh (< 5 min) observation; None in every…, Live Rust servers matching a name, most players first., Players by name (the public API cannot search by SteamID)., Resolve an exact Steam identifier; never infer identity from a name., match() (+15 more)
 
 ### Community 4 - "Store"
-Cohesion: 0.13
-Nodes (11): Store, transition(), valid_steamid64(), Watch, parametrize, test_poll_transition_and_delivery(), test_readding_does_not_erase_baseline(), test_unknown_is_never_a_disconnect() (+3 more)
+Cohesion: 0.06
+Nodes (28): before_loop, loop, Bot with shared state: database, HTTP clients, raid data and server directory., Check every watch and ping the @wipe role only when the state changes. Safety…, RustBot, Path, profile_id(), Path (+20 more)
 
-### Community 5 - "__main__.py"
-Cohesion: 0.15
-Nodes (18): Cybrancee/Pterodactyl entry point for RuxtBot., embed(), main(), craft(), help(), item(), player(), raid() (+10 more)
+### Community 5 - "t"
+Cohesion: 0.07
+Nodes (74): Cybrancee/Pterodactyl entry point for RuxtBot., Exception, Interaction, presence_lines(), Read-only activity tools using exact player identifiers., register_activity(), presence(), sessions() (+66 more)
 
 ### Community 6 - "Catalog"
-Cohesion: 0.20
-Nodes (4): Counter, Catalog, normalized(), All craftable recipe inputs, accumulated across recursive recipes.
+Cohesion: 0.11
+Nodes (11): Counter, Catalog, normalized(), Rust crafting catalog (items and recipes) loaded from data/rust_catalog.yml.…, Search key: lowercase letters and digits only ("Puerta HQ" -> "puertahq")., Item by exact ID or alias; None when unknown or ambiguous., Items whose ID or alias contains the query (for suggestions)., Raw resources to craft `quantity`, walking recipes recursively. Batch recipes… (+3 more)
 
 ### Community 7 - "RuxtBot"
-Cohesion: 0.12
-Nodes (13): Despliegue en Cybrancee, Secretos correctos, Comandos, Comandos adicionales, Conectar Discord, Datos y límites, Desarrollo, Instalación en Fedora (+5 more)
+Cohesion: 0.09
+Nodes (19): Deploying on Cybrancee, The right secret, Alerts, Commands, Data, Development, Players — `/who`, Raid (+11 more)
 
-### Community 10 - "register_utilities"
+### Community 8 - "who.py"
+Cohesion: 0.06
+Nodes (46): AsyncClient, Accepts an ID, link or exact name; requires a single match so the wrong server…, bm_embed(), build_embeds(), check(), clip(), esc(), iso_ts() (+38 more)
+
+### Community 10 - "RaidData"
+Cohesion: 0.10
+Nodes (13): MethodRow, normalized(), RaidData, rows() with the recommended method moved to the top (for pickers and…, Cheapest method by sulfur (> 0). `practical` skips siege and fire unless…, Totals for several targets (hard side). Unsupported method/target pairs are…, What a sulfur budget crafts (per explosive) and destroys (per target, cheapest…, Search key: lowercase letters and digits only ("Puerta HQ" -> "puertahq"). (+5 more)
+
+### Community 11 - "ServerPagesView"
 Cohesion: 0.16
-Nodes (7): register_utilities(), guild_watches(), pause_alerts(), raid_compare(), resume_alerts(), status(), toggle()
+Nodes (10): button(), OwnedView, OwnerLock, Mixin: only the user who opened a panel may use it; components disable…, Classic (embed + buttons) view with the owner lock., Embed, Page `page` (1-based) of the filtered directory., ◀️ ▶️ buttons to browse the directory without retyping the command. (+2 more)
+
+### Community 13 - "CommandTranslator"
+Cohesion: 0.14
+Nodes (11): Locale, locale_str, CommandTranslator, normalize_lang(), es-ES', 'es-419', Locale.spain_spanish… -> 'es'; anything else -> 'en'., Shows command and option descriptions in Spanish to Spanish Discord clients., test_dynamic_keys_resolve(), test_fallbacks() (+3 more)
+
+### Community 14 - "build_raid_data.py"
+Cohesion: 0.47
+Nodes (5): main(), Build data/raid.json from the raw source snapshots in data/sources/. Sources…, First (hard side) table only; the first matching label per explosive wins., rustclash_methods(), to_int()
 
 ## Knowledge Gaps
-- **9 isolated node(s):** `Secretos correctos`, `Instalación en Fedora`, `Conectar Discord`, `Comandos`, `Datos y límites` (+4 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 59 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **2 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **14 isolated node(s):** `The right secret`, `Raid`, `Players — `/who``, `Servers`, `Alerts` (+9 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 179 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **1 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `BattleMetrics` connect `BattleMetrics` to `RustBot`, `Store`, `__main__.py`?**
-  _High betweenness centrality (0.140) - this node is a cross-community bridge._
-- **Why does `register_utilities()` connect `register_utilities` to `__main__.py`?**
-  _High betweenness centrality (0.114) - this node is a cross-community bridge._
-- **Why does `Store` connect `Store` to `RustBot`, `__main__.py`?**
-  _High betweenness centrality (0.100) - this node is a cross-community bridge._
-- **Are the 4 inferred relationships involving `main()` (e.g. with `Catalog` and `Settings`) actually correct?**
-  _`main()` has 4 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 3 inferred relationships involving `register_utilities()` (e.g. with `methods()` and `servers()`) actually correct?**
-  _`register_utilities()` has 3 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 2 inferred relationships involving `Store` (e.g. with `RustBot` and `test_poll_transition_and_delivery()`) actually correct?**
-  _`Store` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 2 inferred relationships involving `BattleMetrics` (e.g. with `RustBot` and `test_only_explicit_fresh_presence()`) actually correct?**
-  _`BattleMetrics` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `t()` connect `t` to `raid.py`, `Store`, `who.py`, `ServerPagesView`, `CommandTranslator`?**
+  _High betweenness centrality (0.134) - this node is a cross-community bridge._
+- **Why does `RaidData` connect `RaidData` to `raid.py`, `Store`, `t`?**
+  _High betweenness centrality (0.119) - this node is a cross-community bridge._
+- **Why does `BattleMetrics` connect `BattleMetrics` to `Store`, `t`?**
+  _High betweenness centrality (0.090) - this node is a cross-community bridge._
+- **Are the 16 inferred relationships involving `RaidData` (e.g. with `help_layout()` and `RustBot`) actually correct?**
+  _`RaidData` has 16 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 6 inferred relationships involving `main()` (e.g. with `Catalog` and `Settings`) actually correct?**
+  _`main()` has 6 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 4 inferred relationships involving `target_layout()` (e.g. with `back()` and `RaidData`) actually correct?**
+  _`target_layout()` has 4 INFERRED edges - model-reasoned connections that need verification._
+- **What connects `The right secret`, `Raid`, `Players — `/who`` to the rest of the system?**
+  _14 weakly-connected nodes found - possible documentation gaps or missing edges._
