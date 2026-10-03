@@ -121,7 +121,7 @@ def register_utilities(bot, catalog, require_admin):
         e.add_field(name=t(lang, 'settings.alerts'), value=('🟢 ' if alerts else '⏸️ ') + t(lang, 'settings.on' if alerts else 'settings.off'))
         e.add_field(name=t(lang, 'settings.interval'), value=f'{saved[3] if saved else bot.settings.poll_interval} s')
         e.add_field(name=t(lang, 'status.watches'), value=t(lang, 'status.watches.value', n=len(watches), on=online, unknown=unknown), inline=False)
-        e.add_field(name=t(lang, 'settings.channel'), value=f'<#{saved[0]}>' if saved else t(lang, 'status.channel.default'))
+        e.add_field(name=t(lang, 'settings.channel'), value=t(lang, 'status.channel.default'))
         e.add_field(name=t(lang, 'status.directory'), value=t(lang, 'status.directory.value', n=len(bot.directory.rows)))
         e.set_footer(text=t(lang, 'status.footer'))
         await interaction.response.send_message(embed=e, ephemeral=True)

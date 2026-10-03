@@ -343,3 +343,34 @@ def test_copy_buttons_send_plain_ids(bot):
     run(go())
     report = {'steamid': STEAMID, 'bm_id': None, 'errors': [], 'steam': {'name': 'X', 'online_state': 'in-game', 'game': ''}}
     assert 'In a game' in build_embeds(report, False)[0].description and 'a game' not in build_embeds(report, False, 'es')[0].description
+
+
+def test_lookups_are_public_errors_private_and_alerts_go_where_requested(bot):
+    async def go():
+        use(bot)
+        bot.store.set_settings(1, 999, 'es', True, 10)                       # an old /settings channel is no longer used
+        t = FakeInteraction(admin=False, user_id=20)
+        t.channel_id = 55
+        await cmd(bot, 'track')(t, 'add', '1128280744')
+        assert t.sent()['ephemeral'] is False and {w.channel_id for w in bot.store.watches()} == {55}
+        assert '<#55>' in str(t.sent()['embed'].fields)
+        other = FakeInteraction(admin=False, user_id=20)                      # same Discord, different channel
+        other.channel_id = 77
+        bot.get_channel = lambda _: SimpleNamespace(guild=SimpleNamespace(id=1))
+        await cmd(bot, 'track')(other, 'remove', '1128280744')
+        assert 'removed' in other.sent()['embed'].description and not bot.store.watches()
+        for name, args in (('player', ('1128280744', '5931597')), ('presence', ('1128280744',)), ('findplayer', ('KingGallardo',)),
+                           ('server', ('5931597',)), ('serverstats', ('5931597',)), ('online', ('5931597',))):
+            i = FakeInteraction()
+            await cmd(bot, name)(i, *args)
+            assert i.sent()['ephemeral'] is False, name
+        bad = FakeInteraction()
+        await cmd(bot, 'player')(bad, 'nobody known', '5931597')
+        assert bad.sent()['ephemeral'] is True and "don't know" in bad.sent()['embed'].description
+        missing = FakeInteraction(user_id=123)
+        await cmd(bot, 'serverstats')(missing)
+        assert missing.sent()['ephemeral'] is True
+        w = FakeInteraction()
+        await cmd(bot, 'wipealert')(w, 'add', '5931597')
+        assert w.sent().get('ephemeral') is not True
+    run(go())

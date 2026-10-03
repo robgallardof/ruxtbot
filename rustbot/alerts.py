@@ -17,7 +17,7 @@ from discord import app_commands
 from discord.ext import tasks
 from .i18n import lang_for, t
 from .players import player_autocomplete, player_error, resolve_player
-from .ui import GREEN, ORANGE, RED, YELLOW, brand_embed, error_embed, success_embed
+from .ui import GREEN, ORANGE, RED, YELLOW, brand_embed, error_embed, private_reply, success_embed
 from .utility_commands import forced_wipes, iso_to_ts
 
 FORCED = 'forced'          # pseudo server ID for forced-wipe reminders
@@ -320,14 +320,14 @@ def register_alerts(bot, can_manage):
         if not server and not forced:
             await interaction.response.send_message(embed=error_embed(t(lang, 'wipealert.need'), t(lang, 'wipealert.need.hint'), lang), ephemeral=True)
             return
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer(ephemeral=action == 'remove')
         targets = ([FORCED] if forced else [])
         name = None
         if server:
             try:
                 sid = bot.directory.resolve(server)
             except ValueError:
-                await interaction.followup.send(embed=error_embed(t(lang, 'server.pick'), lang=lang), ephemeral=True)
+                await private_reply(interaction, True, embed=error_embed(t(lang, 'server.pick'), lang=lang))
                 return
             targets.append(sid)
         if action == 'remove':
@@ -338,7 +338,7 @@ def register_alerts(bot, can_manage):
                 if owner is None:
                     continue
                 if not await owns_or_manages(interaction, owner):
-                    await interaction.followup.send(embed=error_embed(t(lang, 'alerts.owner'), lang=lang), ephemeral=True)
+                    await private_reply(interaction, True, embed=error_embed(t(lang, 'alerts.owner'), lang=lang))
                     return
                 bot.alerts.remove_wipe(interaction.channel_id, sid)
                 removed += 1
@@ -354,7 +354,7 @@ def register_alerts(bot, can_manage):
             try:
                 attrs = (await bot.bm.server(sid)).get('attributes') or {}
             except Exception:
-                await interaction.followup.send(embed=error_embed(t(lang, 'server.fail'), t(lang, 'server.fail.hint'), lang), ephemeral=True)
+                await private_reply(interaction, True, embed=error_embed(t(lang, 'server.fail'), t(lang, 'server.fail.hint'), lang))
                 return
             name = attrs.get('name', sid)
             bot.directory.merge([{'id': sid, 'name': name}])
@@ -369,7 +369,7 @@ def register_alerts(bot, can_manage):
             lines.append(line)
         e = success_embed('\n'.join(lines))
         e.set_footer(text=t(lang, 'wipealert.footer'))
-        await interaction.followup.send(embed=e, ephemeral=True)
+        await interaction.followup.send(embed=e)
 
     # ── /serverwatch ──
     @bot.tree.command(name='serverwatch', description='📈 Get a ping when a server fills up or empties')
@@ -411,11 +411,11 @@ def register_alerts(bot, can_manage):
         if above is not None and below is not None and below >= above:
             await interaction.response.send_message(embed=error_embed(t(lang, 'serverwatch.order'), lang=lang), ephemeral=True)
             return
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer()
         try:
             attrs = (await bot.bm.server(sid)).get('attributes') or {}
         except Exception:
-            await interaction.followup.send(embed=error_embed(t(lang, 'server.fail'), t(lang, 'server.fail.hint'), lang), ephemeral=True)
+            await private_reply(interaction, True, embed=error_embed(t(lang, 'server.fail'), t(lang, 'server.fail.hint'), lang))
             return
         name = attrs.get('name', sid)
         bot.directory.merge([{'id': sid, 'name': name}])
@@ -427,7 +427,7 @@ def register_alerts(bot, can_manage):
         e.add_field(name=t(lang, 'serverwatch.now'), value=t(lang, 'serverwatch.body', p=players_now, m=attrs.get('maxPlayers', 0)), inline=True)
         e.add_field(name=t(lang, 'track.summary.expires'), value=f'<t:{int(time.time() + days * 86400)}:R>', inline=True)
         e.set_footer(text=t(lang, 'alerts.footer'))
-        await interaction.followup.send(embed=e, ephemeral=True)
+        await interaction.followup.send(embed=e)
 
     # ── /team ──
     async def team_choices(interaction, current: str):
@@ -437,12 +437,12 @@ def register_alerts(bot, can_manage):
 
     @bot.tree.command(name='team', description='👥 Group players (a rival clan) and see who is online, or get pinged when they connect')
     @app_commands.describe(action='What to do', name='Team name', player='Player to add or remove: name, SteamID64 or BattleMetrics ID', days='Alert duration in days (maximum 15)',
-                           share='Publish the result in this channel')
+                           share='Everyone in the channel sees it (default yes; false = only you)')
     @app_commands.choices(action=[app_commands.Choice(name=n, value=v) for n, v in (('Show', 'show'), ('Add player', 'add'), ('Remove player', 'remove'), ('Create', 'create'),
                                                                                     ('List', 'list'), ('Alerts on', 'watch'), ('Alerts off', 'unwatch'), ('Delete', 'delete'))])
     @app_commands.autocomplete(name=team_choices, player=players)
     async def team(interaction: discord.Interaction, action: str = 'show', name: app_commands.Range[str, 1, 40] | None = None, player: str | None = None,
-                   days: app_commands.Range[int, 1, 15] = 7, share: bool = False):
+                   days: app_commands.Range[int, 1, 15] = 7, share: bool = True):
         lang = lang_for(interaction)
         if (err := guild_only(interaction, lang)):
             await interaction.response.send_message(embed=err, ephemeral=True)
@@ -521,7 +521,7 @@ def register_alerts(bot, can_manage):
             e = success_embed(t(lang, 'team.watching', team=esc(name), ch=f'<#{interaction.channel_id}>'))
             e.add_field(name=t(lang, 'track.summary.expires'), value=f'<t:{int(time.time() + days * 86400)}:R>')
             e.set_footer(text=t(lang, 'alerts.footer'))
-            await interaction.response.send_message(embed=e, ephemeral=True)
+            await interaction.response.send_message(embed=e, ephemeral=not share)
             return
         if action == 'unwatch':
             bot.alerts.unwatch_team(gid, name)

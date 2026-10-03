@@ -61,6 +61,23 @@ def fmt_num(value: float) -> str:
     return f'{value:,.1f}'
 
 
+async def private_reply(interaction: discord.Interaction, public: bool, **kwargs) -> None:
+    """Errors and notices only go to whoever ran the command, even when the result would have been public.
+
+    After a public defer, the first follow-up would replace the public "thinking…" message, so that
+    placeholder is deleted first and the error is sent as a fresh private message.
+    """
+    if interaction.response.is_done():
+        if public:
+            try:
+                await interaction.delete_original_response()
+            except Exception:
+                pass
+        await interaction.followup.send(ephemeral=True, **kwargs)
+    else:
+        await interaction.response.send_message(ephemeral=True, **kwargs)
+
+
 async def reply(interaction: discord.Interaction, **kwargs) -> None:
     """Reply whether or not the interaction was already answered or deferred."""
     kwargs.setdefault('ephemeral', True)

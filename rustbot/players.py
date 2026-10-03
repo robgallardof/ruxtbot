@@ -9,7 +9,7 @@ import re
 import discord
 from discord import app_commands
 from .i18n import t
-from .ui import YELLOW, OwnedView, error_embed
+from .ui import YELLOW, OwnedView, error_embed, private_reply
 
 # What an explicit identifier looks like; anything else is treated as a name to look up in the book.
 ID_LIKE = re.compile(r'^\s*(?:[0-9]{1,17}|STEAM_[0-5]:[01]:\d+|\[?U:1:\d+\]?|<?https?://\S+>?)\s*$', re.I)
@@ -159,11 +159,7 @@ async def player_error(bot, interaction, lang: str, exc: Exception | str, query:
         view = OwnedView(interaction.user.id)
         view.add_item(search_button(bot, lang, query if query and not looks_like_id(query) else None))
     embed = error_embed(t(lang, key, q=esc(query or '')), t(lang, 'identity.hint'), lang)
-    kwargs = {'embed': embed, 'ephemeral': not share, **({'view': view} if view else {})}
-    if interaction.response.is_done():
-        await interaction.followup.send(**kwargs)
-    else:
-        await interaction.response.send_message(**kwargs)
+    await private_reply(interaction, share, embed=embed, **({'view': view} if view else {}))
 
 
 def hub(bot, interaction, lang: str) -> tuple[discord.Embed, OwnedView]:

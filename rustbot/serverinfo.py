@@ -13,7 +13,7 @@ import discord
 from discord import app_commands
 from .i18n import lang_for, t
 from .profiles import default_server
-from .ui import GREEN, ORANGE, RED, YELLOW, OwnedView, brand_embed, error_embed, fmt_num, success_embed
+from .ui import GREEN, ORANGE, RED, YELLOW, OwnedView, brand_embed, error_embed, fmt_num, private_reply, success_embed
 from .utility_commands import iso_to_ts
 
 SPARK = '▁▂▃▄▅▆▇█'
@@ -243,11 +243,11 @@ def register_serverinfo(bot, can_manage):
             preset = bot.presets.get(interaction.guild_id, server) if interaction.guild_id else None
             if preset and preset[2]:
                 return preset[2]
-            await reply(interaction, embed=error_embed(t(lang, 'server.pick'), lang=lang))
+            await private_reply(interaction, True, embed=error_embed(t(lang, 'server.pick'), lang=lang))
             return None
         sid, _ = await default_server(bot, interaction)
         if not sid:
-            await reply(interaction, embed=error_embed(t(lang, 'server.none_default'), t(lang, 'server.none_default.hint'), lang))
+            await private_reply(interaction, True, embed=error_embed(t(lang, 'server.none_default'), t(lang, 'server.none_default.hint'), lang))
         return sid
 
     async def reply(interaction, ephemeral=True, **kwargs):
@@ -262,7 +262,7 @@ def register_serverinfo(bot, can_manage):
         except Exception:
             a = None
         if a is None and not preset:
-            await reply(interaction, ephemeral=not public, embed=error_embed(t(lang, 'server.fail'), t(lang, 'server.fail.hint'), lang))
+            await private_reply(interaction, public, embed=error_embed(t(lang, 'server.fail'), t(lang, 'server.fail.hint'), lang))
             return
         if a is not None:
             bot.directory.merge([{'id': sid, 'name': a.get('name', sid)}])
@@ -285,9 +285,9 @@ def register_serverinfo(bot, can_manage):
 
     # ── /server ──
     @bot.tree.command(description='🖥️ Live server card: players, map, rates, wipes and connect')
-    @app_commands.describe(server='Server name or BattleMetrics server ID (empty = yours)', share='Publish the result in this channel')
+    @app_commands.describe(server='Server name or BattleMetrics server ID (empty = yours)', share='Everyone in the channel sees it (default yes; false = only you)')
     @app_commands.autocomplete(server=servers)
-    async def server(interaction: discord.Interaction, server: str | None = None, share: bool = False):
+    async def server(interaction: discord.Interaction, server: str | None = None, share: bool = True):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
         sid = await pick_server(interaction, lang, server)
@@ -387,10 +387,10 @@ def register_serverinfo(bot, can_manage):
     PERIODS = [app_commands.Choice(name='24 h', value=1), app_commands.Choice(name='7 days', value=7), app_commands.Choice(name='30 days', value=30)]
 
     @bot.tree.command(name='serverstats', description='📈 Server history: players, rank, new players and outages')
-    @app_commands.describe(server='Server name or BattleMetrics server ID (empty = yours)', period='Time range', share='Publish the result in this channel')
+    @app_commands.describe(server='Server name or BattleMetrics server ID (empty = yours)', period='Time range', share='Everyone in the channel sees it (default yes; false = only you)')
     @app_commands.choices(period=PERIODS)
     @app_commands.autocomplete(server=servers)
-    async def serverstats(interaction: discord.Interaction, server: str | None = None, period: int = 7, share: bool = False):
+    async def serverstats(interaction: discord.Interaction, server: str | None = None, period: int = 7, share: bool = True):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
         sid = await pick_server(interaction, lang, server)
@@ -405,7 +405,7 @@ def register_serverinfo(bot, can_manage):
             outages = await bot.bm.outages(sid, period)
         except Exception:
             logging.info('serverstats failed for %s', sid, exc_info=True)
-            await interaction.followup.send(embed=error_embed(t(lang, 'server.fail'), t(lang, 'server.fail.hint'), lang), ephemeral=not share)
+            await private_reply(interaction, share, embed=error_embed(t(lang, 'server.fail'), t(lang, 'server.fail.hint'), lang))
             return
         values = [v for _, v in counts]
         e = brand_embed(t(lang, 'stats.title', server=a.get('name', sid), period=t(lang, f'stats.period.{period}'))[:256], color=YELLOW)
@@ -461,22 +461,21 @@ def register_serverinfo(bot, can_manage):
         return e, view
 
     @bot.tree.command(name='leaderboard', description='🏆 Players with the most hours on a server')
-    @app_commands.describe(server='Server name or BattleMetrics server ID (empty = yours)', period='Time range', share='Publish the result in this channel')
+    @app_commands.describe(server='Server name or BattleMetrics server ID (empty = yours)', period='Time range', share='Everyone in the channel sees it (default yes; false = only you)')
     @app_commands.choices(period=LB_PERIODS)
     @app_commands.autocomplete(server=servers)
-    async def leaderboard(interaction: discord.Interaction, server: str | None = None, period: int = 7, share: bool = False):
+    async def leaderboard(interaction: discord.Interaction, server: str | None = None, period: int = 7, share: bool = True):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
         sid = await pick_server(interaction, lang, server)
         if not sid:
             return
         embed, view = await leaderboard_page(interaction, lang, sid, bot.directory.name(sid), period, 1, share)
-        kwargs = {'embed': embed, 'ephemeral': not share}
-        if view:
-            kwargs['view'] = view
-        await interaction.followup.send(**kwargs)
-        if view:
-            view.message = await interaction.original_response()
+        if not view:
+            await private_reply(interaction, share, embed=embed)
+            return
+        await interaction.followup.send(embed=embed, view=view, ephemeral=not share)
+        view.message = await interaction.original_response()
 
     # ── /serversearch ──
     @bot.tree.command(name='serversearch', description='🔎 Find Rust servers: name, country, rates, group size, wipe')

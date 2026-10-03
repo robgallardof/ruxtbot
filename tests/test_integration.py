@@ -739,7 +739,7 @@ def test_manage_server_can_configure_and_choose_the_alert_role(bot):
         i = FakeInteraction(admin=False)
         i.user.guild_permissions.manage_guild = True
         role = SimpleNamespace(id=77, name='raid', mention='<@&77>', mentionable=True)
-        await cmd(bot, 'settings')(i, 'en', True, 10, None, role)
+        await cmd(bot, 'settings')(i, 'en', True, 10, role)
         assert bot.store.alert_role(1) == 77 and '<@&77>' in str(i.sent()['embed'].fields)
         bot.store.add('bm:1128280744', '5931597', 2, 'King', owner_id=5)
         bot.store.set_state(bot.store.watches()[0], False)

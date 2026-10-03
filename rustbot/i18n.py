@@ -133,8 +133,8 @@ STRINGS: dict[str, tuple[str, str]] = {
                      '### 🕵️ Jugadores\n`/me` tu BattleMetrics y servidor · `/who` ficha completa: Steam, baneos, **nombres anteriores**, estadísticas · `/findplayer` nombre → ID (primero en tu servidor) · `/player` ¿conectado? + horas · `/presence` · `/sessions` · `/playercompare` posibles compañeros · `/steamid` · `share:true` publica la ficha en el canal\n-# 🔗 Usa el **SteamID**. La primera vez, `/who` te pide elegir el perfil correcto de BattleMetrics; después el SteamID, o solo el nombre, funciona en todos los comandos.'),
     'help.alerts': ('### 🔔 Alerts (everyone)\n`/track` a player connects or disconnects (one server, their usual ones or 🌍 any) · `/team` a whole clan: who is online and where · `/wipealert` a server wipes, or the forced wipe is near · `/serverwatch` a server fills up or empties\n-# Alerts ping whoever created them, in the channel where they were created.',
                     '### 🔔 Avisos (todos)\n`/track` un jugador se conecta o desconecta (un servidor, sus habituales o 🌍 cualquiera) · `/team` un clan entero: quién está y dónde · `/wipealert` un servidor hace wipe, o se acerca el forzado · `/serverwatch` un servidor se llena o se vacía\n-# Los avisos mencionan a quien los creó, en el canal donde se crearon.'),
-    'help.admin': ('### ⚙️ Server managers\n`/setserver` · `/delserver` servers for `/sv` · `/settings` alert channel, role and language · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers`\n-# `/version` for everyone · `/update` · `/restart` bot owner only',
-                   '### ⚙️ Gestores del servidor\n`/setserver` · `/delserver` servidores de `/sv` · `/settings` canal, rol e idioma de avisos · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers`\n-# `/version` para todos · `/update` · `/restart` solo el dueño del bot'),
+    'help.admin': ('### ⚙️ Server managers\n`/setserver` · `/delserver` servers for `/sv` · `/settings` alert role and language · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers`\n-# `/version` for everyone · `/update` · `/restart` bot owner only',
+                   '### ⚙️ Gestores del servidor\n`/setserver` · `/delserver` servidores de `/sv` · `/settings` rol e idioma de los avisos · `/pausealerts` · `/resumealerts` · `/status` · `/syncservers`\n-# `/version` para todos · `/update` · `/restart` solo el dueño del bot'),
     'help.footer': ('Tap any command to open it · `/examples` ready-to-copy examples · `/version` · `/author` · replies follow your Discord language (English/Spanish).',
                     'Toca cualquier comando para abrirlo · `/examples` ejemplos listos para copiar · `/version` · `/author` · las respuestas siguen el idioma de tu Discord (inglés/español).'),
 
@@ -144,8 +144,8 @@ STRINGS: dict[str, tuple[str, str]] = {
     'examples.title': ('📖 Examples', '📖 Ejemplos'),
     'examples.intro': ('Copy any command below into the chat. Options autocomplete as you type, and players autocomplete by name after the first lookup. Everyone in the channel can see this.',
                        'Copia cualquier comando de abajo en el chat. Las opciones se autocompletan al escribir, y los jugadores por nombre tras la primera consulta. Todos en el canal pueden ver esto.'),
-    'examples.setup': ('### ⚡ Set up in one minute\n`/me battlemetrics:https://www.battlemetrics.com/players/1128280744` → the bot knows your server: `/online`, `/findplayer`, `/server` need nothing else\n`/setserver name:Main address:1.2.3.4:28015` → (managers) then everyone can type `/sv` or `/ip` and copy the connect line\n`/settings channel:#alerts role:@raid` → (managers) where alerts go and who they ping',
-                       '### ⚡ Configúralo en un minuto\n`/me battlemetrics:https://www.battlemetrics.com/players/1128280744` → el bot sabe tu servidor: `/online`, `/findplayer`, `/server` no necesitan nada más\n`/setserver name:Principal address:1.2.3.4:28015` → (gestores) luego todos pueden escribir `/sv` o `/ip` y copiar la línea de connect\n`/settings channel:#avisos role:@raid` → (gestores) dónde van los avisos y a quién mencionan'),
+    'examples.setup': ('### ⚡ Set up in one minute\n`/me battlemetrics:https://www.battlemetrics.com/players/1128280744` → the bot knows your server: `/online`, `/findplayer`, `/server` need nothing else\n`/setserver name:Main address:1.2.3.4:28015` → (managers) then everyone can type `/sv` or `/ip` and copy the connect line\n`/settings role:@raid` → (managers) who alerts ping; alerts are posted in the channel where they were requested',
+                       '### ⚡ Configúralo en un minuto\n`/me battlemetrics:https://www.battlemetrics.com/players/1128280744` → el bot sabe tu servidor: `/online`, `/findplayer`, `/server` no necesitan nada más\n`/setserver name:Principal address:1.2.3.4:28015` → (gestores) luego todos pueden escribir `/sv` o `/ip` y copiar la línea de connect\n`/settings role:@raid` → (gestores) a quién mencionan los avisos; se publican en el canal donde se pidieron'),
     'examples.raid': ('### 💥 Raid\n`/raid` → pick a category, see pictures, simulate\n`/raid target:armored door` → HP bar, sulfur and cheapest method\n'
                       '`/raid target:stone wall side:Soft side` → soft side costs\n`/raidcalc target:armored door quantity:2` → base calculator\n'
                       '`/raidbudget sulfur:20000` → what that sulfur crafts and destroys\n`/raidcompare target:garage door` → every method side by side',
@@ -203,7 +203,7 @@ STRINGS: dict[str, tuple[str, str]] = {
     'status.stopped': ('🔴 Stopped', '🔴 Detenido'),
     'status.watches': ('👀 Watches', '👀 Vigilancias'),
     'status.watches.value': ('**{n}** total · 🟢 {on} online · ⚪ {unknown} no data', '**{n}** total · 🟢 {on} online · ⚪ {unknown} sin datos'),
-    'status.channel.default': ('The channel where /track is used', 'El canal donde se use /track'),
+    'status.channel.default': ('The channel where each alert was requested', 'El canal donde se pidió cada aviso'),
     'status.directory': ('🖥️ Directory', '🖥️ Directorio'),
     'status.directory.value': ('{n} servers', '{n} servidores'),
     'status.footer': ('Last known state; /player checks a fresh observation.', 'Último estado conocido; /player consulta una observación reciente.'),
@@ -545,11 +545,11 @@ STRINGS: dict[str, tuple[str, str]] = {
     'welcome.title': ('👋 Thanks for adding RuxtBot!', '👋 ¡Gracias por añadir RuxtBot!'),
     'welcome.body': ('Rust raids, crafting, servers, players and alerts, in English and Spanish (each member sees their Discord language).\n\n'
                      '**Set up in one minute**\n1️⃣ `/setserver` → save your server: everyone gets `/sv` and `/ip` with the connect line\n'
-                     '2️⃣ `/settings` → channel (and optional role) for alerts\n3️⃣ Everyone: `/me` → save your BattleMetrics profile, then `/online` and `/findplayer` just work\n\n'
+                     '2️⃣ `/settings` → (optional) role to ping in alerts; alerts are posted in the channel where they are requested\n3️⃣ Everyone: `/me` → save your BattleMetrics profile, then `/online` and `/findplayer` just work\n\n'
                      'Then try `/help` for the menu, `/server`, `/who`, `/track`, `/team` and `/raid`.',
                      'Raids, crafteo, servidores, jugadores y avisos de Rust, en inglés y español (cada miembro lo ve en el idioma de su Discord).\n\n'
                      '**Configúralo en un minuto**\n1️⃣ `/setserver` → guarda tu servidor: todos tendrán `/sv` e `/ip` con la línea de connect\n'
-                     '2️⃣ `/settings` → canal (y rol opcional) para los avisos\n3️⃣ Todos: `/me` → guarda tu perfil de BattleMetrics y `/online` y `/findplayer` funcionan solos\n\n'
+                     '2️⃣ `/settings` → (opcional) rol a mencionar en los avisos; los avisos se publican en el canal donde se piden\n3️⃣ Todos: `/me` → guarda tu perfil de BattleMetrics y `/online` y `/findplayer` funcionan solos\n\n'
                      'Luego prueba `/help` para el menú, `/server`, `/who`, `/track`, `/team` y `/raid`.'),
     'welcome.footer': ('Tap any command above to open it.', 'Toca cualquier comando de arriba para abrirlo.'),
     'welcome.examples': ('Show examples', 'Ver ejemplos'),
@@ -688,7 +688,8 @@ COMMAND_ES: dict[str, str] = {
     '🛠️ Crafting calculator: raw resources and intermediates': '🛠️ Calculadora de fabricación: recursos base e intermedios',
     'Item to craft': 'Ítem a fabricar',
     'Amount': 'Cantidad',
-    '⚙️ Alert channel, role, language and interval (server managers)': '⚙️ Canal, rol, idioma e intervalo de avisos (gestores del servidor)',
+    '⚙️ Alert role, language and interval (server managers)': '⚙️ Rol, idioma e intervalo de los avisos (gestores del servidor)',
+    'Everyone in the channel sees it (default yes; false = only you)': 'Todos en el canal lo ven (por defecto sí; false = solo tú)',
     'Role to ping in alerts (empty = a role named wipe, if any)': 'Rol a mencionar en los avisos (vacío = un rol llamado wipe, si existe)',
     'Language for alerts': 'Idioma de los avisos',
     'Send alerts': 'Enviar avisos',

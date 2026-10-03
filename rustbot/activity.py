@@ -12,7 +12,7 @@ from .i18n import lang_for, t
 from .players import expand, player_autocomplete, player_error, remember, resolve_player, scope_of, steam_of
 from .profiles import current_server, default_server
 from .servers import server_autocomplete
-from .ui import GREEN, OwnedView, brand_embed, error_embed
+from .ui import GREEN, OwnedView, brand_embed, error_embed, private_reply
 from .utility_commands import iso_to_ts
 
 ONLINE_PAGE = 20
@@ -129,12 +129,12 @@ def register_activity(bot):
     servers = bot.server_choices
 
     async def fail(interaction, lang, key, share):
-        await interaction.followup.send(embed=error_embed(t(lang, key), lang=lang), ephemeral=not share)
+        await private_reply(interaction, share, embed=error_embed(t(lang, key), lang=lang))
 
     @bot.tree.command(description='📍 Presence on synchronized servers: online, hours and last seen')
-    @app_commands.describe(player='Name you looked up before, SteamID64 or BattleMetrics player ID', page='Page of 10 servers', share='Publish the result in this channel')
+    @app_commands.describe(player='Name you looked up before, SteamID64 or BattleMetrics player ID', page='Page of 10 servers', share='Everyone in the channel sees it (default yes; false = only you)')
     @app_commands.autocomplete(player=players)
-    async def presence(interaction: discord.Interaction, player: str, page: app_commands.Range[int, 1, 1000] = 1, share: bool = False):
+    async def presence(interaction: discord.Interaction, player: str, page: app_commands.Range[int, 1, 1000] = 1, share: bool = True):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
         player = expand(bot, interaction, player)
@@ -155,9 +155,9 @@ def register_activity(bot):
         await interaction.followup.send(embed=e, ephemeral=not share)
 
     @bot.tree.command(description='🕒 Recent player sessions, timestamps and duration')
-    @app_commands.describe(player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Optional server name', share='Publish the result in this channel')
+    @app_commands.describe(player='Name you looked up before, SteamID64 or BattleMetrics player ID', server='Optional server name', share='Everyone in the channel sees it (default yes; false = only you)')
     @app_commands.autocomplete(player=players, server=server_autocomplete(bot, player_param='player'))
-    async def sessions(interaction: discord.Interaction, player: str, server: str | None = None, share: bool = False):
+    async def sessions(interaction: discord.Interaction, player: str, server: str | None = None, share: bool = True):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
         player = expand(bot, interaction, player)
@@ -193,9 +193,9 @@ def register_activity(bot):
         await interaction.followup.send(embed=e, ephemeral=not share)
 
     @bot.tree.command(description='👥 Who is online on a server right now')
-    @app_commands.describe(server='Server name or BattleMetrics server ID (empty = yours)', name='Only players whose name contains this', share='Publish the result in this channel')
+    @app_commands.describe(server='Server name or BattleMetrics server ID (empty = yours)', name='Only players whose name contains this', share='Everyone in the channel sees it (default yes; false = only you)')
     @app_commands.autocomplete(server=servers)
-    async def online(interaction: discord.Interaction, server: str | None = None, name: str = '', share: bool = False):
+    async def online(interaction: discord.Interaction, server: str | None = None, name: str = '', share: bool = True):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
         if server:
@@ -207,7 +207,7 @@ def register_activity(bot):
         else:
             sid, _ = await default_server(bot, interaction)
             if not sid:
-                await interaction.followup.send(embed=error_embed(t(lang, 'server.none_default'), t(lang, 'server.none_default.hint'), lang), ephemeral=not share)
+                await private_reply(interaction, share, embed=error_embed(t(lang, 'server.none_default'), t(lang, 'server.none_default.hint'), lang))
                 return
         try:
             attrs, found = await bot.bm.server_players(sid)
@@ -228,8 +228,8 @@ def register_activity(bot):
         view.message = await interaction.original_response()
 
     @bot.tree.command(description='🔎 Find a player by name and get their BattleMetrics ID')
-    @app_commands.describe(name='In-game name (or part of it)', share='Publish the result in this channel')
-    async def findplayer(interaction: discord.Interaction, name: app_commands.Range[str, 2, 64], share: bool = False):
+    @app_commands.describe(name='In-game name (or part of it)', share='Everyone in the channel sees it (default yes; false = only you)')
+    async def findplayer(interaction: discord.Interaction, name: app_commands.Range[str, 2, 64], share: bool = True):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
         try:
@@ -264,9 +264,9 @@ def register_activity(bot):
         view.message = await interaction.original_response()
 
     @bot.tree.command(description='🤝 Servers two players have in common (possible teammates)')
-    @app_commands.describe(first='First player: name, SteamID64 or BattleMetrics ID', second='Second player: name, SteamID64 or BattleMetrics ID', share='Publish the result in this channel')
+    @app_commands.describe(first='First player: name, SteamID64 or BattleMetrics ID', second='Second player: name, SteamID64 or BattleMetrics ID', share='Everyone in the channel sees it (default yes; false = only you)')
     @app_commands.autocomplete(first=players, second=players)
-    async def playercompare(interaction: discord.Interaction, first: str, second: str, share: bool = False):
+    async def playercompare(interaction: discord.Interaction, first: str, second: str, share: bool = True):
         lang = lang_for(interaction)
         await interaction.response.defer(ephemeral=not share)
         first, second = expand(bot, interaction, first), expand(bot, interaction, second)

@@ -17,6 +17,8 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 | ⚙️ Server managers | `/setserver`, `/delserver`, `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers` |
 | 🏷️ Bot | `/version` (everyone), `/update`, `/restart` (bot owner), `/author`, `/ping` |
 
+Lookups are **public by default** so the whole channel sees them: `/who`, `/player`, `/presence`, `/sessions`, `/findplayer`, `/playercompare`, `/online`, `/server`, `/serverstats`, `/leaderboard`, `/team`, and the confirmations of `/track`, `/wipealert` and `/serverwatch`. Each has `share:false` to keep it private. Errors, notices, `/me`, `/settings`, `/status`, `/version` and personal panels are always private; when a public reply turns into an error, the public "thinking…" placeholder is deleted and the error is sent privately.
+
 `/help` is a menu with buttons for the common next steps: 👤 My profile, 🎮 Our server, 🔎 Find player, 👀 Track and the raid tools. `/examples` is posted publicly so everyone in the channel can copy them.
 
 Commands mentioned in `/help`, `/examples` and the welcome message are **clickable**: after the startup sync the bot knows each command's ID, so `` `/sv` `` becomes a Discord command mention that opens the command when tapped. Commands written with options stay as code so they can be copied. When the bot joins a server it posts a short setup guide (in the server's language) in the system channel, or the first channel it can write in, with a button that shows the examples.
@@ -100,6 +102,7 @@ After the first lookup the player goes into the guild's **player book** and ever
 ### Alerts: open to every member
 
 - **Anyone in the server** can use `/track`: watch a player for 1–15 days (7 by default), renew any watch, and see the server's shared list. Stopping someone else's watch needs its creator or a server manager.
+- Alerts are posted in **the channel where they were requested** (`/track`, `/team`, `/wipealert`, `/serverwatch`), so everyone there sees them. `/settings` no longer picks a channel. Stopping a watch works from any channel of the same Discord.
 - Alerts ping **whoever started the watch**, plus the alert role chosen with `/settings role:` (or a role named `wipe`, if there is exactly one). No role is required. Player names are escaped so they can never mention anyone, and `@everyone` is never allowed.
 - If none of the player's servers is in the directory, the servers where they played in the last 14 days are watched (at least the latest one) and added to the directory.
 - The first reading is silent and unknown data never counts as a disconnect.
