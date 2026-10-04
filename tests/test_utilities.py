@@ -22,7 +22,7 @@ def execute(tmp_path,case):
 
 def test_all_commands_register_and_serialize(tmp_path):
     async def case(bot,i):
-        assert len(bot.tree.get_commands())==48
+        assert len(bot.tree.get_commands())==49
         for command in bot.tree.get_commands():command.to_dict(bot.tree)
         assert bot.tree.get_command('raid').get_parameter('method').autocomplete
     execute(tmp_path,case)

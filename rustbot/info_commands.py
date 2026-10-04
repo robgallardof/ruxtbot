@@ -1,4 +1,4 @@
-"""Informational commands: /author, /examples and /binds."""
+"""Informational commands: /author, /examples, /binds and /cctv."""
 from __future__ import annotations
 from pathlib import Path
 import discord
@@ -89,20 +89,25 @@ def examples_layout(lang: str, command_ids: dict[str, int] | None = None) -> ui.
 
 
 def register_info(bot) -> None:
-    binds_path = Path(bot.settings.data_path).with_name('binds.md')
-    binds = split_sections(binds_path.read_text(encoding='utf-8')) if binds_path.exists() else []
+    def guide(name: str, description: str):
+        """Register /<name>: posts data/<name>.md publicly, one message per part."""
+        path = Path(bot.settings.data_path).with_name(f'{name}.md')
+        chunks = split_sections(path.read_text(encoding='utf-8')) if path.exists() else []
 
-    @bot.tree.command(name='binds', description='⌨️ Useful Rust binds and console commands (F1), ready to copy')
-    async def binds_command(interaction: discord.Interaction):
-        lang = lang_for(interaction)
-        if not binds:
-            await interaction.response.send_message(t(lang, 'binds.missing'), ephemeral=True)
-            return
-        # Public: the guide is meant to be shared. Several messages because Discord allows 2000 characters each.
-        none = discord.AllowedMentions.none()
-        await interaction.response.send_message(binds[0], allowed_mentions=none)
-        for chunk in binds[1:]:
-            await interaction.followup.send(chunk, allowed_mentions=none)
+        @bot.tree.command(name=name, description=description)
+        async def command(interaction: discord.Interaction):
+            lang = lang_for(interaction)
+            if not chunks:
+                await interaction.response.send_message(t(lang, f'{name}.missing'), ephemeral=True)
+                return
+            # Public: the guide is meant to be shared. Several messages because Discord allows 2000 characters each.
+            none = discord.AllowedMentions.none()
+            await interaction.response.send_message(chunks[0], allowed_mentions=none)
+            for chunk in chunks[1:]:
+                await interaction.followup.send(chunk, allowed_mentions=none)
+
+    guide('binds', '⌨️ Useful Rust binds and console commands (F1), ready to copy')
+    guide('cctv', '📹 CCTV camera codes for every monument, ready to copy')
 
     @bot.tree.command(name='author', description='👑 Who made RuxtBot')
     async def author(interaction: discord.Interaction):

@@ -374,3 +374,22 @@ def test_lookups_are_public_errors_private_and_alerts_go_where_requested(bot):
         await cmd(bot, 'wipealert')(w, 'add', '5931597')
         assert w.sent().get('ephemeral') is not True
     run(go())
+
+
+def test_cctv_codes_are_public_and_each_code_copies_alone(bot):
+    import re
+
+    async def go():
+        i = FakeInteraction()
+        await cmd(bot, 'cctv')(i)
+        first = i.response.calls[0]
+        messages = [first[1][0], *(c.args[0] for c in i.followup.send.call_args_list)]
+        assert all(len(m) <= 2000 and m.count('```') % 2 == 0 for m in messages) and 'ephemeral' not in first[2]
+        assert messages[0].startswith('# 📹 RUXTBOT — CÓDIGOS CCTV')
+        text = '\n'.join(messages)
+        codes = re.findall(r'```\n([A-Z0-9]+)\n```', text)
+        assert len(codes) == text.count('```') // 2 == len(set(codes))   # one code per block, no repeats
+        assert {'OILRIG1HELI', 'OILRIG2L6D', 'COMPOUNDSTREET', 'CASINO', 'DOMETOP', 'AIRFIELDHELIPAD'} <= set(codes)
+        for section in ('OIL RIG PEQUEÑO', 'OIL RIG GRANDE', 'OUTPOST', 'BANDIT CAMP', 'DOME', 'AIRFIELD'):
+            assert f' {section}\n' in text
+    run(go())
