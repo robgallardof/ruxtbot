@@ -376,7 +376,7 @@ def test_lookups_are_public_errors_private_and_alerts_go_where_requested(bot):
     run(go())
 
 
-def test_cctv_codes_are_public_and_each_code_copies_alone(bot):
+def test_cctv_codes_are_public_and_each_code_is_its_own_message(bot):
     import re
 
     async def go():
@@ -384,12 +384,12 @@ def test_cctv_codes_are_public_and_each_code_copies_alone(bot):
         await cmd(bot, 'cctv')(i)
         first = i.response.calls[0]
         messages = [first[1][0], *(c.args[0] for c in i.followup.send.call_args_list)]
-        assert all(len(m) <= 2000 and m.count('```') % 2 == 0 for m in messages) and 'ephemeral' not in first[2]
-        assert messages[0].startswith('# 📹 RUXTBOT — CÓDIGOS CCTV')
-        text = '\n'.join(messages)
-        codes = re.findall(r'```\n([A-Z0-9]+)\n```', text)
-        assert len(codes) == text.count('```') // 2 == len(set(codes))   # one code per block, no repeats
-        assert {'OILRIG1HELI', 'OILRIG2L6D', 'COMPOUNDSTREET', 'CASINO', 'DOMETOP', 'AIRFIELDHELIPAD'} <= set(codes)
-        for section in ('OIL RIG PEQUEÑO', 'OIL RIG GRANDE', 'OUTPOST', 'BANDIT CAMP', 'DOME', 'AIRFIELD'):
-            assert f' {section}\n' in text
+        assert 'ephemeral' not in first[2] and messages[0].startswith('# 📹 RUXTBOT — CÓDIGOS CCTV')
+        headings = [m for m in messages if m.startswith('## ')]
+        assert [h.split(' ', 2)[2] for h in headings] == ['OIL RIG PEQUEÑO', 'OIL RIG GRANDE', 'OUTPOST', 'BANDIT CAMP', 'DOME', 'AIRFIELD']
+        codes = messages[1:]
+        codes = [m for m in codes if not m.startswith('## ')]
+        # Every code is a message with nothing else in it, so copying the message copies just the code.
+        assert all(re.fullmatch(r'[A-Z0-9]+', c) for c in codes) and len(codes) == len(set(codes)) == 29
+        assert messages[messages.index('## 🛢️ OIL RIG PEQUEÑO') + 1] == 'OILRIG1HELI' and messages[-1] == 'AIRFIELDHELIPAD'
     run(go())

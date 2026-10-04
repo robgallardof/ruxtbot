@@ -56,6 +56,33 @@ def split_sections(text: str, limit: int = MESSAGE_LIMIT) -> list[str]:
     return chunks
 
 
+def split_codes(text: str) -> list[str]:
+    """One message per heading and one per code, so each code can be copied on its own.
+
+    The intro (title and notes before the first `## `) is one message, each `## ` heading another,
+    and every code block becomes a message holding only the bare code: copying it copies nothing else.
+    Bold labels above the codes are for whoever edits the file and are not posted.
+    """
+    messages, intro, code, in_code = [], [], [], False
+    for line in text.strip().split('\n'):
+        if line.startswith('```'):
+            if in_code and code:
+                messages.append('\n'.join(code).strip())
+            in_code, code = not in_code, []
+        elif in_code:
+            code.append(line)
+        elif line.startswith('## '):
+            if intro:
+                messages.append('\n'.join(intro).strip())
+                intro = []
+            messages.append(line)
+        elif not messages:
+            intro.append(line)
+    if intro:
+        messages.append('\n'.join(intro).strip())
+    return [m for m in messages if m]
+
+
 # (section key, icon shortName) in display order; texts live in i18n.STRINGS.
 EXAMPLE_SECTIONS = [
     ('examples.setup', 'computerstation'),
@@ -89,10 +116,10 @@ def examples_layout(lang: str, command_ids: dict[str, int] | None = None) -> ui.
 
 
 def register_info(bot) -> None:
-    def guide(name: str, description: str):
+    def guide(name: str, description: str, split=split_sections):
         """Register /<name>: posts data/<name>.md publicly, one message per part."""
         path = Path(bot.settings.data_path).with_name(f'{name}.md')
-        chunks = split_sections(path.read_text(encoding='utf-8')) if path.exists() else []
+        chunks = split(path.read_text(encoding='utf-8')) if path.exists() else []
 
         @bot.tree.command(name=name, description=description)
         async def command(interaction: discord.Interaction):
@@ -107,7 +134,7 @@ def register_info(bot) -> None:
                 await interaction.followup.send(chunk, allowed_mentions=none)
 
     guide('binds', '⌨️ Useful Rust binds and console commands (F1), ready to copy')
-    guide('cctv', '📹 CCTV camera codes for every monument, ready to copy')
+    guide('cctv', '📹 CCTV camera codes for every monument, ready to copy', split_codes)
 
     @bot.tree.command(name='author', description='👑 Who made RuxtBot')
     async def author(interaction: discord.Interaction):
