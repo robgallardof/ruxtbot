@@ -1,161 +1,164 @@
-# 📹 RUXTBOT — CÓDIGOS CCTV
+# 📷 Códigos CCTV · Computer Station
 
-> 🖥️ Úsalos en una **Computer Station**: escribe el código, pulsa **Add** y elige la cámara.
-> Los códigos van en **MAYÚSCULAS** y siempre son los mismos en todos los mapas.
+Crafteala (Workbench 2) o cómprala en Outpost. Escribe el código en **MAYÚSCULAS** en **Identifier to Add** y dale **+** 📡
+-# 📋 Pasa el mouse sobre un bloque y dale al botón de copiar (o selecciona la línea).
 
-## 🛢️ OIL RIG PEQUEÑO
-
-**🚁 Helipuerto**
+## 🛢️ Oil Rig chico
 ```
 OILRIG1HELI
 ```
-
-**⚓ Muelle**
 ```
 OILRIG1DOCK
 ```
-
-**💨 Chimenea**
-```
-OILRIG1EXHAUST
-```
-
-**1️⃣ Nivel 1**
 ```
 OILRIG1L1
 ```
-
-**2️⃣ Nivel 2**
 ```
 OILRIG1L2
 ```
-
-**3️⃣ Nivel 3**
 ```
 OILRIG1L3
 ```
-
-**4️⃣ Nivel 4**
 ```
 OILRIG1L4
 ```
 
-## 🏗️ OIL RIG GRANDE
-
-**🚁 Helipuerto**
+## 🛢️ Oil Rig grande
 ```
 OILRIG2HELI
 ```
-
-**⚓ Muelle**
 ```
 OILRIG2DOCK
 ```
-
-**💨 Chimenea**
 ```
 OILRIG2EXHAUST
 ```
-
-**1️⃣ Nivel 1**
 ```
 OILRIG2L1
 ```
-
-**2️⃣ Nivel 2**
 ```
 OILRIG2L2
 ```
-
-**3️⃣ Nivel 3 A**
 ```
 OILRIG2L3A
 ```
-
-**3️⃣ Nivel 3 B**
 ```
 OILRIG2L3B
 ```
-
-**4️⃣ Nivel 4**
 ```
 OILRIG2L4
 ```
-
-**5️⃣ Nivel 5**
 ```
 OILRIG2L5
 ```
-
-**6️⃣ Nivel 6 A**
 ```
 OILRIG2L6A
 ```
-
-**6️⃣ Nivel 6 B**
 ```
 OILRIG2L6B
 ```
-
-**6️⃣ Nivel 6 C**
 ```
 OILRIG2L6C
 ```
-
-**6️⃣ Nivel 6 D**
 ```
 OILRIG2L6D
 ```
 
-## 🏘️ OUTPOST
+## 🚢 Cargo Ship
+```
+CARGOBRIDGE
+```
+```
+CARGODECK
+```
+```
+CARGOSTERN
+```
+```
+CARGOHOLD1
+```
+```
+CARGOHOLD2
+```
 
-**🛣️ Calle**
+## ☢️ Missile Silo
+```
+SILOTOWER
+```
+```
+SILOEXIT1
+```
+```
+SILOEXIT2
+```
+```
+SILOSHIPPING
+```
+```
+SILOMISSILE
+```
+
+## ⛴️ Ferry Terminal
+```
+FERRYDOCK
+```
+```
+FERRYPARKING
+```
+```
+FERRYUTILITIES
+```
+```
+FERRYLOGISTICS
+```
+```
+COBALT1
+```
+
+## 🏘️ Outpost
 ```
 COMPOUNDSTREET
 ```
-
-**🛋️ Zona chill**
 ```
 COMPOUNDCHILL
 ```
-
-**🎵 Música**
+```
+COMPOUNDCRUDE
+```
 ```
 COMPOUNDMUSIC
 ```
 
-**🛢️ Crudo**
-```
-COMPOUNDCRUDE
-```
-
-## 🎰 BANDIT CAMP
-
-**🎲 Casino**
+## 🎰 Bandit Camp
 ```
 CASINO
 ```
-
-**🔫 Tienda de armas**
 ```
 TOWNWEAPONS
 ```
 
-## 🔭 DOME
-
-**🔝 Arriba**
+## 🛰️ Dome
+```
+DOME1
+```
 ```
 DOMETOP
 ```
 
-**1️⃣ Cámara 1**
+## 🏙️ Radtown
 ```
-DOME1
+RADTOWNHOUSE
+```
+```
+RADTOWNSBL
+```
+```
+RADTOWNAPARTMENTS
 ```
 
-## ✈️ AIRFIELD
-
-**🚁 Helipuerto**
+## ✈️ Airfield
 ```
 AIRFIELDHELIPAD
 ```
+
+🌊 **Underwater Labs** y **Abandoned Military Base** usan códigos con números al azar en cada wipe (ej. `LAB1234`). ¿Sabes uno nuevo? Compártelo aquí 👇

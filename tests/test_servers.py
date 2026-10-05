@@ -376,7 +376,7 @@ def test_lookups_are_public_errors_private_and_alerts_go_where_requested(bot):
     run(go())
 
 
-def test_cctv_codes_are_public_and_each_code_is_its_own_message(bot):
+def test_cctv_codes_are_public_with_one_copyable_block_per_code(bot):
     import re
 
     async def go():
@@ -384,12 +384,14 @@ def test_cctv_codes_are_public_and_each_code_is_its_own_message(bot):
         await cmd(bot, 'cctv')(i)
         first = i.response.calls[0]
         messages = [first[1][0], *(c.args[0] for c in i.followup.send.call_args_list)]
-        assert 'ephemeral' not in first[2] and messages[0].startswith('# 📹 RUXTBOT — CÓDIGOS CCTV')
-        headings = [m for m in messages if m.startswith('## ')]
-        assert [h.split(' ', 2)[2] for h in headings] == ['OIL RIG PEQUEÑO', 'OIL RIG GRANDE', 'OUTPOST', 'BANDIT CAMP', 'DOME', 'AIRFIELD']
-        codes = messages[1:]
-        codes = [m for m in codes if not m.startswith('## ')]
-        # Every code is a message with nothing else in it, so copying the message copies just the code.
-        assert all(re.fullmatch(r'[A-Z0-9]+', c) for c in codes) and len(codes) == len(set(codes)) == 29
-        assert messages[messages.index('## 🛢️ OIL RIG PEQUEÑO') + 1] == 'OILRIG1HELI' and messages[-1] == 'AIRFIELDHELIPAD'
+        assert 'ephemeral' not in first[2] and messages[0].startswith('# 📷 Códigos CCTV · Computer Station')
+        assert all(len(m) <= 2000 and m.count('```') % 2 == 0 for m in messages)
+        text = '\n'.join(messages)
+        assert re.findall(r'^## (.+)$', text, re.M) == ['🛢️ Oil Rig chico', '🛢️ Oil Rig grande', '🚢 Cargo Ship', '☢️ Missile Silo',
+                                                         '⛴️ Ferry Terminal', '🏘️ Outpost', '🎰 Bandit Camp', '🛰️ Dome', '🏙️ Radtown', '✈️ Airfield']
+        # Each code sits alone in its own block, so Discord's copy button copies just that code.
+        codes = re.findall(r'```\n([A-Z0-9]+)\n```', text)
+        assert len(codes) == text.count('```') // 2 == len(set(codes)) == 46
+        assert {'OILRIG1HELI', 'OILRIG2L6D', 'CARGOHOLD2', 'SILOMISSILE', 'COBALT1', 'RADTOWNSBL', 'AIRFIELDHELIPAD'} <= set(codes)
+        assert 'LAB1234' in text
     run(go())

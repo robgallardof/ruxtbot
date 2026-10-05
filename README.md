@@ -50,7 +50,7 @@ Posts the binds and console (F1) commands guide publicly, one message per part (
 
 ### CCTV codes: `/cctv`
 
-Posts the CCTV camera codes publicly, grouped by monument (small and large Oil Rig, Outpost, Bandit Camp, Dome, Airfield), each monument heading and then every code as its own message holding only the code, so copying a message copies just that code for a Computer Station. The text lives in `data/cctv.md`: edit it there (the bold labels above each code are only for editors and are not posted).
+Posts the CCTV camera codes publicly as a Markdown guide grouped by monument (Oil Rigs, Cargo Ship, Missile Silo, Ferry Terminal, Outpost, Bandit Camp, Dome, Radtown, Airfield), every code in its own code block so Discord's copy button copies just that code for a Computer Station. The text lives in `data/cctv.md`: edit it there.
 
 ### Version and updates
 
