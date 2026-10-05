@@ -163,7 +163,7 @@ def test_every_command_is_registered_localized_and_serializable(bot):
     async def go():
         from rustbot.i18n import CommandTranslator
         names = sorted(c.name for c in bot.tree.get_commands())
-        assert names == sorted(['binds', 'cctv', 'me', 'sv', 'ip', 'setserver', 'delserver', 'serverstats', 'leaderboard', 'rust', 'version', 'update', 'restart', 'upkeep', 'decay', 'wipealert', 'serverwatch', 'team', 'online', 'findplayer', 'playercompare', 'steamid', 'presence', 'sessions', 'author', 'craft', 'examples', 'forcewipe', 'help', 'item', 'pausealerts', 'ping', 'player', 'raid', 'raidbudget',
+        assert names == sorted(['binds', 'cctv', 'gamma', 'me', 'sv', 'ip', 'setserver', 'delserver', 'serverstats', 'leaderboard', 'rust', 'version', 'update', 'restart', 'upkeep', 'decay', 'wipealert', 'serverwatch', 'team', 'online', 'findplayer', 'playercompare', 'steamid', 'presence', 'sessions', 'author', 'craft', 'examples', 'forcewipe', 'help', 'item', 'pausealerts', 'ping', 'player', 'raid', 'raidbudget',
                                 'raidcalc', 'raidcompare', 'raidtools', 'resumealerts', 'server', 'servers', 'serversearch', 'settings',
                                 'sources', 'status', 'syncservers', 'track', 'who', 'wipe'])
         for command in bot.tree.get_commands():

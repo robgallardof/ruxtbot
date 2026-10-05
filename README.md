@@ -10,7 +10,7 @@ Replies follow each user's Discord language: **English** by default, **Spanish**
 | --- | --- |
 | ⚡ Start here | `/me`, `/sv`, `/ip`, `/help`, `/examples` |
 | 💥 Raid | `/raid`, `/raidcalc`, `/raidbudget`, `/raidcompare`, `/raidtools` |
-| 🛠️ Crafting & base | `/craft`, `/item`, `/upkeep`, `/decay`, `/binds`, `/cctv`, `/sources` |
+| 🛠️ Crafting & base | `/craft`, `/item`, `/upkeep`, `/decay`, `/binds`, `/cctv`, `/gamma`, `/sources` |
 | 🖥️ Servers | `/server`, `/online`, `/serverstats`, `/leaderboard`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe`, `/rust` |
 | 🕵️ Players | `/who`, `/findplayer`, `/player`, `/presence`, `/sessions`, `/playercompare`, `/steamid` |
 | 🔔 Alerts (everyone) | `/track`, `/team`, `/wipealert`, `/serverwatch` |
@@ -51,6 +51,10 @@ Posts the binds and console (F1) commands guide publicly, one message per part (
 ### CCTV codes: `/cctv`
 
 Posts the CCTV camera codes publicly as a Markdown guide grouped by monument (Oil Rigs, Cargo Ship, Missile Silo, Ferry Terminal, Outpost, Bandit Camp, Dome, Radtown, Airfield), every code in its own code block so Discord's copy button copies just that code for a Computer Station. The text lives in `data/cctv.md`: edit it there.
+
+### Night gamma script: `/gamma`
+
+Posts an install guide for an AutoHotkey v2 script that raises the NVIDIA gamma to see at night in Rust. `key:` picks the toggle key (F1–F12, mouse 4/5, Insert, Numpad…, default F10) and `reset:` the emergency reset key pressed with Shift (default F9). Under the guide, ⬇️ **Download .ahk** sends the script with those keys as a file and 📋 **Copy code** sends it in copyable blocks, both only to whoever clicks; the keys live in the button ID, so the buttons keep working after a restart. The script restarts itself as administrator so the keys work while Rust has focus. The guide lives in `data/gamma.md` (`{toggle}` and `{reset}` become the chosen keys) and the script in `data/gamma.ahk`.
 
 ### Version and updates
 

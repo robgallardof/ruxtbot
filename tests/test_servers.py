@@ -395,3 +395,39 @@ def test_cctv_codes_are_public_with_one_copyable_block_per_code(bot):
         assert {'OILRIG1HELI', 'OILRIG2L6D', 'CARGOHOLD2', 'SILOMISSILE', 'COBALT1', 'RADTOWNSBL', 'AIRFIELDHELIPAD'} <= set(codes)
         assert 'LAB1234' in text
     run(go())
+
+
+def test_gamma_guide_uses_the_chosen_keys_and_buttons_send_the_script(bot):
+    import re
+    from rustbot.info_commands import GammaButton, gamma_script
+
+    async def go():
+        i = FakeInteraction()
+        await cmd(bot, 'gamma')(i, key='XButton1', reset='F8')
+        first = i.response.calls[0]
+        messages = [first[1][0], *(c.args[0] for c in i.followup.send.call_args_list)]
+        assert 'ephemeral' not in first[2] and messages[0].startswith('# 🌗 Gamma NVIDIA')
+        assert all(len(m) <= 2000 for m in messages)
+        text = '\n'.join(messages)
+        assert '**Mouse 4**' in text and '**Shift + F8**' in text and '{toggle}' not in text and '{reset}' not in text
+        view = i.sent()['view']
+        ids = [b.custom_id for b in view.children if getattr(b, 'url', None) is None]
+        assert ids == ['gamma:download:XButton1:F8', 'gamma:copy:XButton1:F8']
+
+        script = gamma_script(GammaButton.script, 'XButton1', 'F8')
+        assert 'TOGGLE_KEY := "XButton1"' in script and 'RESET_KEY  := "+F8"' in script and '*RunAs' in script
+        assert 'Hotkey(TOGGLE_KEY, ToggleGamma)' in script and '; Mouse 4    -> Toggle' in script and '; Shift + F8 -> Emergency' in script
+
+        click = FakeInteraction()
+        await GammaButton('download', 'XButton1', 'F8').callback(click)
+        sent = click.response.calls[0][2]
+        assert sent['ephemeral'] and sent['file'].filename == 'gamma.ahk' and sent['file'].fp.read().decode() == script
+
+        click = FakeInteraction()
+        await GammaButton('copy', 'XButton1', 'F8').callback(click)
+        blocks = [c.args[0] for c in click.followup.send.call_args_list]
+        assert all(len(b) <= 2000 and c.kwargs['ephemeral'] for b, c in zip(blocks, click.followup.send.call_args_list))
+        pasted = '\n'.join(re.fullmatch(r'```ahk\n(.*)\n```', b, re.S)[1] for b in blocks)
+        assert re.sub(r'\n+', '\n', pasted) == re.sub(r'\n+', '\n', script.rstrip())   # nothing lost between parts
+        assert GammaButton.__discord_ui_compiled_template__.fullmatch('gamma:copy:F10:F9')
+    run(go())
