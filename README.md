@@ -54,9 +54,9 @@ Posts the CCTV camera codes publicly as a Markdown guide grouped by monument (Oi
 
 ### Night gamma script: `/gamma`
 
-Posts a step-by-step panel to install an AutoHotkey v2 script that raises the NVIDIA gamma to see at night in Rust: 1️⃣ install AutoHotkey v2 (button to its page), 2️⃣ pick your keys, 3️⃣ download the script (with a preview of the file and of your key settings), 4️⃣ run it as administrator, plus tips and fixes. The keys are picked from two menus (on/off key, and the emergency reset key pressed with Shift; F1–F12, mouse 4/5, Insert, Numpad…) or typed with ✏️ **Type another key** (any F1–F24, letter, number, Numpad or navigation key, checked before it reaches the script). `key:` and `reset:` preset them (default F10 and Shift + F9).
+Posts a short public card for an AutoHotkey v2 script that raises the NVIDIA gamma to see at night in Rust: what it does, what you need, 🚀 **Start**, a quick ⬇️ download with the default keys and a link to AutoHotkey. **Start** opens a private wizard, only for whoever clicks and in their Discord language, with a progress bar and ◀️ / ▶️: 1) install AutoHotkey v2, 2) pick the bright/normal key and the Shift reset key from menus or type any key (checked before it reaches the script), 3) download `gamma.ahk` or copy it in 3 parts, 4) turn it on as administrator, plus tips. `key:` and `reset:` preset the keys (default F10 and Shift + F9).
 
-The panel is public; picking keys on it opens the user's own copy, which then updates in place. ⬇️ **Download gamma.ahk** sends the file and 📋 **Copy code** sends it in copyable blocks, only to whoever clicks. The keys live in each control's ID, so the panel keeps working after a restart. The script restarts itself as administrator so the keys work while Rust has focus. The script lives in `data/gamma.ahk` and the panel texts in `rustbot/i18n.py`.
+The script's own messages follow the user's language too. It restarts itself as administrator so the keys work while Rust has focus. Every control keeps the step and the keys in its ID, so cards and wizards keep working after a restart. The script lives in `data/gamma.ahk` and the texts in `rustbot/i18n.py`.
 
 ### Version and updates
 

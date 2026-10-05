@@ -398,71 +398,91 @@ def test_cctv_codes_are_public_with_one_copyable_block_per_code(bot):
 
 
 
-def test_gamma_panel_lets_each_user_pick_keys_and_get_the_script(bot):
+
+def test_gamma_card_opens_a_private_wizard_in_each_users_language(bot):
     import re
     from types import SimpleNamespace
     from test_integration import text_of
-    from rustbot.gamma import GammaButton, KeyMenu, KeysModal, gamma_script, parse_key
+    from rustbot.gamma import STEPS, GammaButton, KeyMenu, KeysModal, compact, gamma_script, parse_key
 
     def controls(view):
         return {getattr(c, 'custom_id', None): c for c in view.walk_children() if getattr(c, 'custom_id', None)}
 
+    def in_wizard(locale='es-ES', **kwargs):
+        i = FakeInteraction(locale, **kwargs)
+        i.message = SimpleNamespace(flags=SimpleNamespace(ephemeral=True))
+        return i
+
     async def go():
+        # The public card: short, with Start, a quick download and the AutoHotkey page.
         i = FakeInteraction('es-ES')
         await cmd(bot, 'gamma')(i, key='XButton1', reset='F8')
-        sent = i.response.calls[0][2]
-        view = sent['view']
-        view.to_components()
-        text = text_of(view)
-        assert 'ephemeral' not in sent and sent['file'].filename == 'gamma.ahk' and len(text) <= 4000
-        for step in ('1️⃣ Instala AutoHotkey v2', '2️⃣ Elige tus teclas', '3️⃣ Descarga el script', '4️⃣ Ábrelo como administrador'):
-            assert step in text
-        assert '**Mouse 4**' in text and '**Shift + F8**' in text and 'TOGGLE_KEY := "XButton1"' in text
-        ids = controls(view)
-        assert {'gamma:toggle:XButton1:F8', 'gamma:reset:XButton1:F8', 'gamma:type:XButton1:F8',
-                'gamma:download:XButton1:F8', 'gamma:copy:XButton1:F8'} <= set(ids)
-        assert any(getattr(c, 'url', None) == 'https://www.autohotkey.com' for c in view.walk_children())
+        card = i.response.calls[0][2]
+        assert 'ephemeral' not in card
+        card['view'].to_components()
+        assert 'Ve de noche en Rust' in text_of(card['view']) and '**Mouse 4**' in text_of(card['view'])
+        ids = controls(card['view'])
+        assert ids['gamma:start:1:XButton1:F8'].item.label == 'Empezar' and ids['gamma:download:0:XButton1:F8'].item.label == 'Descargar (Mouse 4)'
 
-        # Picking a key on the public panel opens the user's own copy; picking on that copy updates it.
-        pick = FakeInteraction('es-ES', values=['F6'])
-        await KeyMenu('toggle', 'XButton1', 'F8').callback(pick)
-        kind, _, mine = pick.response.calls[0]
-        assert kind == 'send' and mine['ephemeral'] and 'gamma:toggle:F6:F8' in controls(mine['view'])
-        pick = FakeInteraction('es-ES', values=['Home'])
-        pick.message = SimpleNamespace(flags=SimpleNamespace(ephemeral=True))
-        await KeyMenu('reset', 'F6', 'F8').callback(pick)
+        # Start opens the wizard only for the clicker, in their own language.
+        for locale, words in (('en-US', ('Step 1 of 4', 'Install AutoHotkey v2', 'Download v2.0')),
+                              ('es-419', ('Paso 1 de 4', 'Instala AutoHotkey v2', 'Download v2.0'))):
+            click = FakeInteraction(locale)
+            await GammaButton('start', 1, 'XButton1', 'F8').callback(click)
+            kind, _, sent = click.response.calls[0]
+            assert kind == 'send' and sent['ephemeral'] and sent['files'] == []
+            assert all(w in text_of(sent['view']) for w in words)
+            assert controls(sent['view'])['gamma:back:1:XButton1:F8'].item.disabled
+
+        # Next / Back move the same message; each step fits Discord's 4000 characters.
+        for step in range(1, STEPS + 1):
+            for locale in ('en-US', 'es-ES'):
+                move = in_wizard(locale)
+                await GammaButton('next', step, 'XButton1', 'F8').callback(move)
+                kind, _, edit = move.response.calls[0]
+                edit['view'].to_components()
+                assert kind == 'edit' and len(text_of(edit['view'])) <= 4000
+                assert (step == 3) == bool(edit['attachments'])
+        assert 'gamma:restart:1:XButton1:F8' in controls(edit['view']) and '**Shift + F8**' in text_of(edit['view'])
+
+        # Step 3 carries the script with the keys and the clicker's language.
+        move = in_wizard('es-ES')
+        await GammaButton('next', 3, 'XButton1', 'F8').callback(move)
+        attached = move.response.calls[0][2]['attachments'][0].fp.read().decode('utf-8-sig')
+        assert attached == gamma_script(GammaButton.script, 'XButton1', 'F8', 'es') and 'No se pudo iniciar NVIDIA NVAPI' in attached
+
+        # Step 2: menus and the typed key update the wizard in place.
+        pick = in_wizard(values=['F6'])
+        await KeyMenu('toggle', 'XButton1', 'F8', 'es').callback(pick)
         kind, _, edit = pick.response.calls[0]
-        assert kind == 'edit' and 'gamma:copy:F6:Home' in controls(edit['view'])
-        assert edit['attachments'][0].fp.read().decode() == gamma_script(GammaButton.script, 'F6', 'Home')
-
-        # ✏️ any typed key, checked before it reaches the script.
-        assert parse_key('mouse 5') == 'XButton2' and parse_key('f13') == 'F13' and parse_key('g') == 'G' and parse_key('F10::') is None
+        assert kind == 'edit' and 'gamma:reset:2:F6:F8' in controls(edit['view']) and 'Paso 2 de 4' in text_of(edit['view'])
+        assert parse_key('mouse 5') == 'XButton2' and parse_key('f13') == 'F13' and parse_key('Inicio') == 'Home' and parse_key('F10::') is None
         modal = KeysModal('es', 'F10', 'F9')
         modal.toggle._value, modal.reset._value = 'numpad 5', 'x'
-        typed = FakeInteraction('es-ES')
+        typed = in_wizard()
         await modal.on_submit(typed)
-        assert 'gamma:download:Numpad5:X' in controls(typed.response.calls[0][2]['view'])
+        assert 'gamma:next:3:Numpad5:X' in controls(typed.response.calls[0][2]['view'])
         modal.toggle._value = 'F10::Run'
-        bad = FakeInteraction('es-ES')
+        bad = in_wizard()
         await modal.on_submit(bad)
         assert 'No conozco' in bad.response.calls[0][1][0]
 
-        script = gamma_script(GammaButton.script, 'XButton1', 'F8')
-        assert 'TOGGLE_KEY := "XButton1"' in script and 'RESET_KEY  := "+F8"' in script and '*RunAs' in script
-        assert 'Hotkey(TOGGLE_KEY, ToggleGamma)' in script and '; Mouse 4    -> Toggle' in script and '; Shift + F8 -> Emergency' in script
+        en, es = gamma_script(GammaButton.script, 'XButton1', 'F8'), gamma_script(GammaButton.script, 'XButton1', 'F8', 'es')
+        assert 'TOGGLE_KEY := "XButton1"' in en and 'RESET_KEY  := "+F8"' in en and '*RunAs' in en and 'Failed to initialize' in en
+        assert 'Hotkey(TOGGLE_KEY, ToggleGamma)' in en and '; Mouse 4    -> Toggle' in en and '; Shift + F8 -> Emergency' in en
+        assert 'Gamma: ALTO (' in es and 'Failed' not in es
 
-        click = FakeInteraction()
-        await GammaButton('download', 'XButton1', 'F8').callback(click)
+        click = FakeInteraction('es-ES')
+        await GammaButton('download', 3, 'XButton1', 'F8').callback(click)
         sent = click.response.calls[0][2]
-        assert sent['ephemeral'] and sent['file'].filename == 'gamma.ahk' and sent['file'].fp.read().decode() == script
+        assert sent['ephemeral'] and sent['file'].filename == 'gamma.ahk' and sent['file'].fp.read().decode('utf-8-sig') == es
 
-        click = FakeInteraction()
-        await GammaButton('copy', 'XButton1', 'F8').callback(click)
+        click = FakeInteraction('en-US')
+        await GammaButton('copy', 3, 'XButton1', 'F8').callback(click)
         calls = click.followup.send.call_args_list
-        blocks = [c.args[0] for c in calls]
-        assert all(len(b) <= 2000 and c.kwargs['ephemeral'] for b, c in zip(blocks, calls))
-        pasted = '\n'.join(re.fullmatch(r'```ahk\n(.*)\n```', b, re.S)[1] for b in blocks)
-        assert re.sub(r'\n+', '\n', pasted) == re.sub(r'\n+', '\n', script.rstrip())   # nothing lost between parts
-        assert GammaButton.__discord_ui_compiled_template__.fullmatch('gamma:type:F10:F9')
-        assert KeyMenu.__discord_ui_compiled_template__.fullmatch('gamma:reset:F10:F9')
+        assert len(calls) == 3 and all(len(c.args[0]) <= 2000 and c.kwargs['ephemeral'] for c in calls)
+        parts = [re.fullmatch(rf'\*\*{n}/3\*\*\n```ahk\n(.*)\n```', c.args[0], re.S)[1] for n, c in enumerate(calls, 1)]
+        assert '\n'.join(parts) == compact(en)   # nothing lost between parts
+        assert GammaButton.__discord_ui_compiled_template__.fullmatch('gamma:type:2:F10:F9')
+        assert KeyMenu.__discord_ui_compiled_template__.fullmatch('gamma:reset:2:F10:F9')
     run(go())
