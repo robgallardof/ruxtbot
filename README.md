@@ -54,7 +54,9 @@ Posts the CCTV camera codes publicly as a Markdown guide grouped by monument (Oi
 
 ### Night gamma script: `/gamma`
 
-Posts an install guide for an AutoHotkey v2 script that raises the NVIDIA gamma to see at night in Rust. `key:` picks the toggle key (F1–F12, mouse 4/5, Insert, Numpad…, default F10) and `reset:` the emergency reset key pressed with Shift (default F9). Under the guide, ⬇️ **Download .ahk** sends the script with those keys as a file and 📋 **Copy code** sends it in copyable blocks, both only to whoever clicks; the keys live in the button ID, so the buttons keep working after a restart. The script restarts itself as administrator so the keys work while Rust has focus. The guide lives in `data/gamma.md` (`{toggle}` and `{reset}` become the chosen keys) and the script in `data/gamma.ahk`.
+Posts a step-by-step panel to install an AutoHotkey v2 script that raises the NVIDIA gamma to see at night in Rust: 1️⃣ install AutoHotkey v2 (button to its page), 2️⃣ pick your keys, 3️⃣ download the script (with a preview of the file and of your key settings), 4️⃣ run it as administrator, plus tips and fixes. The keys are picked from two menus (on/off key, and the emergency reset key pressed with Shift; F1–F12, mouse 4/5, Insert, Numpad…) or typed with ✏️ **Type another key** (any F1–F24, letter, number, Numpad or navigation key, checked before it reaches the script). `key:` and `reset:` preset them (default F10 and Shift + F9).
+
+The panel is public; picking keys on it opens the user's own copy, which then updates in place. ⬇️ **Download gamma.ahk** sends the file and 📋 **Copy code** sends it in copyable blocks, only to whoever clicks. The keys live in each control's ID, so the panel keeps working after a restart. The script restarts itself as administrator so the keys work while Rust has focus. The script lives in `data/gamma.ahk` and the panel texts in `rustbot/i18n.py`.
 
 ### Version and updates
 

@@ -397,22 +397,55 @@ def test_cctv_codes_are_public_with_one_copyable_block_per_code(bot):
     run(go())
 
 
-def test_gamma_guide_uses_the_chosen_keys_and_buttons_send_the_script(bot):
+
+def test_gamma_panel_lets_each_user_pick_keys_and_get_the_script(bot):
     import re
-    from rustbot.info_commands import GammaButton, gamma_script
+    from types import SimpleNamespace
+    from test_integration import text_of
+    from rustbot.gamma import GammaButton, KeyMenu, KeysModal, gamma_script, parse_key
+
+    def controls(view):
+        return {getattr(c, 'custom_id', None): c for c in view.walk_children() if getattr(c, 'custom_id', None)}
 
     async def go():
-        i = FakeInteraction()
+        i = FakeInteraction('es-ES')
         await cmd(bot, 'gamma')(i, key='XButton1', reset='F8')
-        first = i.response.calls[0]
-        messages = [first[1][0], *(c.args[0] for c in i.followup.send.call_args_list)]
-        assert 'ephemeral' not in first[2] and messages[0].startswith('# 🌗 Gamma NVIDIA')
-        assert all(len(m) <= 2000 for m in messages)
-        text = '\n'.join(messages)
-        assert '**Mouse 4**' in text and '**Shift + F8**' in text and '{toggle}' not in text and '{reset}' not in text
-        view = i.sent()['view']
-        ids = [b.custom_id for b in view.children if getattr(b, 'url', None) is None]
-        assert ids == ['gamma:download:XButton1:F8', 'gamma:copy:XButton1:F8']
+        sent = i.response.calls[0][2]
+        view = sent['view']
+        view.to_components()
+        text = text_of(view)
+        assert 'ephemeral' not in sent and sent['file'].filename == 'gamma.ahk' and len(text) <= 4000
+        for step in ('1️⃣ Instala AutoHotkey v2', '2️⃣ Elige tus teclas', '3️⃣ Descarga el script', '4️⃣ Ábrelo como administrador'):
+            assert step in text
+        assert '**Mouse 4**' in text and '**Shift + F8**' in text and 'TOGGLE_KEY := "XButton1"' in text
+        ids = controls(view)
+        assert {'gamma:toggle:XButton1:F8', 'gamma:reset:XButton1:F8', 'gamma:type:XButton1:F8',
+                'gamma:download:XButton1:F8', 'gamma:copy:XButton1:F8'} <= set(ids)
+        assert any(getattr(c, 'url', None) == 'https://www.autohotkey.com' for c in view.walk_children())
+
+        # Picking a key on the public panel opens the user's own copy; picking on that copy updates it.
+        pick = FakeInteraction('es-ES', values=['F6'])
+        await KeyMenu('toggle', 'XButton1', 'F8').callback(pick)
+        kind, _, mine = pick.response.calls[0]
+        assert kind == 'send' and mine['ephemeral'] and 'gamma:toggle:F6:F8' in controls(mine['view'])
+        pick = FakeInteraction('es-ES', values=['Home'])
+        pick.message = SimpleNamespace(flags=SimpleNamespace(ephemeral=True))
+        await KeyMenu('reset', 'F6', 'F8').callback(pick)
+        kind, _, edit = pick.response.calls[0]
+        assert kind == 'edit' and 'gamma:copy:F6:Home' in controls(edit['view'])
+        assert edit['attachments'][0].fp.read().decode() == gamma_script(GammaButton.script, 'F6', 'Home')
+
+        # ✏️ any typed key, checked before it reaches the script.
+        assert parse_key('mouse 5') == 'XButton2' and parse_key('f13') == 'F13' and parse_key('g') == 'G' and parse_key('F10::') is None
+        modal = KeysModal('es', 'F10', 'F9')
+        modal.toggle._value, modal.reset._value = 'numpad 5', 'x'
+        typed = FakeInteraction('es-ES')
+        await modal.on_submit(typed)
+        assert 'gamma:download:Numpad5:X' in controls(typed.response.calls[0][2]['view'])
+        modal.toggle._value = 'F10::Run'
+        bad = FakeInteraction('es-ES')
+        await modal.on_submit(bad)
+        assert 'No conozco' in bad.response.calls[0][1][0]
 
         script = gamma_script(GammaButton.script, 'XButton1', 'F8')
         assert 'TOGGLE_KEY := "XButton1"' in script and 'RESET_KEY  := "+F8"' in script and '*RunAs' in script
@@ -425,9 +458,11 @@ def test_gamma_guide_uses_the_chosen_keys_and_buttons_send_the_script(bot):
 
         click = FakeInteraction()
         await GammaButton('copy', 'XButton1', 'F8').callback(click)
-        blocks = [c.args[0] for c in click.followup.send.call_args_list]
-        assert all(len(b) <= 2000 and c.kwargs['ephemeral'] for b, c in zip(blocks, click.followup.send.call_args_list))
+        calls = click.followup.send.call_args_list
+        blocks = [c.args[0] for c in calls]
+        assert all(len(b) <= 2000 and c.kwargs['ephemeral'] for b, c in zip(blocks, calls))
         pasted = '\n'.join(re.fullmatch(r'```ahk\n(.*)\n```', b, re.S)[1] for b in blocks)
         assert re.sub(r'\n+', '\n', pasted) == re.sub(r'\n+', '\n', script.rstrip())   # nothing lost between parts
-        assert GammaButton.__discord_ui_compiled_template__.fullmatch('gamma:copy:F10:F9')
+        assert GammaButton.__discord_ui_compiled_template__.fullmatch('gamma:type:F10:F9')
+        assert KeyMenu.__discord_ui_compiled_template__.fullmatch('gamma:reset:F10:F9')
     run(go())
