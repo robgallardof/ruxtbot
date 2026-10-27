@@ -1,27 +1,40 @@
-# RuxtBot
+<a id="top"></a>
+
+<h1 align="center">RuxtBot</h1>
+
+<p align="center">A Discord companion for Rust servers: find players, review server activity, set alerts and plan raids with your team.</p>
 
 Discord bot for Rust: raid planning with pictures, crafting, live servers, player lookups and BattleMetrics presence alerts.
 
 Replies follow each user's Discord language: **English** by default, **Spanish** for Spanish clients (es-ES / es-419). Slash command descriptions are localized too. Background alerts use the language chosen with `/settings`.
 
+## Setup
+
+1. Copy `.env.example` to `.env` and set `DISCORD_TOKEN`. Add `BATTLEMETRICS_TOKEN` for `/server`, `/serversearch`, `/player`, `/track` and BattleMetrics data in `/who`; `STEAM_API_KEY` is optional.
+2. Docker: `docker compose up -d --build` (the `rustbot-data` volume keeps watches and settings). Cybrancee: see [CYBRANCEE.md](CYBRANCEE.md).
+3. Invite the bot with the `bot` and `applications.commands` scopes and permission to send messages and embed links. Global commands can take a few minutes to appear.
+
 ## Commands
 
 | Area | Commands |
 | --- | --- |
-| ⚡ Start here | `/me`, `/sv`, `/ip`, `/help`, `/examples` |
-| 💥 Raid | `/raid`, `/raidcalc`, `/raidbudget`, `/raidcompare`, `/raidtools` |
-| 🛠️ Crafting & base | `/craft`, `/item`, `/upkeep`, `/decay`, `/binds`, `/cctv`, `/gamma`, `/sources` |
-| 🖥️ Servers | `/server`, `/online`, `/serverstats`, `/leaderboard`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe`, `/rust` |
-| 🕵️ Players | `/who`, `/findplayer`, `/player`, `/presence`, `/sessions`, `/playercompare`, `/steamid` |
-| 🔔 Alerts (everyone) | `/track`, `/team`, `/wipealert`, `/serverwatch` |
-| ⚙️ Server managers | `/setserver`, `/delserver`, `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers` |
-| 🏷️ Bot | `/version` (everyone), `/update`, `/restart` (bot owner), `/author`, `/ping` |
+| <img src="assets/readme-builder/icons/bolt.svg" width="20" height="20" alt="" /> Start here | `/me`, `/sv`, `/ip`, `/help`, `/examples` |
+| <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> Raid | `/raid`, `/raidcalc`, `/raidbudget`, `/raidcompare`, `/raidtools` |
+| <img src="assets/readme-builder/icons/settings.svg" width="20" height="20" alt="" /> Crafting & base | `/craft`, `/item`, `/upkeep`, `/decay`, `/binds`, `/cctv`, `/gamma`, `/sources` |
+| <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> Servers | `/server`, `/online`, `/serverstats`, `/leaderboard`, `/serversearch`, `/servers`, `/wipe`, `/forcewipe`, `/rust` |
+| <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> Players | `/who`, `/findplayer`, `/player`, `/presence`, `/sessions`, `/playercompare`, `/steamid` |
+| <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> Alerts (everyone) | `/track`, `/team`, `/wipealert`, `/serverwatch` |
+| <img src="assets/readme-builder/icons/settings.svg" width="20" height="20" alt="" /> Server managers | `/setserver`, `/delserver`, `/settings`, `/pausealerts`, `/resumealerts`, `/status`, `/syncservers` |
+| <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> Bot | `/version` (everyone), `/update`, `/restart` (bot owner), `/author`, `/ping` |
 
 Lookups are **public by default** so the whole channel sees them: `/who`, `/player`, `/presence`, `/sessions`, `/findplayer`, `/playercompare`, `/online`, `/server`, `/serverstats`, `/leaderboard`, `/team`, and the confirmations of `/track`, `/wipealert` and `/serverwatch`. Each has `share:false` to keep it private. Errors, notices, `/me`, `/settings`, `/status`, `/version` and personal panels are always private; when a public reply turns into an error, the public "thinking…" placeholder is deleted and the error is sent privately.
 
-`/help` is a menu with buttons for the common next steps: 👤 My profile, 🎮 Our server, 🔎 Find player, 👀 Track and the raid tools. `/examples` is posted publicly so everyone in the channel can copy them.
+`/help` is a menu with buttons for the common next steps: <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> My profile, <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> Our server, <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> Find player, <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> Track and the raid tools. `/examples` is posted publicly so everyone in the channel can copy them.
 
 Commands mentioned in `/help`, `/examples` and the welcome message are **clickable**: after the startup sync the bot knows each command's ID, so `` `/sv` `` becomes a Discord command mention that opens the command when tapped. Commands written with options stay as code so they can be copied. When the bot joins a server it posts a short setup guide (in the server's language) in the system channel, or the first channel it can write in, with a button that shows the examples.
+
+<details>
+<summary>Full command guide</summary>
 
 ### Your settings: `/me`
 
@@ -31,7 +44,7 @@ Commands whose `server` is optional (`/server`, `/online`, `/serverstats`, `/lea
 
 ### Our server: `/sv`, `/ip`, `/setserver`
 
-A server manager saves the community's servers once: `/setserver name:Main address:1.2.3.4:28015` (the whole `client.connect …` line also works), optionally with `battlemetrics:` for live data, and `default:true` for the one `/sv` shows first. If you only pick the BattleMetrics server, the address is read from it. `/sv` and `/ip` post **publicly**: name, live status and the `client.connect` line in a code block, with a **📋 Copy connect** button that replies with just the plain line for easy copying.
+A server manager saves the community's servers once: `/setserver name:Main address:1.2.3.4:28015` (the whole `client.connect …` line also works), optionally with `battlemetrics:` for live data, and `default:true` for the one `/sv` shows first. If you only pick the BattleMetrics server, the address is read from it. `/sv` and `/ip` post **publicly**: name, live status and the `client.connect` line in a code block, with a **<img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> Copy connect** button that replies with just the plain line for easy copying.
 
 ### Server tools (BattleMetrics)
 
@@ -40,7 +53,7 @@ A server manager saves the community's servers once: `/setserver name:Main addre
 - `/leaderboard period:all time|30 days|7 days|24 h`: players with the most hours on a server, paged, with a picker that opens their profile.
 - `/serversearch`: name, country, minimum players, gather (1x, 2x, 3x+), maximum group (solo, duo, trio, quad), type, wiped in the last N days and PvE. BattleMetrics ignores or rejects most Rust feature filters (checked 2026-10-03), so the bot fetches up to 100 servers and filters them itself. A picker opens the full card.
 - `/player player: server:` adds hours on that server, first and last seen, and a 30-day hours-per-day graph.
-- In `/player`, `/sessions` and `/track`, the `server` suggestions follow the player already typed: their servers first (🟢 online there now, then most recent) with their hours on each. This works for BattleMetrics IDs and for SteamIDs already linked in the Discord.
+- In `/player`, `/sessions` and `/track`, the `server` suggestions follow the player already typed: their servers first (<img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> online there now, then most recent) with their hours on each. This works for BattleMetrics IDs and for SteamIDs already linked in the Discord.
 - `/rust`: players and servers worldwide, with the 24-hour range and 7-day peak.
 - `/upkeep server:` and `/decay server:` apply that server's upkeep and decay multipliers.
 
@@ -54,7 +67,7 @@ Posts the CCTV camera codes publicly as a Markdown guide grouped by monument (Oi
 
 ### Night gamma script: `/gamma`
 
-Posts a short public card for an AutoHotkey v2 script that raises the NVIDIA gamma to see at night in Rust: what it does, what you need, 🚀 **Start**, a quick ⬇️ download with the default keys and a link to AutoHotkey. **Start** opens a private wizard, only for whoever clicks and in their Discord language, with a progress bar and ◀️ / ▶️: 1) install AutoHotkey v2, 2) pick the bright/normal key and the Shift reset key from menus or type any key (checked before it reaches the script), 3) download `gamma.ahk` or copy it in 3 parts, 4) turn it on as administrator, plus tips. `key:` and `reset:` preset the keys (default F10 and Shift + F9).
+Posts a short public card for an AutoHotkey v2 script that raises the NVIDIA gamma to see at night in Rust: what it does, what you need, <img src="assets/readme-builder/icons/rocket.svg" width="20" height="20" alt="" /> **Start**, a quick ⬇️ download with the default keys and a link to AutoHotkey. **Start** opens a private wizard, only for whoever clicks and in their Discord language, with a progress bar and ◀️ / ▶️: 1) install AutoHotkey v2, 2) pick the bright/normal key and the Shift reset key from menus or type any key (checked before it reaches the script), 3) download `gamma.ahk` or copy it in 3 parts, 4) turn it on as administrator, plus tips. `key:` and `reset:` preset the keys (default F10 and Shift + F9).
 
 The script's own messages follow the user's language too. It restarts itself as administrator so the keys work while Rust has focus. Every control keeps the step and the keys in its ID, so cards and wizards keep working after a restart. The script lives in `data/gamma.ahk` and the texts in `rustbot/i18n.py`.
 
@@ -65,8 +78,8 @@ The script's own messages follow the user's language too. It restarts itself as 
 ### Raid
 
 - **57 targets** in six categories: doors, walls & high externals, floors & hatches, windows/bars/barricades, deployables (TC, turrets, SAM site, traps…) and vehicles. Walls and floors include the **soft side**.
-- `/raid`: picture-based planner built with Discord **Components V2**. Every category shows a gallery of its targets; the simulator shows the target and explosive pictures, HP bar, sulfur/charcoal/frag cost, the 🏆 cheapest option, and buttons to apply, undo, complete, reset, switch side and compare.
-- `/raidcalc`: base calculator. Add several targets (2 armored doors + 3 stone walls…), pick one method or "cheapest per target", and get explosives, totals and a picture per explosive. 📤 shares a read-only copy in the channel.
+- `/raid`: picture-based planner built with Discord **Components V2**. Every category shows a gallery of its targets; the simulator shows the target and explosive pictures, HP bar, sulfur/charcoal/frag cost, the <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> cheapest option, and buttons to apply, undo, complete, reset, switch side and compare.
+- `/raidcalc`: base calculator. Add several targets (2 armored doors + 3 stone walls…), pick one method or "cheapest per target", and get explosives, totals and a picture per explosive. <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> shares a read-only copy in the channel.
 - `/raidbudget sulfur:20000`: how many of each explosive you can craft and how many targets of each kind you can destroy.
 - "Cheapest" only considers common explosives; siege (catapult, mortar, ballista, ram, MLRS, 40mm HE, cannon) and fire are tagged in comparisons but never recommended by default. Unverified craft costs are shown as such, never as free.
 
@@ -78,15 +91,15 @@ After the first lookup the player goes into the guild's **player book** and ever
 
 - **A SteamID is enough**: the bot finds the BattleMetrics ID and loads Steam, RustWho and BattleMetrics together. Order: link saved in this Discord → verified cache (30 days) → `quick-match` → same-name profiles that list the exact SteamID.
 - **Why**: SteamIDs are *private identifiers*; BattleMetrics requires the `rcon:read` token scope to view and match them (developer documentation, Player object). Without it `quick-match` and `/players/match` answer 200 with no data.
-- **Regular BattleMetrics tokens do not see SteamIDs** (checked 2026-10-03: `quick-match` answers 200 with no data and profiles only list names). Then `/who <SteamID>` lists the BattleMetrics profiles named like the player, most likely first (names shared with Steam/RustWho, online now, hours, servers; ⭐ when one clearly stands out). **Pick the right one once** and the link is saved for that Discord server: from then on the SteamID alone works in `/track`, `/presence`, `/player`, `/sessions`… Commands that hit an unlinked SteamID show an **🔗 Open profile and link** button. Nothing is linked without that confirmation.
+- **Regular BattleMetrics tokens do not see SteamIDs** (checked 2026-10-03: `quick-match` answers 200 with no data and profiles only list names). Then `/who <SteamID>` lists the BattleMetrics profiles named like the player, most likely first (names shared with Steam/RustWho, online now, hours, servers; ⭐ when one clearly stands out). **Pick the right one once** and the link is saved for that Discord server: from then on the SteamID alone works in `/track`, `/presence`, `/player`, `/sessions`… Commands that hit an unlinked SteamID show an **<img src="assets/readme-builder/icons/link.svg" width="20" height="20" alt="" /> Open profile and link** button. Nothing is linked without that confirmation.
 - **Type the name and press Enter**: a name typed without picking a suggestion is looked up in the book (exact name first, otherwise a single partial match).
-- **Errors always offer a way out**: an unknown name shows a **🔎 Search «name»** button that runs the BattleMetrics name search in one click.
+- **Errors always offer a way out**: an unknown name shows a **<img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> Search «name»** button that runs the BattleMetrics name search in one click.
 - `/who` with no options opens a panel: recent players, search by name, or enter a SteamID / BattleMetrics ID. `/help` has a **Find player** button that opens it.
 - `/player player:` without a server shows where the player is (same as `/presence`).
-- `/track` lists recent players in a **⚡ Watch for 7 days** picker: one click, nothing to type. The form accepts names too.
+- `/track` lists recent players in a **<img src="assets/readme-builder/icons/bolt.svg" width="20" height="20" alt="" /> Watch for 7 days** picker: one click, nothing to type. The form accepts names too.
 - `/findplayer name:` searches BattleMetrics by in-game name and shows each **BattleMetrics ID**; pick one to open the full profile.
-- `/online server:` lists who is playing right now (20 per page, time in the current session). 👀 marks watched players, ⭐ players you looked up before; the picker opens a profile.
-- `/playercompare first: second:` lists the servers two players have in common, hours of each and 🟢🟢 when both are online (possible teammates; not proof).
+- `/online server:` lists who is playing right now (20 per page, time in the current session). <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> marks watched players, ⭐ players you looked up before; the picker opens a profile.
+- `/playercompare first: second:` lists the servers two players have in common, hours of each and <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /><img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> when both are online (possible teammates; not proof).
 - `/steamid player:` converts between every SteamID format.
 
 ### Players: `/who`
@@ -95,10 +108,10 @@ After the first lookup the player goes into the guild's **player book** and ever
 
 `/who player:<SteamID64, BattleMetrics ID or name> bm_id:<optional BattleMetrics ID>`. With only a BattleMetrics ID, the bot reads the SteamID from the BattleMetrics profile when the token can see it, so Steam and RustWho data still appear. Buttons under the profile open **Watch 7 days** and **Sessions** directly. It shows:
 
-- 📝 **Name history first**: merged from Steam, RustWho and BattleMetrics with date and source, plus how many older names are locked on RustWho.
-- 👤 Steam status, every SteamID format (like steamid.io), creation date, level, games, badges, limited account.
-- 🛡️ VAC, game, community, trade and server bans.
-- 🦀 Rust stats from RustWho; 📊 BattleMetrics hours, servers and most played servers.
+- <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> **Name history first**: merged from Steam, RustWho and BattleMetrics with date and source, plus how many older names are locked on RustWho.
+- <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> Steam status, every SteamID format (like steamid.io), creation date, level, games, badges, limited account.
+- <img src="assets/readme-builder/icons/shield.svg" width="20" height="20" alt="" /> VAC, game, community, trade and server bans.
+- <img src="assets/readme-builder/icons/code.svg" width="20" height="20" alt="" /> Rust stats from RustWho; <img src="assets/readme-builder/icons/chart.svg" width="20" height="20" alt="" /> BattleMetrics hours, servers and most played servers.
 - SteamIDs are resolved automatically through the official authenticated `POST /players/quick-match` endpoint. Only an exact, unique identifier match is used. Account permissions may limit available matches; same-name candidates remain unverified and never activate tracking.
 - Buttons to Steam, SteamID I/O, SteamDB (MXN calculator), RustWho and BattleMetrics. `STEAM_API_KEY` (optional) adds Rust hours.
 
@@ -126,7 +139,7 @@ One background loop checks these every 2 minutes, fetching each server and playe
 - `/wipealert server:` pings when the server's last-wipe date changes; `forced:true` reminds one hour before the monthly forced wipe and when it goes live.
 - `/serverwatch server: above: below:` pings when the population crosses a threshold (for example, when it fills up on wipe day). 1–15 days.
 - `/track server:🌍` watches a player on any server; the alert names the server they joined or left.
-- **Stale online flags**: BattleMetrics keeps `online: true` while it cannot query a server (`queryStatus` other than `valid`). The bot treats that as unknown for alerts and shows it as 🟡 *unconfirmed* in `/who`, never as online.
+- **Stale online flags**: BattleMetrics keeps `online: true` while it cannot query a server (`queryStatus` other than `valid`). The bot treats that as unknown for alerts and shows it as <img src="assets/readme-builder/icons/spark.svg" width="20" height="20" alt="" /> *unconfirmed* in `/who`, never as online.
 
 ### Base: `/upkeep`, `/decay`
 
@@ -134,10 +147,7 @@ One background loop checks these every 2 minutes, fetching each server and playe
 - Group tax since [Breach and Clear](https://rust.facepunch.com/news/breach-and-clear) (3 September 2026): first 4 players free, next 6 add 2 % each, every player after adds 4 %, capped at 300 %. Players authed on the TC or any code lock (guests included, and anyone deauthed in the last 24 h) count.
 - `/decay grade: health:` gives the time to full decay: twig 1 h, wood 3 h, stone 5 h, sheet metal 8 h, armored 12 h from full health ([Facepunch wiki](https://wiki.facepunch.com/rust/the_tool_cupboard)). Servers can change all of these with the decay convars.
 
-## UX rules
-
-- Interactive panels can only be used by whoever opened them; they disable themselves when they expire.
-- Errors are red embeds with a hint on how to continue; a global handler catches anything unexpected.
+</details>
 
 ## Data
 
@@ -145,11 +155,10 @@ One background loop checks these every 2 minutes, fetching each server and playe
 - `data/rust_catalog.yml` holds crafting recipes for `/craft` and `/item`.
 - Item pictures come from `https://wiki.rustclash.com/img/items180/<shortName>.png`.
 
-## Setup
+## UX rules
 
-1. Copy `.env.example` to `.env` and set `DISCORD_TOKEN`. Add `BATTLEMETRICS_TOKEN` for `/server`, `/serversearch`, `/player`, `/track` and BattleMetrics data in `/who`; `STEAM_API_KEY` is optional.
-2. Docker: `docker compose up -d --build` (the `rustbot-data` volume keeps watches and settings). Cybrancee: see [CYBRANCEE.md](CYBRANCEE.md).
-3. Invite the bot with the `bot` and `applications.commands` scopes and permission to send messages and embed links. Global commands can take a few minutes to appear.
+- Interactive panels can only be used by whoever opened them; they disable themselves when they expire.
+- Errors are red embeds with a hint on how to continue; a global handler catches anything unexpected.
 
 ## Development
 
@@ -185,3 +194,9 @@ Performance: duplicate player/server observations are reused within each polling
 ### Guided tracking panel
 
 Type `/track` with no arguments. Choose **Watch · 7 days** or **Watch · 15 days**, enter a SteamID and optionally a nickname. **Stop watching** removes your watches for that player in the configured alert channel; **My watches** refreshes the list. Each panel is controlled by its opener and expires after five minutes. The confirmation shows the destination channel, @wipe, and exact expiry. English and Spanish are supported.
+
+<p align="center"><a href="#top">Back to top</a></p>
+
+<!-- readme-builder:signature:start -->
+<p align="center"><a href="https://github.com/robgallardof"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/readme/brand/signature-en-dark.svg" /><img src="assets/readme/brand/signature-en-light.svg" alt="RuxtBot / Roberto Gallardo" width="100%" /></picture></a></p>
+<!-- readme-builder:signature:end -->
